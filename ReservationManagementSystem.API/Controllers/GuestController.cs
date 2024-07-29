@@ -21,9 +21,12 @@ public class GuestController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<GuestResponse>>> GetAll(CancellationToken cancellationToken)
+    public async Task<ActionResult<List<GuestResponse>>> GetAll(CancellationToken cancellationToken,
+        [FromQuery] string? filterOn, [FromQuery] string? filterQuery,
+        [FromQuery] string? sortBy, [FromQuery] bool isAscending = true,
+        [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 1)
     {
-        var response = await _mediator.Send(new GetAllUserRequest(), cancellationToken);
+        var response = await _mediator.Send(new GetAllUserRequest(filterOn, filterQuery, sortBy, isAscending, pageNumber, pageSize), cancellationToken);
         return Ok(response);
     }
 

@@ -7,18 +7,21 @@ namespace ReservationManagementSystem.Application.Features.GuestFeatures.GetAllG
 
 public sealed class GetAllUserHandler : IRequestHandler<GetAllUserRequest, List<GuestResponse>>
 {
-    private readonly IGuestRepository _userRepository;
+    private readonly IGuestRepository _guestRepository;
     private readonly IMapper _mapper;
 
     public GetAllUserHandler(IGuestRepository userRepository, IMapper mapper)
     {
-        _userRepository = userRepository;
+        _guestRepository = userRepository;
         _mapper = mapper;
     }
 
     public async Task<List<GuestResponse>> Handle(GetAllUserRequest request, CancellationToken cancellationToken)
     {
-        var users = await _userRepository.GetAll(cancellationToken);
+        var users = await _guestRepository.GetAll(cancellationToken,
+            request.FilterOn, request.FilterQuery, request.SortBy,
+            request.IsAscending, request.PageNumber, request.PageSize);
+
         return _mapper.Map<List<GuestResponse>>(users);
     }
 }
