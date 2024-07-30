@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace ReservationManagementSystem.Infrastructure.Identity.Models.Account;
+namespace ReservationManagementSystem.Application.DTOs.Account;
 
 public class AuthenticationResponse
 {

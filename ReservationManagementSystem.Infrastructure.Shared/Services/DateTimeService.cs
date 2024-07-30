@@ -1,6 +1,6 @@
 ﻿using ReservationManagementSystem.Application.Interfaces.Services;
 
-namespace ReservationManagementSystem.Infrastructure.Identity.Services;
+namespace ReservationManagementSystem.Infrastructure.Shared.Services;
 
 public class DateTimeService : IDateTimeService
 {

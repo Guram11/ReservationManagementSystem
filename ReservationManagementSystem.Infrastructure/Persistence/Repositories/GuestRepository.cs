@@ -1,4 +1,4 @@
-﻿using ReservationManagementSystem.Application.Repositories;
+﻿using ReservationManagementSystem.Application.Interfaces.Repositories;
 using ReservationManagementSystem.Domain.Entities;
 using ReservationManagementSystem.Infrastructure.Persistence.Context;
 

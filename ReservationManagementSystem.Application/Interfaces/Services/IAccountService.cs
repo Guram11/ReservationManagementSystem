@@ -1,7 +1,7 @@
-﻿using ReservationManagementSystem.Infrastructure.Identity.Models.Account;
-using ReservationManagementSystem.Infrastructure.Identity.Wrappers;
+﻿using ReservationManagementSystem.Application.DTOs.Account;
+using ReservationManagementSystem.Application.Wrappers;
 
-namespace ReservationManagementSystem.Infrastructure.Identity.Interfaces;
+namespace ReservationManagementSystem.Application.Interfaces.Services;
 
 public interface IAccountService
 {

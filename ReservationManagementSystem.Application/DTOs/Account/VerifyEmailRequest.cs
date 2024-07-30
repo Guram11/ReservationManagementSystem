@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ReservationManagementSystem.Infrastructure.Identity.Models.Account;
+namespace ReservationManagementSystem.Application.DTOs.Account;
 
 public class ResetPasswordRequest
 {

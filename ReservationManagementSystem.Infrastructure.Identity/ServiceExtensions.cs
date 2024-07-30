@@ -1,5 +1,4 @@
-﻿using ReservationManagementSystem.Infrastructure.Identity.Wrappers;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -10,8 +9,9 @@ using ReservationManagementSystem.Infrastructure.Identity.Contexts;
 using ReservationManagementSystem.Infrastructure.Identity.Models;
 using System.Text;
 using Infrastructure.Identity.Services;
-using ReservationManagementSystem.Infrastructure.Identity.Interfaces;
 using ReservationManagementSystem.Infrastructure.Identity.Services;
+using ReservationManagementSystem.Application.Interfaces.Services;
+using ReservationManagementSystem.Application.Wrappers;
 
 namespace ReservationManagementSystem.Infrastructure.Identity;
 

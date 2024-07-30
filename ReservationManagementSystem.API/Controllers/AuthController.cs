@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ReservationManagementSystem.Infrastructure.Identity.Interfaces;
-using ReservationManagementSystem.Infrastructure.Identity.Models.Account;
+using ReservationManagementSystem.Application.DTOs.Account;
+using ReservationManagementSystem.Application.Interfaces.Services;
 
 namespace ReservationManagementSystem.API.Controllers;
 

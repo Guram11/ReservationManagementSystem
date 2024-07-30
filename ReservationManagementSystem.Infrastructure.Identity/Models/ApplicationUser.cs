@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using ReservationManagementSystem.Infrastructure.Identity.Models.Account;
+using ReservationManagementSystem.Application.DTOs.Account;
 
 namespace ReservationManagementSystem.Infrastructure.Identity.Models
 {

@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ReservationManagementSystem.Application.Repositories;
 using ReservationManagementSystem.Domain.Common;
 using ReservationManagementSystem.Infrastructure.Persistence.Context;
 using ReservationManagementSystem.Infrastructure.FilterExtensions;
+using ReservationManagementSystem.Application.Interfaces.Repositories;
 
 namespace ReservationManagementSystem.Infrastructure.Persistence.Repositories;
 
@@ -15,9 +15,12 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
         Context = context;
     }
 
-    public void Create(T entity)
+    public async Task<T> Create(T entity)
     {
-        Context.Set<T>().Add(entity);
+       Context.Set<T>().Add(entity);
+       await Context.SaveChangesAsync();
+
+       return entity;
     }
 
     public Task<T?> Get(Guid id, CancellationToken cancellationToken)

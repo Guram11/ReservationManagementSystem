@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using ReservationManagementSystem.Application.Features.GuestFeatures.Common;
-using ReservationManagementSystem.Application.Repositories;
+using ReservationManagementSystem.Application.Interfaces.Repositories;
 
 namespace ReservationManagementSystem.Application.Features.GuestFeatures.DeleteGuest;
 

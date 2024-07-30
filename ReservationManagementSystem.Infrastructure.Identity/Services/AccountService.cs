@@ -1,5 +1,4 @@
 ﻿using ReservationManagementSystem.Application.Common.Exceptions;
-using ReservationManagementSystem.Infrastructure.Identity.Wrappers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.IdentityModel.Tokens;
@@ -7,12 +6,13 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using ReservationManagementSystem.Infrastructure.Identity.Models.Enums;
-using ReservationManagementSystem.Infrastructure.Identity.Models;
 using ReservationManagementSystem.Infrastructure.Identity.Helpers;
-using ReservationManagementSystem.Infrastructure.Identity.Interfaces;
-using ReservationManagementSystem.Infrastructure.Identity.Models.Account;
-using ReservationManagementSystem.Infrastructure.Identity.Models.Email;
+using ReservationManagementSystem.Infrastructure.Identity.Models;
+using ReservationManagementSystem.Application.Interfaces.Services;
+using ReservationManagementSystem.Application.DTOs.Account;
+using ReservationManagementSystem.Application.DTOs.Email;
+using ReservationManagementSystem.Application.Enums;
+using ReservationManagementSystem.Application.Wrappers;
 
 namespace Infrastructure.Identity.Services
 {

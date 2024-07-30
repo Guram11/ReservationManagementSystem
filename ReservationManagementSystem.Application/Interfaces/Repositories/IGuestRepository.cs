@@ -1,6 +1,6 @@
 ﻿using ReservationManagementSystem.Domain.Entities;
 
-namespace ReservationManagementSystem.Application.Repositories;
+namespace ReservationManagementSystem.Application.Interfaces.Repositories;
 
 public interface IGuestRepository : IBaseRepository<Guest>
 {

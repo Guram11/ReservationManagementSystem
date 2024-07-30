@@ -1,4 +1,4 @@
-﻿namespace ReservationManagementSystem.Infrastructure.Identity.Settings;
+﻿namespace ReservationManagementSystem.Domain.Settings;
 
 public class MailSettings
 {

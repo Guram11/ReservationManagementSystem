@@ -1,4 +1,4 @@
-﻿namespace ReservationManagementSystem.Infrastructure.Identity.Wrappers;
+﻿namespace ReservationManagementSystem.Application.Wrappers;
 
 public class Response<T>
 {

@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using ReservationManagementSystem.Infrastructure.Identity.Models.Enums;
+using ReservationManagementSystem.Application.Enums;
 
 namespace ReservationManagementSystem.Infrastructure.Identity.Seeds
 {

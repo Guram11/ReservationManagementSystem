@@ -1,4 +1,4 @@
-﻿namespace ReservationManagementSystem.Infrastructure.Identity.Models.Email;
+﻿namespace ReservationManagementSystem.Application.DTOs.Email;
 
 public class EmailRequest
 {

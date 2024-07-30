@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReservationManagementSystem
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReservationManagementSystem.API", "ReservationManagementSystem.API\ReservationManagementSystem.API.csproj", "{FAA09F28-FD13-4743-ACE6-E5A39E6BBB6F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReservationManagementSystem.Infrastructure.Identity", "ReservationManagementSystem.Infrastructure.Identity\ReservationManagementSystem.Infrastructure.Identity.csproj", "{EC02A338-7F87-43A9-8929-E05032479924}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReservationManagementSystem.Infrastructure.Identity", "ReservationManagementSystem.Infrastructure.Identity\ReservationManagementSystem.Infrastructure.Identity.csproj", "{EC02A338-7F87-43A9-8929-E05032479924}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
