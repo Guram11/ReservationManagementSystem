@@ -7,13 +7,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{FF15048D-271
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{D829DB05-6CD4-4749-938B-517E966AEDBC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReservationManagementSystem.Domain", "ReservationManagementSystem.Domain\ReservationManagementSystem.Domain.csproj", "{8968F0BA-4F63-44DF-9C0B-8F34E0CBC907}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReservationManagementSystem.Domain", "ReservationManagementSystem.Domain\ReservationManagementSystem.Domain.csproj", "{8968F0BA-4F63-44DF-9C0B-8F34E0CBC907}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReservationManagementSystem.Application", "ReservationManagementSystem.Application\ReservationManagementSystem.Application.csproj", "{A0BC3586-27F8-4AB5-832E-E49D24B58ADC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReservationManagementSystem.Application", "ReservationManagementSystem.Application\ReservationManagementSystem.Application.csproj", "{A0BC3586-27F8-4AB5-832E-E49D24B58ADC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReservationManagementSystem.Infrastructure", "ReservationManagementSystem.Infrastructure\ReservationManagementSystem.Infrastructure.csproj", "{327E34A3-0908-4251-93B0-37921E981A97}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReservationManagementSystem.Infrastructure", "ReservationManagementSystem.Infrastructure\ReservationManagementSystem.Infrastructure.csproj", "{327E34A3-0908-4251-93B0-37921E981A97}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReservationManagementSystem.API", "ReservationManagementSystem.API\ReservationManagementSystem.API.csproj", "{FAA09F28-FD13-4743-ACE6-E5A39E6BBB6F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReservationManagementSystem.API", "ReservationManagementSystem.API\ReservationManagementSystem.API.csproj", "{FAA09F28-FD13-4743-ACE6-E5A39E6BBB6F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReservationManagementSystem.Infrastructure.Identity", "ReservationManagementSystem.Infrastructure.Identity\ReservationManagementSystem.Infrastructure.Identity.csproj", "{EC02A338-7F87-43A9-8929-E05032479924}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,6 +39,10 @@ Global
 		{FAA09F28-FD13-4743-ACE6-E5A39E6BBB6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FAA09F28-FD13-4743-ACE6-E5A39E6BBB6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FAA09F28-FD13-4743-ACE6-E5A39E6BBB6F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC02A338-7F87-43A9-8929-E05032479924}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC02A338-7F87-43A9-8929-E05032479924}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC02A338-7F87-43A9-8929-E05032479924}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC02A338-7F87-43A9-8929-E05032479924}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -46,6 +52,7 @@ Global
 		{A0BC3586-27F8-4AB5-832E-E49D24B58ADC} = {FF15048D-2712-43CF-8EF5-0FBE183E60A1}
 		{327E34A3-0908-4251-93B0-37921E981A97} = {FF15048D-2712-43CF-8EF5-0FBE183E60A1}
 		{FAA09F28-FD13-4743-ACE6-E5A39E6BBB6F} = {FF15048D-2712-43CF-8EF5-0FBE183E60A1}
+		{EC02A338-7F87-43A9-8929-E05032479924} = {FF15048D-2712-43CF-8EF5-0FBE183E60A1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6BA2CB24-E4AA-4164-B931-81D803A11E9D}

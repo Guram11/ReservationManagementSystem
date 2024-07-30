@@ -10,7 +10,8 @@ public static class ServiceExtensions
 {
     public static void ConfigurePersistence(this IServiceCollection services)
     {
-        services.AddDbContext<DataContext>(options => options.UseSqlServer("Server=localhost;Database=ReservationManagementSystemDb;Trusted_Connection=True;TrustServerCertificate=True"));
+        services.AddDbContext<DataContext>(options =>
+            options.UseSqlServer("Server=localhost;Database=ReservationManagementSystemDb;Trusted_Connection=True;TrustServerCertificate=True"));
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IGuestRepository, GuestRepository>();

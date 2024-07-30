@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ReservationManagementSystem.Application.Repositories;
 using ReservationManagementSystem.Domain.Common;
-using ReservationManagementSystem.Domain.Entities;
 using ReservationManagementSystem.Infrastructure.Persistence.Context;
 using ReservationManagementSystem.Infrastructure.FilterExtensions;
 
@@ -26,7 +25,8 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
         return Context.Set<T>().FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
     }
 
-    public Task<List<T>> GetAll(CancellationToken cancellationToken, string? filterOn = null, string? filterQuery = null,
+    public Task<List<T>> GetAll(CancellationToken cancellationToken,
+        string? filterOn = null, string? filterQuery = null,
         string? sortBy = null, bool isAscending = true,
         int pageNumber = 1, int pageSize = 10)
     {
