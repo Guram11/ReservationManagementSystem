@@ -1,19 +1,22 @@
 ﻿using ReservationManagementSystem.Domain.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ReservationManagementSystem.Domain.Entities
+namespace ReservationManagementSystem.Domain.Entities;
+
+public class ReservationRoom : BaseEntity
 {
-    internal class ReservationRoom : BaseEntity
-    {
-        public int ReservationId { get; set; }
-        public int RateRoomTypeId { get; set; }
-        public int RoomId { get;set; } // specific Room which was assigned to a reservation
-        public DateTime Checkin { get; set; }
-        public DateTime Checkout { get; set; }
-        public decimal Price { get; set; } // Sum of prices of all child ReservationRoomTimeline rows
-    }
+    public Guid ReservationId { get; set; }
+    public Guid RateId { get; set; }
+    public Guid RoomTypeId { get; set; }
+    public Guid RoomId { get; set; } // specific Room assigned to a reservation
+    public DateTime Checkin { get; set; }
+    public DateTime Checkout { get; set; }
+    public decimal Price { get; set; } // Sum of prices of all child ReservationRoomTimeline rows
+
+    public Reservation Reservation { get; set; }
+    public RateRoomType RateRoomType { get; set; }
+    public Room Room { get; set; }
+    public ICollection<Guest> Guests { get; set; }
+    public ICollection<ReservationRoomTimeline> ReservationRoomTimelines { get; set; } 
+    public ICollection<ReservationRoomServices> ReservationRoomServices { get; set; }
+    public ICollection<ReservationRoomPayments> ReservationRoomPayments { get; set; }
 }

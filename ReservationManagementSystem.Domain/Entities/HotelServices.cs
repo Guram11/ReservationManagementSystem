@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ReservationManagementSystem.Domain.Common;
+using ReservationManagementSystem.Domain.Enums;
 
-namespace ReservationManagementSystem.Domain.Entities
+namespace ReservationManagementSystem.Domain.Entities;
+
+public class HotelServices : BaseEntity
 {
-    internal class HotelServices
-    {
-        public int HotelId { get; set; }
-        public int TypeId { get; set; } // TODO: this should come from HotelServiceTypes enum (such as Extra Bed, Hotel Damage, Mini bar, etc)
-        public string Description { get; set; }
-        public decimal Price;
-    }
+    public Guid HotelId { get; set; }
+    public HotelServiceTypes TypeId { get; set; }
+    public required string Description { get; set; }
+    public decimal Price { get; set; }
+
+    public Hotel Hotel { get; set; }
+
+    public ICollection<ReservationRoomServices> ReservationRoomServices { get; set; }
 }

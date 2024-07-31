@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ReservationManagementSystem.Domain.Common;
 
-namespace ReservationManagementSystem.Domain.Entities
+namespace ReservationManagementSystem.Domain.Entities;
+
+public class RateTimeline : BaseEntity
 {
-    internal class RateTimeline
-    {
-        public DateOnly Date { get; set; }
-        public int RateRoomTypeId { get; set; }
-        public decimal Price { get; set; }
-    }
+    public DateOnly Date { get; set; }
+    public Guid RateId { get; set; }
+    public Guid RoomTypeId { get; set; }
+    public decimal Price { get; set; }
+
+    public RateRoomType RateRoomType { get; set; }
 }

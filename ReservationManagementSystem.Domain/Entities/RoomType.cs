@@ -1,19 +1,18 @@
 ﻿using ReservationManagementSystem.Domain.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ReservationManagementSystem.Domain.Entities
+namespace ReservationManagementSystem.Domain.Entities;
+
+public class RoomType : BaseEntity
 {
-    internal class RoomType : BaseEntity
-    {
-        public int HotelId { get; set; }
-        public string Name { get; set; }
-        public byte NumberOfRooms { get; set; }
-        public bool IsActive { get; set; }
-        public byte MinCapacity { get; set; } // min number of guests it can accomodate
-        public byte MaxCapacity { get; set; }// max number of guests it can accomodate
-    }
+    public Guid HotelId { get; set; }
+    public required string Name { get; set; }
+    public byte NumberOfRooms { get; set; }
+    public bool IsActive { get; set; }
+    public byte MinCapacity { get; set; } // Min number of guests it can accommodate
+    public byte MaxCapacity { get; set; } // Max number of guests it can accommodate
+
+    public Hotel Hotel { get; set; }
+    public ICollection<Room> Rooms { get; set; } 
+    public ICollection<AvailabilityTimeline> AvailabilityTimelines { get; set; }
+    public ICollection<RateRoomType> RateRoomTypes { get; set; }
 }

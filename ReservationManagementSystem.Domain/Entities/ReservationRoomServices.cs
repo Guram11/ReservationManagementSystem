@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ReservationManagementSystem.Domain.Common;
 
-namespace ReservationManagementSystem.Domain.Entities
+namespace ReservationManagementSystem.Domain.Entities;
+
+public class ReservationRoomServices : BaseEntity
 {
-    internal class ReservationRoomServices
-    {
-        // Below IDs should form a composite primary key
-        public int HotelServiceId { get; set; }
-        public int ReservationRoomId { get; set; }
-    }
+    public Guid HotelServiceId { get; set; }
+    public Guid ReservationRoomId { get; set; }
+
+    public HotelServices HotelService { get; set; }
+    public ReservationRoom ReservationRoom { get; set; }
 }

@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ReservationManagementSystem.Domain.Common;
 
-namespace ReservationManagementSystem.Domain.Entities
+namespace ReservationManagementSystem.Domain.Entities;
+
+public class RateRoomType : BaseEntity
 {
-    internal class RateRoomType
-    {
-        // Below IDs should form a single composite primary key
-        public int RateId { get; set; }
-        public int RoomTypeId { get; set; }
-    }
+    public Guid RateId { get; set; }
+    public Guid RoomTypeId { get; set; }
+
+    public Rate Rate { get; set; }
+    public RoomType RoomType { get; set; }
+    public ICollection<RateTimeline> RateTimelines { get; set; }
+    public ICollection<ReservationRoom> ReservationRooms { get; set; }
 }

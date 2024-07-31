@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ReservationManagementSystem.Domain.Common;
+using ReservationManagementSystem.Domain.Enums;
 
-namespace ReservationManagementSystem.Domain.Entities
+namespace ReservationManagementSystem.Domain.Entities;
+
+public class ReservationRoomPayments : BaseEntity
 {
-    internal class ReservationRoomPayments
-    {
-        public int ReservationRoomId { get; set; }
-        public decimal Amount { get; set; }
-        public string Description { get; set; }
-        public string Currency { get; set; }
-    }
+    public Guid ReservationRoomId { get; set; }
+    public decimal Amount { get; set; }
+    public required string Description { get; set; }
+    public Currencies Currency { get; set; }
+
+    public ReservationRoom ReservationRoom { get; set; }
 }

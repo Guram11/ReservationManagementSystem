@@ -1,14 +1,10 @@
 ﻿using ReservationManagementSystem.Domain.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ReservationManagementSystem.Domain.Entities
+namespace ReservationManagementSystem.Domain.Entities;
+
+public class Rate : BaseEntity
 {
-    internal class Rate : BaseEntity
-    {
-        public string Name { get; set; }
-    }
+    public required string Name { get; set; }
+
+    public ICollection<RateRoomType> RateRoomTypes { get; set; }
 }

@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ReservationManagementSystem.Domain.Common;
+using ReservationManagementSystem.Domain.Enums;
 
-namespace ReservationManagementSystem.Domain.Entities
+namespace ReservationManagementSystem.Domain.Entities;
+
+public class ReservationInvoices : BaseEntity
 {
-    // TODO: add CreateDate/UpdateDate (auditing) fields to BaseEntity
-    internal class ReservationInvoices
-    {
-        public int ReservationId { get; set; }
-        public decimal Amount { get; set; }
-        public decimal Paid { get; set; }
-        public decimal Due { get; set; }
-        public string Currency { get; set; }
-    }
+    public Guid ReservationId { get; set; }
+    public decimal Amount { get; set; }
+    public decimal Paid { get; set; }
+    public decimal Due { get; set; }
+    public Currencies Currency { get; set; }
+
+    public Reservation Reservation { get; set; }
 }
