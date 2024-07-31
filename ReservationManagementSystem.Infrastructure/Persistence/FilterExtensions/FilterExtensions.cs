@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using System.Reflection;
 
-namespace ReservationManagementSystem.Infrastructure.FilterExtensions;
+namespace ReservationManagementSystem.Infrastructure.Persistence.FilterExtensions;
 
 public static class FilterExtensions
 {

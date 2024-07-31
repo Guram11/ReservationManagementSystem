@@ -1,12 +1,10 @@
 using ReservationManagementSystem.API.Extensions;
-using ReservationManagementSystem.Infrastructure.Persistence.Context;
 using ReservationManagementSystem.Application;
-using ReservationManagementSystem.Infrastructure.Persistence;
-using ReservationManagementSystem.Infrastructure.Identity;
-using ReservationManagementSystem.Infrastructure.Identity.Contexts;
 using Microsoft.AspNetCore.Identity;
 using ReservationManagementSystem.Infrastructure.Identity.Models;
 using ReservationManagementSystem.Infrastructure.Identity.Seeds;
+using ReservationManagementSystem.Infrastructure;
+using ReservationManagementSystem.Infrastructure.Context;
 
 internal class Program
 {
@@ -16,7 +14,6 @@ internal class Program
 
         builder.Services.ConfigurePersistence();
         builder.Services.ConfigureApplication();
-        builder.Services.AddIdentityInfrastructure();
 
         builder.Services.ConfigureApiBehavior();
         builder.Services.ConfigureCorsPolicy();
@@ -29,9 +26,7 @@ internal class Program
 
         var serviceScope = app.Services.CreateScope();
         var dataContext = serviceScope.ServiceProvider.GetService<DataContext>();
-        var authDataContext = serviceScope.ServiceProvider.GetService<IdentityContext>();
         dataContext?.Database.EnsureCreated();
-        authDataContext?.Database.EnsureCreated();
 
         var userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
         var roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();

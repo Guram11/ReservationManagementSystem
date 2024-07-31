@@ -4,7 +4,7 @@ namespace ReservationManagementSystem.Domain.Entities;
 
 public class Guest : BaseEntity
 {
-    public int ReservationRoomId { get; set; }
+    //public int ReservationRoomId { get; set; }
     public required string FirstName { get; set; }
     public required string LastName { get; set; }
     public required string Email { get; set; }

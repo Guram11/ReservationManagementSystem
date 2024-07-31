@@ -1,6 +1,6 @@
 ﻿using ReservationManagementSystem.Application.Interfaces.Repositories;
 using ReservationManagementSystem.Domain.Entities;
-using ReservationManagementSystem.Infrastructure.Persistence.Context;
+using ReservationManagementSystem.Infrastructure.Context;
 
 namespace ReservationManagementSystem.Infrastructure.Persistence.Repositories;
 

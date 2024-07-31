@@ -23,7 +23,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ReservationManagementSystem.Application\ReservationManagementSystem.Application.csproj" />
-    <ProjectReference Include="..\ReservationManagementSystem.Infrastructure.Identity\ReservationManagementSystem.Infrastructure.Identity.csproj" />
     <ProjectReference Include="..\ReservationManagementSystem.Infrastructure\ReservationManagementSystem.Infrastructure.csproj" />
   </ItemGroup>
 
