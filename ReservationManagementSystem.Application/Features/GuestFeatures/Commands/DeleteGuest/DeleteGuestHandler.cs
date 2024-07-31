@@ -3,7 +3,7 @@ using MediatR;
 using ReservationManagementSystem.Application.Features.GuestFeatures.Common;
 using ReservationManagementSystem.Application.Interfaces.Repositories;
 
-namespace ReservationManagementSystem.Application.Features.GuestFeatures.DeleteGuest;
+namespace ReservationManagementSystem.Application.Features.GuestFeatures.Commands.DeleteGuest;
 
 public sealed class DeleteGuestHandler : IRequestHandler<DeleteGuestRequest, GuestResponse>
 {

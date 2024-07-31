@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace ReservationManagementSystem.Application.Features.GuestFeatures.CreateGuest;
+namespace ReservationManagementSystem.Application.Features.GuestFeatures.Commands.CreateGuest;
 
 public sealed class CreateGuestValidator : AbstractValidator<CreateGuestRequest>
 {

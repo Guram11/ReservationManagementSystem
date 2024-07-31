@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using ReservationManagementSystem.Application.Features.GuestFeatures.CreateGuest;
-using ReservationManagementSystem.Application.Features.GuestFeatures.UpdateGuest;
+using ReservationManagementSystem.Application.Features.GuestFeatures.Commands.CreateGuest;
+using ReservationManagementSystem.Application.Features.GuestFeatures.Commands.UpdateGuest;
 using ReservationManagementSystem.Domain.Entities;
 
 namespace ReservationManagementSystem.Application.Features.GuestFeatures.Common;

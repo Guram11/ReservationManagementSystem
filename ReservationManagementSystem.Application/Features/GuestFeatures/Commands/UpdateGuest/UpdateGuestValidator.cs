@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace ReservationManagementSystem.Application.Features.GuestFeatures.UpdateGuest;
+namespace ReservationManagementSystem.Application.Features.GuestFeatures.Commands.UpdateGuest;
 
 public sealed class UpdateGuestValidator : AbstractValidator<UpdateGuestRequest>
 {

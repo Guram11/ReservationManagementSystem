@@ -3,7 +3,7 @@ using MediatR;
 using ReservationManagementSystem.Application.Features.GuestFeatures.Common;
 using ReservationManagementSystem.Application.Interfaces.Repositories;
 
-namespace ReservationManagementSystem.Application.Features.GuestFeatures.GetGuestById;
+namespace ReservationManagementSystem.Application.Features.GuestFeatures.Queries.GetGuestById;
 
 public sealed class GetGuestByIdHandler : IRequestHandler<GetGuestByIdRequest, GuestResponse>
 {
@@ -18,7 +18,7 @@ public sealed class GetGuestByIdHandler : IRequestHandler<GetGuestByIdRequest, G
 
     public async Task<GuestResponse> Handle(GetGuestByIdRequest request, CancellationToken cancellationToken)
     {
-        var guest = await _userRepository.Get(request.Id ,cancellationToken);
+        var guest = await _userRepository.Get(request.Id, cancellationToken);
         return _mapper.Map<GuestResponse>(guest);
     }
 }
