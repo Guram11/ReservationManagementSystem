@@ -13,18 +13,25 @@ using ReservationManagementSystem.Application.DTOs.Account;
 using ReservationManagementSystem.Application.DTOs.Email;
 using ReservationManagementSystem.Application.Enums;
 using ReservationManagementSystem.Application.Wrappers;
+using ReservationManagementSystem.Domain.Settings;
+using Microsoft.Extensions.Options;
 
 namespace Infrastructure.Identity.Services
 {
     public class AccountService : IAccountService
     {
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly MailSettings _mailSettings;
+        private readonly JWTSettings _jwtSettings;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailService _emailService;
 
-        public AccountService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IEmailService emailService)
+        public AccountService(UserManager<ApplicationUser> userManager, IOptions<JWTSettings> jwtSettings,
+            IOptions<MailSettings> mailSettings, SignInManager<ApplicationUser> signInManager, IEmailService emailService)
         {
             _userManager = userManager;
+            _mailSettings = mailSettings.Value;
+            _jwtSettings = jwtSettings.Value;
             _signInManager = signInManager;
             _emailService = emailService;
         }
@@ -101,7 +108,14 @@ namespace Infrastructure.Identity.Services
                 {
                     await _userManager.AddToRoleAsync(user, Roles.Basic.ToString());
                     var verificationUri = await SendVerificationEmail(user, origin);
-                    await _emailService.SendAsync(new EmailRequest() { From = "superadmin@gmail.com", To = user.Email, Body = $"Please confirm your account by visiting this URL {verificationUri}", Subject = "Confirm Registration" });
+
+                    await _emailService.SendAsync(new EmailRequest()
+                    { 
+                        From = _mailSettings.EmailFrom,
+                        To = user.Email, Body = $"Please confirm your account by visiting this URL {verificationUri}",
+                        Subject = "Confirm Registration"
+                    });
+
                     return new Response<string>(user.Id, message: $"User Registered. Please confirm your account by visiting this URL {verificationUri}");
                 }
                 else
@@ -146,14 +160,14 @@ namespace Infrastructure.Identity.Services
             .Union(userClaims)
             .Union(roleClaims);
 
-            var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("C1CF4B7DC4C4175B6618DE4F55CA4srtsrt"));
+            var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
             var signingCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256);
 
             var jwtSecurityToken = new JwtSecurityToken(
-                issuer: "CoreIdentity",
-                audience: "CoreIdentityUser",
+                issuer: _jwtSettings.Issuer,
+                audience: _jwtSettings.Audience,
                 claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(60),
+                expires: DateTime.UtcNow.AddMinutes(_jwtSettings.DurationInMinutes),
                 signingCredentials: signingCredentials);
             return jwtSecurityToken;
         }

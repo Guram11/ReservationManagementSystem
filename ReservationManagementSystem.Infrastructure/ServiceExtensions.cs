@@ -3,12 +3,14 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using ReservationManagementSystem.Application.Interfaces.Repositories;
 using ReservationManagementSystem.Application.Interfaces.Services;
 using ReservationManagementSystem.Application.Wrappers;
+using ReservationManagementSystem.Domain.Settings;
 using ReservationManagementSystem.Infrastructure.Context;
 using ReservationManagementSystem.Infrastructure.Identity.Models;
 using ReservationManagementSystem.Infrastructure.Identity.Services;
@@ -19,12 +21,14 @@ namespace ReservationManagementSystem.Infrastructure;
 
 public static class ServiceExtensions
 {
-    public static void ConfigurePersistence(this IServiceCollection services)
+    public static void ConfigurePersistence(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<DataContext>(options =>
-            options.UseSqlServer("Server=localhost;Database=ReservationSystemDb;Trusted_Connection=True;TrustServerCertificate=True",
+            options.UseSqlServer(configuration.GetConnectionString("DataContextConnectionString"),
             b => b.MigrationsAssembly(typeof(DataContext).Assembly.FullName)));
 
+        services.Configure<JWTSettings>(configuration.GetSection("JWTSettings"));
+        services.Configure<MailSettings>(configuration.GetSection("MailSettings"));
         services.AddScoped<IGuestRepository, GuestRepository>();
         services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<DataContext>().AddDefaultTokenProviders();
         services.AddTransient<IAccountService, AccountService>();
@@ -46,9 +50,9 @@ public static class ServiceExtensions
                     ValidateAudience = true,
                     ValidateLifetime = true,
                     ClockSkew = TimeSpan.Zero,
-                    ValidIssuer = "CoreIdentity",
-                    ValidAudience = "CoreIdentityUser",
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("C1CF4B7DC4C4175B6618DE4F55CA4srtsrt"))
+                    ValidIssuer = configuration["JWTSettings:Issuer"],
+                    ValidAudience = configuration["JWTSettings:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWTSettings:Key"]))
                 };
                 o.Events = new JwtBearerEvents()
                 {

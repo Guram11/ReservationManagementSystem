@@ -11,7 +11,7 @@ namespace ReservationManagementSystem.Infrastructure.Identity.Services;
 
 public class EmailService : IEmailService
 {
-    public MailSettings _mailSettings { get; }
+    private readonly MailSettings _mailSettings;
 
     public EmailService(IOptions<MailSettings> mailSettings)
     {
@@ -29,15 +29,15 @@ public class EmailService : IEmailService
 
             var email = new MimeMessage
             {
-                Sender = new MailboxAddress("Guram Chubinidze", request.From ?? "guramchubinidze@mail.com"),
+                Sender = new MailboxAddress(_mailSettings.DisplayName, request.From ?? _mailSettings.EmailFrom),
                 Subject = request.Subject,
                 Body = builder.ToMessageBody()
             };
             email.To.Add(MailboxAddress.Parse(request.To));
 
             using var smtp = new SmtpClient();
-            smtp.Connect("smtp.ethereal.email", 587, SecureSocketOptions.StartTls);
-            smtp.Authenticate("doug.vandervort54@ethereal.email", "CpCcbMUCqCUz5jxBZ3");
+            smtp.Connect(_mailSettings.SmtpHost, _mailSettings.SmtpPort, SecureSocketOptions.StartTls);
+            smtp.Authenticate(_mailSettings.SmtpUser, _mailSettings.SmtpPass);
             await smtp.SendAsync(email);
             smtp.Disconnect(true);
 

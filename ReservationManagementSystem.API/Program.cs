@@ -12,8 +12,8 @@ internal class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        builder.Services.ConfigurePersistence();
         builder.Services.ConfigureApplication();
+        builder.Services.ConfigurePersistence(builder.Configuration);
 
         builder.Services.ConfigureApiBehavior();
         builder.Services.ConfigureCorsPolicy();
