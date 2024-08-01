@@ -8,5 +8,5 @@ public class AvailabilityTimeline : BaseEntity
     public Guid RoomTypeId { get; set; }
     public byte Available { get; set; }
 
-    public RoomType RoomType { get; set; }
+    public RoomType? RoomType { get; set; }
 }

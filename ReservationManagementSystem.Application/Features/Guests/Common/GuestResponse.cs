@@ -1,4 +1,4 @@
-﻿namespace ReservationManagementSystem.Application.Features.GuestFeatures.Common;
+﻿namespace ReservationManagementSystem.Application.Features.Guests.Common;
 
 public sealed record GuestResponse
 {

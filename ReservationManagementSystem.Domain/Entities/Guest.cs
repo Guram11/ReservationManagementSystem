@@ -10,5 +10,5 @@ public class Guest : BaseEntity
     public required string PhoneNumber { get; set; }
     public Guid ReservationRoomId { get; set; }
 
-    public ReservationRoom ReservationRoom { get; set; }
+    public ReservationRoom? ReservationRoom { get; set; }
 }

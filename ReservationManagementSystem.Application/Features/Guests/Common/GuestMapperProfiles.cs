@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
-using ReservationManagementSystem.Application.Features.GuestFeatures.Commands.CreateGuest;
-using ReservationManagementSystem.Application.Features.GuestFeatures.Commands.UpdateGuest;
+using ReservationManagementSystem.Application.Features.Guests.Commands.CreateGuest;
+using ReservationManagementSystem.Application.Features.Guests.Commands.UpdateGuest;
 using ReservationManagementSystem.Domain.Entities;
 
-namespace ReservationManagementSystem.Application.Features.GuestFeatures.Common;
+namespace ReservationManagementSystem.Application.Features.Guests.Common;
 
 public sealed class GuestMapperProfiles : Profile
 {

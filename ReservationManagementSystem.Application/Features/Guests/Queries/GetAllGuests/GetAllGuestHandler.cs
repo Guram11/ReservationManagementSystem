@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using MediatR;
-using ReservationManagementSystem.Application.Features.GuestFeatures.Common;
+using ReservationManagementSystem.Application.Features.Guests.Common;
 using ReservationManagementSystem.Application.Interfaces.Repositories;
 
-namespace ReservationManagementSystem.Application.Features.GuestFeatures.Queries.GetAllGuests;
+namespace ReservationManagementSystem.Application.Features.Guests.Queries.GetAllGuests;
 
 public sealed class GetAllUserHandler : IRequestHandler<GetAllUserRequest, List<GuestResponse>>
 {

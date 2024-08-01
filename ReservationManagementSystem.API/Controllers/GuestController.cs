@@ -1,11 +1,11 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using ReservationManagementSystem.Application.Features.GuestFeatures.Commands.CreateGuest;
-using ReservationManagementSystem.Application.Features.GuestFeatures.Commands.DeleteGuest;
-using ReservationManagementSystem.Application.Features.GuestFeatures.Commands.UpdateGuest;
-using ReservationManagementSystem.Application.Features.GuestFeatures.Common;
-using ReservationManagementSystem.Application.Features.GuestFeatures.Queries.GetAllGuests;
-using ReservationManagementSystem.Application.Features.GuestFeatures.Queries.GetGuestById;
+using ReservationManagementSystem.Application.Features.Guests.Commands.DeleteGuest;
+using ReservationManagementSystem.Application.Features.Guests.Queries.GetAllGuests;
+using ReservationManagementSystem.Application.Features.Guests.Queries.GetGuestById;
+using ReservationManagementSystem.Application.Features.Guests.Commands.CreateGuest;
+using ReservationManagementSystem.Application.Features.Guests.Commands.UpdateGuest;
+using ReservationManagementSystem.Application.Features.Guests.Common;
 
 namespace ReservationManagementSystem.API.Controllers;
 

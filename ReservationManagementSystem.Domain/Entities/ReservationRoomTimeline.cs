@@ -8,5 +8,5 @@ public class ReservationRoomTimeline : BaseEntity
     public DateOnly Date { get; set; }
     public decimal Price { get; set; }
 
-    public ReservationRoom ReservationRoom { get; set; }
+    public ReservationRoom? ReservationRoom { get; set; }
 }

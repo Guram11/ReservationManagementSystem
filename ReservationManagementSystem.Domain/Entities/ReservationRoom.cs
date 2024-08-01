@@ -12,11 +12,11 @@ public class ReservationRoom : BaseEntity
     public DateTime Checkout { get; set; }
     public decimal Price { get; set; } // Sum of prices of all child ReservationRoomTimeline rows
 
-    public Reservation Reservation { get; set; }
-    public RateRoomType RateRoomType { get; set; }
-    public Room Room { get; set; }
-    public ICollection<Guest> Guests { get; set; }
-    public ICollection<ReservationRoomTimeline> ReservationRoomTimelines { get; set; } 
-    public ICollection<ReservationRoomServices> ReservationRoomServices { get; set; }
-    public ICollection<ReservationRoomPayments> ReservationRoomPayments { get; set; }
+    public Reservation? Reservation { get; set; }
+    public RateRoomType? RateRoomType { get; set; }
+    public Room? Room { get; set; }
+    public ICollection<Guest>? Guests { get; set; }
+    public ICollection<ReservationRoomTimeline>? ReservationRoomTimelines { get; set; } 
+    public ICollection<ReservationRoomServices>? ReservationRoomServices { get; set; }
+    public ICollection<ReservationRoomPayments>? ReservationRoomPayments { get; set; }
 }

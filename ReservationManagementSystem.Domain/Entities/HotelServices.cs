@@ -10,7 +10,7 @@ public class HotelServices : BaseEntity
     public required string Description { get; set; }
     public decimal Price { get; set; }
 
-    public Hotel Hotel { get; set; }
+    public Hotel? Hotel { get; set; }
 
-    public ICollection<ReservationRoomServices> ReservationRoomServices { get; set; }
+    public ICollection<ReservationRoomServices>? ReservationRoomServices { get; set; }
 }

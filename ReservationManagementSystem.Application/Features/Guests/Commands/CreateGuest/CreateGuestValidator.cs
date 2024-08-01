@@ -1,10 +1,10 @@
 ﻿using FluentValidation;
 
-namespace ReservationManagementSystem.Application.Features.GuestFeatures.Commands.UpdateGuest;
+namespace ReservationManagementSystem.Application.Features.Guests.Commands.CreateGuest;
 
-public sealed class UpdateGuestValidator : AbstractValidator<UpdateGuestRequest>
+public sealed class CreateGuestValidator : AbstractValidator<CreateGuestRequest>
 {
-    public UpdateGuestValidator()
+    public CreateGuestValidator()
     {
         RuleFor(x => x.Email).NotEmpty().MaximumLength(50).EmailAddress();
         RuleFor(x => x.FirstName).NotEmpty().MinimumLength(3).MaximumLength(50);

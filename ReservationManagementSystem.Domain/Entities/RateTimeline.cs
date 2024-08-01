@@ -9,5 +9,5 @@ public class RateTimeline : BaseEntity
     public Guid RoomTypeId { get; set; }
     public decimal Price { get; set; }
 
-    public RateRoomType RateRoomType { get; set; }
+    public RateRoomType? RateRoomType { get; set; }
 }

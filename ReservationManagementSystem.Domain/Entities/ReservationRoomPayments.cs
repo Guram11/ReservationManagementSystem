@@ -10,5 +10,5 @@ public class ReservationRoomPayments : BaseEntity
     public required string Description { get; set; }
     public Currencies Currency { get; set; }
 
-    public ReservationRoom ReservationRoom { get; set; }
+    public ReservationRoom? ReservationRoom { get; set; }
 }

@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using MediatR;
-using ReservationManagementSystem.Application.Features.GuestFeatures.Common;
+using ReservationManagementSystem.Application.Features.Guests.Common;
 using ReservationManagementSystem.Application.Interfaces.Repositories;
 
-namespace ReservationManagementSystem.Application.Features.GuestFeatures.Commands.DeleteGuest;
+namespace ReservationManagementSystem.Application.Features.Guests.Commands.DeleteGuest;
 
 public sealed class DeleteGuestHandler : IRequestHandler<DeleteGuestRequest, GuestResponse>
 {

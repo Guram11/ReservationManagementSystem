@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using MediatR;
-using ReservationManagementSystem.Application.Features.GuestFeatures.Common;
+using ReservationManagementSystem.Application.Features.Guests.Common;
 using ReservationManagementSystem.Application.Interfaces.Repositories;
 using ReservationManagementSystem.Domain.Entities;
 
-namespace ReservationManagementSystem.Application.Features.GuestFeatures.Commands.CreateGuest;
+namespace ReservationManagementSystem.Application.Features.Guests.Commands.CreateGuest;
 
 public sealed class CreateUserHandler : IRequestHandler<CreateGuestRequest, GuestResponse>
 {
