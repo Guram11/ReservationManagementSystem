@@ -5,12 +5,23 @@ using ReservationManagementSystem.Infrastructure.Identity.Models;
 using ReservationManagementSystem.Infrastructure.Identity.Seeds;
 using ReservationManagementSystem.Infrastructure;
 using ReservationManagementSystem.Infrastructure.Context;
+using Serilog;
 
 internal class Program
 {
     private static async Task Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+
+        var logger = new LoggerConfiguration()
+            .WriteTo.Console()
+            .WriteTo.File("Logs/log.txt", rollingInterval: RollingInterval.Day)
+            .MinimumLevel.Information()
+            .CreateLogger();
+
+        builder.Logging.ClearProviders();
+
+        builder.Logging.AddSerilog(logger);
 
         builder.Services.ConfigureApplication();
         builder.Services.ConfigurePersistence(builder.Configuration);
