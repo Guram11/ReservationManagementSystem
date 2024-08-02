@@ -2,11 +2,12 @@
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Options;
 using MimeKit;
-using ReservationManagementSystem.Application.Common.Exceptions;
 using ReservationManagementSystem.Domain.Settings;
 using ReservationManagementSystem.Application.Interfaces.Services;
 using ReservationManagementSystem.Application.DTOs.Email;
 using Microsoft.Extensions.Logging;
+using ReservationManagementSystem.Application.Wrappers;
+using ReservationManagementSystem.Infrastructure.Common;
 
 namespace ReservationManagementSystem.Infrastructure.Identity.Services;
 
@@ -21,7 +22,7 @@ public class EmailService : IEmailService
         this.logger = logger;
     }
 
-    public async Task SendAsync(EmailRequest request)
+    public async Task<Result<string>> SendAsync(EmailRequest request)
     {
         try
         {
@@ -38,18 +39,17 @@ public class EmailService : IEmailService
             };
             email.To.Add(MailboxAddress.Parse(request.To));
 
-            logger.LogInformation(_mailSettings.SmtpPass);
-
             using var smtp = new SmtpClient();
             smtp.Connect(_mailSettings.SmtpHost, _mailSettings.SmtpPort, SecureSocketOptions.StartTls);
             smtp.Authenticate(_mailSettings.SmtpUser, _mailSettings.SmtpPass);
             await smtp.SendAsync(email);
             smtp.Disconnect(true);
 
+            return Result<string>.Success("Email sent successfully!");
         }
         catch (Exception ex)
         {
-            throw new ApiException($"{ex.Message}, Custom error from em");
+            return Result<string>.Failure(EmailServiceErrors.EmailNotSent(ex.Message));
         }
     }
 }

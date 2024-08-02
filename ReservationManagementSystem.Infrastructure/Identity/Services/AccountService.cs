@@ -41,23 +41,23 @@ namespace Infrastructure.Identity.Services
             var user = await _userManager.FindByEmailAsync(request.Email);
             if (user is null)
             {
-                return Result<AuthenticationResponse>.Failure(AccountErrors.UserNotFound(request.Email));
+                return Result<AuthenticationResponse>.Failure(AccountServiceErrors.UserNotFound(request.Email));
             }
 
             if (user.UserName is null || user.Email is null)
             {
-                return Result<AuthenticationResponse>.Failure(AccountErrors.InvalidCredentials(request.Email));
+                return Result<AuthenticationResponse>.Failure(AccountServiceErrors.InvalidCredentials(request.Email));
             }
 
             var signInResult = await _signInManager.PasswordSignInAsync(user.UserName, request.Password, false, lockoutOnFailure: false);
             if (!signInResult.Succeeded)
             {
-                return Result<AuthenticationResponse>.Failure(AccountErrors.InvalidCredentials(request.Email));
+                return Result<AuthenticationResponse>.Failure(AccountServiceErrors.InvalidCredentials(request.Email));
             }
 
             if (!user.EmailConfirmed)
             {
-                return Result<AuthenticationResponse>.Failure(AccountErrors.EmailNotConfirmed(request.Email));
+                return Result<AuthenticationResponse>.Failure(AccountServiceErrors.EmailNotConfirmed(request.Email));
             }
 
             try
@@ -81,7 +81,7 @@ namespace Infrastructure.Identity.Services
             }
             catch (Exception ex)
             {
-                return Result<AuthenticationResponse>.Failure(AccountErrors.TokenGenerationError(ex.Message));
+                return Result<AuthenticationResponse>.Failure(AccountServiceErrors.TokenGenerationError(ex.Message));
             }
         }
 
@@ -90,13 +90,13 @@ namespace Infrastructure.Identity.Services
             var userWithSameUserName = await _userManager.FindByNameAsync(request.UserName);
             if (userWithSameUserName != null)
             {
-                return Result<string>.Failure(AccountErrors.UsernameTaken(request.UserName));
+                return Result<string>.Failure(AccountServiceErrors.UsernameTaken(request.UserName));
             }
 
             var userWithSameEmail = await _userManager.FindByEmailAsync(request.Email);
             if (userWithSameEmail != null)
             {
-                return Result<string>.Failure(AccountErrors.EmailRegistered(request.Email));
+                return Result<string>.Failure(AccountServiceErrors.EmailRegistered(request.Email));
             }
 
             var user = new ApplicationUser
@@ -117,15 +117,22 @@ namespace Infrastructure.Identity.Services
             await _userManager.AddToRoleAsync(user, Roles.Basic.ToString());
             var verificationUri = await SendVerificationEmail(user, origin);
 
-            await _emailService.SendAsync(new EmailRequest
+            try
             {
-                From = _mailSettings.EmailFrom,
-                To = user.Email,
-                Body = $"Please confirm your account by visiting this URL {verificationUri}",
-                Subject = "Confirm Registration"
-            });
+                await _emailService.SendAsync(new EmailRequest
+                {
+                    From = _mailSettings.EmailFrom,
+                    To = user.Email,
+                    Body = $"Please confirm your account by visiting this URL {verificationUri}",
+                    Subject = "Confirm Registration"
+                });
 
-            return Result<string>.Success(user.Id);
+                return Result<string>.Success(user.Id);
+            }
+            catch (Exception ex)
+            {
+                return Result<string>.Failure(EmailServiceErrors.EmailNotSent(ex.Message));
+            }
         }
 
         private async Task<JwtSecurityToken> GenerateJWToken(ApplicationUser user)
@@ -166,6 +173,7 @@ namespace Infrastructure.Identity.Services
                 claims: claims,
                 expires: DateTime.UtcNow.AddMinutes(_jwtSettings.DurationInMinutes),
                 signingCredentials: signingCredentials);
+
             return jwtSecurityToken;
         }
 
@@ -193,7 +201,7 @@ namespace Infrastructure.Identity.Services
             var user = await _userManager.FindByIdAsync(userId);
             if (user is null || user.Email is null)
             {
-                return Result<string>.Failure(AccountErrors.UserNotFound(userId));
+                return Result<string>.Failure(AccountServiceErrors.UserNotFound(userId));
             }
 
             code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
@@ -205,7 +213,7 @@ namespace Infrastructure.Identity.Services
             }
             else
             {
-                return Result<string>.Failure(AccountErrors.EmailConfirmationFailed(user.Email));
+                return Result<string>.Failure(AccountServiceErrors.EmailConfirmationFailed(user.Email));
             }
         }
 
@@ -220,11 +228,14 @@ namespace Infrastructure.Identity.Services
             };
         }
 
-        public async Task ForgotPassword(ForgotPasswordRequest model, string origin)
+        public async Task<Result<string>> ForgotPassword(ForgotPasswordRequest model, string origin)
         {
             var account = await _userManager.FindByEmailAsync(model.Email);
 
-            if (account == null) return;
+            if (account is null)
+            {
+                return Result<string>.Failure(AccountServiceErrors.UserNotFound(model.Email));
+            };
 
             var code = await _userManager.GeneratePasswordResetTokenAsync(account);
             var route = "api/account/reset-password/";
@@ -237,7 +248,15 @@ namespace Infrastructure.Identity.Services
                 Subject = "Reset Password"
             };
 
-            await _emailService.SendAsync(emailRequest);
+            try
+            {
+                await _emailService.SendAsync(emailRequest);
+                return Result<string>.Success("Email sent successfully.");
+            }
+            catch (Exception ex)
+            {
+                return Result<string>.Failure(EmailServiceErrors.EmailNotSent(ex.Message));
+            }
         }
 
         public async Task<Result<string>> ResetPassword(ResetPasswordRequest model)
@@ -245,7 +264,7 @@ namespace Infrastructure.Identity.Services
             var account = await _userManager.FindByEmailAsync(model.Email);
             if (account == null)
             {
-                return Result<string>.Failure(AccountErrors.UserNotFound(model.Email));
+                return Result<string>.Failure(AccountServiceErrors.UserNotFound(model.Email));
             }
 
             var result = await _userManager.ResetPasswordAsync(account, model.Token, model.Password);
@@ -256,7 +275,7 @@ namespace Infrastructure.Identity.Services
             }
             else
             {
-                return Result<string>.Failure(AccountErrors.PasswordResetFailed(model.Email));
+                return Result<string>.Failure(AccountServiceErrors.PasswordResetFailed(model.Email));
             }
         }
     }

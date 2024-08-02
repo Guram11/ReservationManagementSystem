@@ -1,11 +1,12 @@
 ﻿using FluentValidation;
 using MediatR;
-using ReservationManagementSystem.Application.Common.Exceptions;
+using ReservationManagementSystem.Application.Features.Hotels.Common;
+using ReservationManagementSystem.Application.Wrappers;
 
 namespace ReservationManagementSystem.Application.Common.Behaviors;
 
-public sealed class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
-    where TRequest : IRequest<TResponse>
+public sealed class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, Result<TResponse>>
+    where TRequest : IRequest<Result<TResponse>>
 {
     private readonly IEnumerable<IValidator<TRequest>> _validators;
 
@@ -14,7 +15,7 @@ public sealed class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<
         _validators = validators;
     }
 
-    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
+    public async Task<Result<TResponse>> Handle(TRequest request, RequestHandlerDelegate<Result<TResponse>> next, CancellationToken cancellationToken)
     {
         if (!_validators.Any()) return await next();
 
@@ -26,10 +27,15 @@ public sealed class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<
             .Where(x => x != null)
             .Select(x => x.ErrorMessage)
             .Distinct()
-            .ToArray();
+            .ToList();
 
         if (errors.Any())
-            throw new BadRequestException(errors);
+        {
+            foreach (var error in errors)
+            {
+                return Result<TResponse>.Failure(HotelValidationError.ValidationFailed(error));
+            }
+        }
 
         return await next();
     }

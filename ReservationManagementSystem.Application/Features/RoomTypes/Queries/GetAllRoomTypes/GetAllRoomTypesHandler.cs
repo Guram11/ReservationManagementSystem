@@ -20,7 +20,7 @@ public sealed class GetAllRoomTypesHandler : IRequestHandler<GetAllRoomTypesRequ
 
     public async Task<List<RoomTypeResponse>> Handle(GetAllRoomTypesRequest request, CancellationToken cancellationToken)
     {
-        var roomTypes = await _roomTypeRepository.GetAll(cancellationToken,
+        var roomTypes = await _roomTypeRepository.GetAll(
             request.FilterOn, request.FilterQuery, request.SortBy,
             request.IsAscending, request.PageNumber, request.PageSize);
 

@@ -18,7 +18,7 @@ public sealed class GetGuestByIdHandler : IRequestHandler<GetGuestByIdRequest, G
 
     public async Task<GuestResponse> Handle(GetGuestByIdRequest request, CancellationToken cancellationToken)
     {
-        var guest = await _userRepository.Get(request.Id, cancellationToken);
+        var guest = await _userRepository.Get(request.Id);
         return _mapper.Map<GuestResponse>(guest);
     }
 }

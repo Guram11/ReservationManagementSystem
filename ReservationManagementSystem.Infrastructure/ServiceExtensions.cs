@@ -37,7 +37,6 @@ public static class ServiceExtensions
 
         services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<DataContext>().AddDefaultTokenProviders();
         services.AddTransient<IAccountService, AccountService>();
-        services.AddTransient<IDateTimeService, DateTimeService>();
         services.AddTransient<IEmailService, EmailService>();
         services.AddAuthentication(options =>
         {

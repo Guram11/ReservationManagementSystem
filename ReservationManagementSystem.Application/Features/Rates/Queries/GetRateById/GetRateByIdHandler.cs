@@ -18,7 +18,7 @@ public sealed class GetRateByIdHandler : IRequestHandler<GetRateByIdRequest, Rat
 
     public async Task<RateResponse> Handle(GetRateByIdRequest request, CancellationToken cancellationToken)
     {
-        var rate = await _rateRepository.Get(request.Id, cancellationToken);
+        var rate = await _rateRepository.Get(request.Id);
         return _mapper.Map<RateResponse>(rate);
     }
 }

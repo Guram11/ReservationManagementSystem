@@ -3,11 +3,12 @@ using FluentValidation;
 using MediatR;
 using ReservationManagementSystem.Application.Features.Hotels.Common;
 using ReservationManagementSystem.Application.Interfaces.Repositories;
+using ReservationManagementSystem.Application.Wrappers;
 using ReservationManagementSystem.Domain.Entities;
 
 namespace ReservationManagementSystem.Application.Features.Hotels.Commands.CreateHotel;
 
-public sealed class CreateHotelHandler : IRequestHandler<CreateHotelRequest, HotelResponse>
+public sealed class CreateHotelHandler : IRequestHandler<CreateHotelRequest, Result<HotelResponse>>
 {
     private readonly IHotelRepository _hotelRepository;
     private readonly IMapper _mapper;
@@ -20,19 +21,23 @@ public sealed class CreateHotelHandler : IRequestHandler<CreateHotelRequest, Hot
         _validator = validator;
     }
 
-    public async Task<HotelResponse> Handle(CreateHotelRequest request, CancellationToken cancellationToken)
+    public async Task<Result<HotelResponse>> Handle(CreateHotelRequest request, CancellationToken cancellationToken)
     {
         var validationResult = await _validator.ValidateAsync(request, cancellationToken);
 
         if (!validationResult.IsValid)
         {
             var errors = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
-            throw new ValidationException($"{errors}");
+            foreach (var error in errors)
+            {
+                return Result<HotelResponse>.Failure(HotelValidationError.ValidationFailed(error));
+            }
         }
 
         var hotel = _mapper.Map<Hotel>(request);
         await _hotelRepository.Create(hotel);
 
-        return _mapper.Map<HotelResponse>(hotel);
+        var hotelResponse = _mapper.Map<HotelResponse>(hotel);
+        return Result<HotelResponse>.Success(hotelResponse);
     }
 }

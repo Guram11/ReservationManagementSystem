@@ -23,15 +23,14 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
        return entity;
     }
 
-    public Task<T?> Get(Guid id, CancellationToken cancellationToken)
+    public Task<T?> Get(Guid id)
     {
-        return Context.Set<T>().FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+        return Context.Set<T>().FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public Task<List<T>> GetAll(CancellationToken cancellationToken,
-        string? filterOn = null, string? filterQuery = null,
-        string? sortBy = null, bool isAscending = true,
-        int pageNumber = 1, int pageSize = 10)
+    public Task<List<T>> GetAll(string? filterOn, string? filterQuery,
+        string? sortBy, bool isAscending,
+        int pageNumber, int pageSize)
     {
         var filterExpression = FilterExtensions.FilterExtensions.GetFilterExpression<T>(filterOn, filterQuery);
         var sortExpression = FilterExtensions.FilterExtensions.GetSortExpression<T>(sortBy);
@@ -40,7 +39,7 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
                 .ApplyFilter(filterExpression)
                 .ApplySort(sortExpression, isAscending)
                 .ApplyPagination(pageNumber, pageSize)
-                .ToListAsync(cancellationToken);
+                .ToListAsync();
     }
 
     public async Task<T?> Update(Guid id, T entity)

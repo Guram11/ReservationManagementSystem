@@ -18,7 +18,7 @@ public sealed class GetAllRatesHandler : IRequestHandler<GetAllRatesRequest, Lis
 
     public async Task<List<RateResponse>> Handle(GetAllRatesRequest request, CancellationToken cancellationToken)
     {
-        var rates = await _rateRepository.GetAll(cancellationToken,
+        var rates = await _rateRepository.GetAll(
             request.FilterOn, request.FilterQuery, request.SortBy,
             request.IsAscending, request.PageNumber, request.PageSize);
 

@@ -18,7 +18,7 @@ public sealed class GetAllHotelsHandler : IRequestHandler<GetAllGuestsRequest, L
 
     public async Task<List<HotelResponse>> Handle(GetAllGuestsRequest request, CancellationToken cancellationToken)
     {
-        var hotels = await _hotelRepository.GetAll(cancellationToken,
+        var hotels = await _hotelRepository.GetAll(
             request.FilterOn, request.FilterQuery, request.SortBy,
             request.IsAscending, request.PageNumber, request.PageSize);
 

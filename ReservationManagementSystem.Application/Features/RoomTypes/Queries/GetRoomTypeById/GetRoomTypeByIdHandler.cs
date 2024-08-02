@@ -18,7 +18,7 @@ public sealed class GetRoomTypeByIdHandler : IRequestHandler<GetRoomTypeByIdRequ
 
     public async Task<RoomTypeResponse> Handle(GetRoomTypeByIdRequest request, CancellationToken cancellationToken)
     {
-        var hotel = await _roomTypeRepository.Get(request.Id, cancellationToken);
+        var hotel = await _roomTypeRepository.Get(request.Id);
         return _mapper.Map<RoomTypeResponse>(hotel);
     }
 }

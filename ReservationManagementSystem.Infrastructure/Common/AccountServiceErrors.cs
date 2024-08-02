@@ -2,7 +2,7 @@
 
 namespace ReservationManagementSystem.Infrastructure.Common;
 
-public static class AccountErrors
+public static class AccountServiceErrors
 {
     public static Error UserNotFound(string email) => new Error(
         "Account.UserNotFound", $"No accounts registered with the email '{email}'.");

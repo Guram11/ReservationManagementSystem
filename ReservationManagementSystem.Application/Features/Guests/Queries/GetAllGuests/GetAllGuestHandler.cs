@@ -18,7 +18,7 @@ public sealed class GetAllUserHandler : IRequestHandler<GetAllUserRequest, List<
 
     public async Task<List<GuestResponse>> Handle(GetAllUserRequest request, CancellationToken cancellationToken)
     {
-        var users = await _guestRepository.GetAll(cancellationToken,
+        var users = await _guestRepository.GetAll(
             request.FilterOn, request.FilterQuery, request.SortBy,
             request.IsAscending, request.PageNumber, request.PageSize);
 
