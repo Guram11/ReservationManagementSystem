@@ -30,6 +30,11 @@ public static class ServiceExtensions
         services.Configure<JWTSettings>(configuration.GetSection("JWTSettings"));
         services.Configure<MailSettings>(configuration.GetSection("MailSettings"));
         services.AddScoped<IGuestRepository, GuestRepository>();
+        services.AddScoped<IHotelRepository, HotelRepository>();
+        services.AddScoped<IRoomRepository, RoomRepository>();
+        services.AddScoped<IRoomTypeRepository, RateTypeRepository>();
+        services.AddScoped<IRateRepository, RateRepository>();
+
         services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<DataContext>().AddDefaultTokenProviders();
         services.AddTransient<IAccountService, AccountService>();
         services.AddTransient<IDateTimeService, DateTimeService>();
@@ -68,15 +73,17 @@ public static class ServiceExtensions
                         context.HandleResponse();
                         context.Response.StatusCode = 401;
                         context.Response.ContentType = "application/json";
-                        var result = JsonConvert.SerializeObject(new Response<string>("You are not Authorized"));
-                        return context.Response.WriteAsync(result);
+                        var result = Result<object>.Failure(new Error("Authorization.Unauthorized", "You are not Authorized"));
+                        var resultJson = JsonConvert.SerializeObject(result);
+                        return context.Response.WriteAsync(resultJson);
                     },
                     OnForbidden = context =>
                     {
                         context.Response.StatusCode = 403;
                         context.Response.ContentType = "application/json";
-                        var result = JsonConvert.SerializeObject(new Response<string>("You are not authorized to access this resource"));
-                        return context.Response.WriteAsync(result);
+                        var result = Result<object>.Failure(new Error("Authorization.Forbidden", "You are not authorized to access this resource"));
+                        var resultJson = JsonConvert.SerializeObject(result);
+                        return context.Response.WriteAsync(resultJson);
                     },
                 };
             });

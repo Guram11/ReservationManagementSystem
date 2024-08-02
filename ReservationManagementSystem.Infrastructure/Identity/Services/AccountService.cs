@@ -1,5 +1,4 @@
-﻿using ReservationManagementSystem.Application.Common.Exceptions;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -15,6 +14,7 @@ using ReservationManagementSystem.Application.Enums;
 using ReservationManagementSystem.Application.Wrappers;
 using ReservationManagementSystem.Domain.Settings;
 using Microsoft.Extensions.Options;
+using ReservationManagementSystem.Infrastructure.Common;
 
 namespace Infrastructure.Identity.Services
 {
@@ -36,35 +36,37 @@ namespace Infrastructure.Identity.Services
             _emailService = emailService;
         }
 
-        public async Task<Response<AuthenticationResponse>> AuthenticateAsync(AuthenticationRequest request, string ipAddress)
+        public async Task<Result<AuthenticationResponse>> AuthenticateAsync(AuthenticationRequest request, string ipAddress)
         {
-            var user = await _userManager.FindByEmailAsync(request.Email) ?? throw new ApiException($"No Accounts Registered with {request.Email}.");
-            
+            var user = await _userManager.FindByEmailAsync(request.Email);
+            if (user is null)
+            {
+                return Result<AuthenticationResponse>.Failure(AccountErrors.UserNotFound(request.Email));
+            }
+
             if (user.UserName is null || user.Email is null)
             {
-                throw new ApiException($"Invalid Credentials for '{request.Email}'.");
+                return Result<AuthenticationResponse>.Failure(AccountErrors.InvalidCredentials(request.Email));
             }
-            
-            var result = await _signInManager.PasswordSignInAsync(user.UserName, request.Password, false, lockoutOnFailure: false);
 
-            if (!result.Succeeded)
+            var signInResult = await _signInManager.PasswordSignInAsync(user.UserName, request.Password, false, lockoutOnFailure: false);
+            if (!signInResult.Succeeded)
             {
-                throw new ApiException($"Invalid Credentials for '{request.Email}'.");
+                return Result<AuthenticationResponse>.Failure(AccountErrors.InvalidCredentials(request.Email));
             }
 
             if (!user.EmailConfirmed)
             {
-                throw new ApiException($"Account Not Confirmed for '{request.Email}'.");
+                return Result<AuthenticationResponse>.Failure(AccountErrors.EmailNotConfirmed(request.Email));
             }
 
             try
             {
                 JwtSecurityToken jwtSecurityToken = await GenerateJWToken(user);
-
                 var rolesList = await _userManager.GetRolesAsync(user).ConfigureAwait(false);
                 var refreshToken = GenerateRefreshToken(ipAddress);
 
-                AuthenticationResponse response = new()
+                var response = new AuthenticationResponse
                 {
                     Id = user.Id,
                     JWToken = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
@@ -75,21 +77,26 @@ namespace Infrastructure.Identity.Services
                     RefreshToken = refreshToken.Token
                 };
 
-                return new Response<AuthenticationResponse>(response, $"Authenticated {user.UserName}");
+                return Result<AuthenticationResponse>.Success(response);
             }
             catch (Exception ex)
             {
-                throw new ApiException($"Error while generating JWT token. '{ex.Message}'");
+                return Result<AuthenticationResponse>.Failure(AccountErrors.TokenGenerationError(ex.Message));
             }
-
         }
 
-        public async Task<Response<string>> RegisterAsync(RegisterRequest request, string origin)
+        public async Task<Result<string>> RegisterAsync(RegisterRequest request, string origin)
         {
             var userWithSameUserName = await _userManager.FindByNameAsync(request.UserName);
             if (userWithSameUserName != null)
             {
-                throw new ApiException($"Username '{request.UserName}' is already taken.");
+                return Result<string>.Failure(AccountErrors.UsernameTaken(request.UserName));
+            }
+
+            var userWithSameEmail = await _userManager.FindByEmailAsync(request.Email);
+            if (userWithSameEmail != null)
+            {
+                return Result<string>.Failure(AccountErrors.EmailRegistered(request.Email));
             }
 
             var user = new ApplicationUser
@@ -100,34 +107,25 @@ namespace Infrastructure.Identity.Services
                 UserName = request.UserName
             };
 
-            var userWithSameEmail = await _userManager.FindByEmailAsync(request.Email);
-            if (userWithSameEmail == null)
+            var createUserResult = await _userManager.CreateAsync(user, request.Password);
+            if (!createUserResult.Succeeded)
             {
-                var result = await _userManager.CreateAsync(user, request.Password);
-                if (result.Succeeded)
-                {
-                    await _userManager.AddToRoleAsync(user, Roles.Basic.ToString());
-                    var verificationUri = await SendVerificationEmail(user, origin);
-
-                    await _emailService.SendAsync(new EmailRequest()
-                    { 
-                        From = _mailSettings.EmailFrom,
-                        To = user.Email, Body = $"Please confirm your account by visiting this URL {verificationUri}",
-                        Subject = "Confirm Registration"
-                    });
-
-                    return new Response<string>(user.Id, message: $"User Registered. Please confirm your account by visiting this URL {verificationUri}");
-                }
-                else
-                {
-                    var errors = string.Join(", ", result.Errors.Select(e => e.Description));
-                    throw new ApiException($"User creation failed: {errors}");
-                }
+                var errors = string.Join(", ", createUserResult.Errors.Select(e => e.Description));
+                return Result<string>.Failure(new Error("User.CreationFailed", $"User creation failed: {errors}"));
             }
-            else
+
+            await _userManager.AddToRoleAsync(user, Roles.Basic.ToString());
+            var verificationUri = await SendVerificationEmail(user, origin);
+
+            await _emailService.SendAsync(new EmailRequest
             {
-                throw new ApiException($"Email {request.Email } is already registered.");
-            }
+                From = _mailSettings.EmailFrom,
+                To = user.Email,
+                Body = $"Please confirm your account by visiting this URL {verificationUri}",
+                Subject = "Confirm Registration"
+            });
+
+            return Result<string>.Success(user.Id);
         }
 
         private async Task<JwtSecurityToken> GenerateJWToken(ApplicationUser user)
@@ -136,7 +134,6 @@ namespace Infrastructure.Identity.Services
             var roles = await _userManager.GetRolesAsync(user);
 
             var roleClaims = new List<Claim>();
-
             for (int i = 0; i < roles.Count; i++)
             {
                 roleClaims.Add(new Claim("roles", roles[i]));
@@ -146,7 +143,7 @@ namespace Infrastructure.Identity.Services
 
             if (user.UserName is null || user.Email is null)
             {
-                throw new ApiException($"Invalid Credentials for '{user.Email}'.");
+                throw new Exception($"Invalid Credentials for '{user.Email}'.");
             }
 
             var claims = new[]
@@ -178,7 +175,7 @@ namespace Infrastructure.Identity.Services
             RandomNumberGenerator.Fill(randomBytes);
             return BitConverter.ToString(randomBytes).Replace("-", "");
         }
-        
+
         private async Task<string> SendVerificationEmail(ApplicationUser user, string origin)
         {
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -191,20 +188,24 @@ namespace Infrastructure.Identity.Services
             return verificationUri;
         }
 
-        public async Task<Response<string>> ConfirmEmailAsync(string userId, string code)
+        public async Task<Result<string>> ConfirmEmailAsync(string userId, string code)
         {
-            var user = await _userManager.FindByIdAsync(userId) ?? throw new ApiException($"No user was found with these credentials!");
-            
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user is null || user.Email is null)
+            {
+                return Result<string>.Failure(AccountErrors.UserNotFound(userId));
+            }
+
             code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
             var result = await _userManager.ConfirmEmailAsync(user, code);
 
             if (result.Succeeded)
             {
-                return new Response<string>(user.Id, message: $"Account Confirmed for {user.Email}. You can now use the /api/Account/authenticate endpoint.");
+                return Result<string>.Success(user.Id);
             }
             else
             {
-                throw new ApiException($"An error occured while confirming {user.Email}.");
+                return Result<string>.Failure(AccountErrors.EmailConfirmationFailed(user.Email));
             }
         }
 
@@ -223,34 +224,39 @@ namespace Infrastructure.Identity.Services
         {
             var account = await _userManager.FindByEmailAsync(model.Email);
 
-            if (account is null) return;
+            if (account == null) return;
 
             var code = await _userManager.GeneratePasswordResetTokenAsync(account);
             var route = "api/account/reset-password/";
             var _enpointUri = new Uri(string.Concat($"{origin}/", route));
 
-            var emailRequest = new EmailRequest()
+            var emailRequest = new EmailRequest
             {
-                Body = $"You reset token is - {code}",
+                Body = $"Your reset token is - {code}",
                 To = model.Email,
-                Subject = "Reset Password",
+                Subject = "Reset Password"
             };
 
             await _emailService.SendAsync(emailRequest);
         }
 
-        public async Task<Response<string>> ResetPassword(ResetPasswordRequest model)
+        public async Task<Result<string>> ResetPassword(ResetPasswordRequest model)
         {
-            var account = await _userManager.FindByEmailAsync(model.Email) ?? throw new ApiException($"No Accounts Registered with {model.Email}.");
+            var account = await _userManager.FindByEmailAsync(model.Email);
+            if (account == null)
+            {
+                return Result<string>.Failure(AccountErrors.UserNotFound(model.Email));
+            }
+
             var result = await _userManager.ResetPasswordAsync(account, model.Token, model.Password);
 
             if (result.Succeeded)
             {
-                return new Response<string>(model.Email, message: $"Password Resetted.");
+                return Result<string>.Success(model.Email);
             }
             else
             {
-                throw new ApiException($"Error occured while reseting the password.");
+                return Result<string>.Failure(AccountErrors.PasswordResetFailed(model.Email));
             }
         }
     }
