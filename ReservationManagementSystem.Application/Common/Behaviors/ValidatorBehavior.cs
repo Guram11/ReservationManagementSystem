@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using MediatR;
+using ReservationManagementSystem.Application.Common.Errors;
 using ReservationManagementSystem.Application.Features.Hotels.Common;
 using ReservationManagementSystem.Application.Wrappers;
 
@@ -33,7 +34,7 @@ public sealed class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<
         {
             foreach (var error in errors)
             {
-                return Result<TResponse>.Failure(HotelValidationError.ValidationFailed(error));
+                return Result<TResponse>.Failure(ValidationError.ValidationFailed(error));
             }
         }
 

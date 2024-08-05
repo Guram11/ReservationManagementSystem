@@ -8,6 +8,5 @@ public class RateTimeline : BaseEntity
     public Guid RateId { get; set; }
     public Guid RoomTypeId { get; set; }
     public decimal Price { get; set; }
-
     public RateRoomType? RateRoomType { get; set; }
 }

@@ -8,7 +8,7 @@ public sealed class UpdateRoomValidator : AbstractValidator<UpdateRoomRequest>
     {
         RuleFor(x => x.Number)
             .NotEmpty()
-            .MinimumLength(3).WithMessage($"Name must be at least 3 characters.")
+            .MinimumLength(3).WithMessage($"Number must be at least 3 characters.")
             .MaximumLength(50);
     }
 }

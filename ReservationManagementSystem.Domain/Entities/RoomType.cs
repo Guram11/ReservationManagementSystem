@@ -10,7 +10,6 @@ public class RoomType : BaseEntity
     public bool IsActive { get; set; }
     public byte MinCapacity { get; set; } // Min number of guests it can accommodate
     public byte MaxCapacity { get; set; } // Max number of guests it can accommodate
-
     public Hotel? Hotel { get; set; }
     public ICollection<Room>? Rooms { get; set; } 
     public ICollection<AvailabilityTimeline>? AvailabilityTimelines { get; set; }

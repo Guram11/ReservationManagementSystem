@@ -1,7 +1,5 @@
 ﻿using AutoMapper;
 using MediatR;
-using ReservationManagementSystem.Application.Features.Rooms.Common;
-using ReservationManagementSystem.Application.Features.Rooms.Queries.GetAllRooms;
 using ReservationManagementSystem.Application.Features.RoomTypes.Common;
 using ReservationManagementSystem.Application.Interfaces.Repositories;
 

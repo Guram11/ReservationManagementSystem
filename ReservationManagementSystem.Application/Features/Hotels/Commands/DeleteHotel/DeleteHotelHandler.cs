@@ -2,10 +2,11 @@
 using MediatR;
 using ReservationManagementSystem.Application.Features.Hotels.Common;
 using ReservationManagementSystem.Application.Interfaces.Repositories;
+using ReservationManagementSystem.Application.Wrappers;
 
 namespace ReservationManagementSystem.Application.Features.Hotels.Commands.DeleteHotel;
 
-public sealed class DeleteHotelHandler : IRequestHandler<DeleteHotelRequest, HotelResponse>
+public sealed class DeleteHotelHandler : IRequestHandler<DeleteHotelRequest, Result<HotelResponse>>
 {
     private readonly IHotelRepository _hotelRepository;
     private readonly IMapper _mapper;
@@ -16,10 +17,11 @@ public sealed class DeleteHotelHandler : IRequestHandler<DeleteHotelRequest, Hot
         _mapper = mapper;
     }
 
-    public async Task<HotelResponse> Handle(DeleteHotelRequest request, CancellationToken cancellationToken)
+    public async Task<Result<HotelResponse>> Handle(DeleteHotelRequest request, CancellationToken cancellationToken)
     {
         var hotel = await _hotelRepository.Delete(request.Id);
+        var response = _mapper.Map<HotelResponse>(hotel);
 
-        return _mapper.Map<HotelResponse>(hotel);
+        return Result<HotelResponse>.Success(response);
     }
 }

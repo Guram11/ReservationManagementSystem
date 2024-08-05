@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using MediatR;
+using ReservationManagementSystem.Application.Common.Errors;
 using ReservationManagementSystem.Application.Features.Hotels.Common;
 using ReservationManagementSystem.Application.Interfaces.Repositories;
 using ReservationManagementSystem.Application.Wrappers;
@@ -30,7 +31,7 @@ public sealed class CreateHotelHandler : IRequestHandler<CreateHotelRequest, Res
             var errors = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
             foreach (var error in errors)
             {
-                return Result<HotelResponse>.Failure(HotelValidationError.ValidationFailed(error));
+                return Result<HotelResponse>.Failure(ValidationError.ValidationFailed(error));
             }
         }
 

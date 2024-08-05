@@ -1,13 +1,15 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using MediatR;
+using ReservationManagementSystem.Application.Common.Errors;
 using ReservationManagementSystem.Application.Features.Hotels.Common;
 using ReservationManagementSystem.Application.Interfaces.Repositories;
+using ReservationManagementSystem.Application.Wrappers;
 using ReservationManagementSystem.Domain.Entities;
 
 namespace ReservationManagementSystem.Application.Features.Hotels.Commands.UpdateHotel;
 
-public sealed class UpdateHotelHandler : IRequestHandler<UpdateHotelRequest, HotelResponse>
+public sealed class UpdateHotelHandler : IRequestHandler<UpdateHotelRequest, Result<HotelResponse>>
 {
     private readonly IHotelRepository _hotelRepository;
     private readonly IMapper _mapper;
@@ -20,19 +22,23 @@ public sealed class UpdateHotelHandler : IRequestHandler<UpdateHotelRequest, Hot
         _validator = validator;
     }
 
-    public async Task<HotelResponse> Handle(UpdateHotelRequest request, CancellationToken cancellationToken)
+    public async Task<Result<HotelResponse>> Handle(UpdateHotelRequest request, CancellationToken cancellationToken)
     {
         var validationResult = await _validator.ValidateAsync(request, cancellationToken);
 
         if (!validationResult.IsValid)
         {
             var errors = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
-            throw new ValidationException($"{errors}");
+            foreach (var error in errors)
+            {
+                return Result<HotelResponse>.Failure(ValidationError.ValidationFailed(error));
+            }
         }
 
         var hotel = _mapper.Map<Hotel>(request);
         await _hotelRepository.Update(request.Id, hotel);
 
-        return _mapper.Map<HotelResponse>(hotel);
+        var response = _mapper.Map<HotelResponse>(hotel);
+        return Result<HotelResponse>.Success(response);
     }
 }

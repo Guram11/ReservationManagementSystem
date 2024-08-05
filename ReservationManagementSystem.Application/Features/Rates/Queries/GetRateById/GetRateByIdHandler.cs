@@ -2,10 +2,11 @@
 using MediatR;
 using ReservationManagementSystem.Application.Features.Rates.Common;
 using ReservationManagementSystem.Application.Interfaces.Repositories;
+using ReservationManagementSystem.Application.Wrappers;
 
 namespace ReservationManagementSystem.Application.Features.Rates.Queries.GetRateById;
 
-public sealed class GetRateByIdHandler : IRequestHandler<GetRateByIdRequest, RateResponse>
+public sealed class GetRateByIdHandler : IRequestHandler<GetRateByIdRequest, Result<RateResponse>>
 {
     private readonly IRateRepository _rateRepository;
     private readonly IMapper _mapper;
@@ -16,9 +17,11 @@ public sealed class GetRateByIdHandler : IRequestHandler<GetRateByIdRequest, Rat
         _mapper = mapper;
     }
 
-    public async Task<RateResponse> Handle(GetRateByIdRequest request, CancellationToken cancellationToken)
+    public async Task<Result<RateResponse>> Handle(GetRateByIdRequest request, CancellationToken cancellationToken)
     {
         var rate = await _rateRepository.Get(request.Id);
-        return _mapper.Map<RateResponse>(rate);
+        var response = _mapper.Map<RateResponse>(rate);
+
+        return Result<RateResponse>.Success(response);
     }
 }
