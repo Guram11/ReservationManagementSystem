@@ -20,6 +20,12 @@ public sealed class GetHotelByIdHandler : IRequestHandler<GetHotelByIdRequest, R
     public async Task<Result<HotelResponse>> Handle(GetHotelByIdRequest request, CancellationToken cancellationToken)
     {
         var hotel = await _hotelRepository.Get(request.Id);
+
+        if (hotel is null)
+        {
+            return Result<HotelResponse>.Failure(new Error("HotelNotFound", $"Hotel with ID {request.Id} was not found."));
+        }
+
         var response =  _mapper.Map<HotelResponse>(hotel);
 
         return Result<HotelResponse>.Success(response);

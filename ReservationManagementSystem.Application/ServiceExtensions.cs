@@ -1,6 +1,4 @@
 ﻿using System.Reflection;
-using ReservationManagementSystem.Application.Common.Behaviors;
-using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using FluentValidation;
 

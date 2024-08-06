@@ -1,7 +1,6 @@
 ﻿using FluentValidation;
 using MediatR;
 using ReservationManagementSystem.Application.Common.Errors;
-using ReservationManagementSystem.Application.Features.Hotels.Common;
 using ReservationManagementSystem.Application.Wrappers;
 
 namespace ReservationManagementSystem.Application.Common.Behaviors;

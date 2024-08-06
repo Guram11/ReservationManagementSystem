@@ -8,7 +8,7 @@ public sealed class UpdateHotelValidator : AbstractValidator<UpdateHotelRequest>
     {
         RuleFor(x => x.Name)
             .NotEmpty()
-            .MinimumLength(6).WithMessage($"Name must be at least 6 characters.")
+            .MinimumLength(5).WithMessage($"Name must be at least 5 characters.")
             .MaximumLength(50);
     }
 }

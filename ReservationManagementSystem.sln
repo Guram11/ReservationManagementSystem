@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReservationManagementSystem
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReservationManagementSystem.API", "ReservationManagementSystem.API\ReservationManagementSystem.API.csproj", "{FAA09F28-FD13-4743-ACE6-E5A39E6BBB6F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReservationManagementSystem.Application.Tests", "ReservationManagementSystem.Application.Tests\ReservationManagementSystem.Application.Tests.csproj", "{17A76B0E-F468-463F-A2D9-F029D7C8F7CE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,10 @@ Global
 		{FAA09F28-FD13-4743-ACE6-E5A39E6BBB6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FAA09F28-FD13-4743-ACE6-E5A39E6BBB6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FAA09F28-FD13-4743-ACE6-E5A39E6BBB6F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17A76B0E-F468-463F-A2D9-F029D7C8F7CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17A76B0E-F468-463F-A2D9-F029D7C8F7CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17A76B0E-F468-463F-A2D9-F029D7C8F7CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17A76B0E-F468-463F-A2D9-F029D7C8F7CE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -46,6 +52,7 @@ Global
 		{A0BC3586-27F8-4AB5-832E-E49D24B58ADC} = {FF15048D-2712-43CF-8EF5-0FBE183E60A1}
 		{327E34A3-0908-4251-93B0-37921E981A97} = {FF15048D-2712-43CF-8EF5-0FBE183E60A1}
 		{FAA09F28-FD13-4743-ACE6-E5A39E6BBB6F} = {FF15048D-2712-43CF-8EF5-0FBE183E60A1}
+		{17A76B0E-F468-463F-A2D9-F029D7C8F7CE} = {D829DB05-6CD4-4749-938B-517E966AEDBC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6BA2CB24-E4AA-4164-B931-81D803A11E9D}
