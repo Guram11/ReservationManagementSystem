@@ -18,9 +18,7 @@ internal class Program
             .WriteTo.File("Logs/log.txt", rollingInterval: RollingInterval.Day)
             .MinimumLevel.Information()
             .CreateLogger();
-
         builder.Logging.ClearProviders();
-
         builder.Logging.AddSerilog(logger);
 
         builder.Services.ConfigureApplication();
@@ -48,7 +46,6 @@ internal class Program
 
         app.UseSwagger();
         app.UseSwaggerUI();
-        app.UseErrorHandler();
         app.UseCors();
         app.MapControllers();
         app.Run();

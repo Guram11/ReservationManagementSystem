@@ -1,26 +1,29 @@
-﻿//using AutoMapper;
-//using MediatR;
-//using ReservationManagementSystem.Application.DTOs.Account;
-//using ReservationManagementSystem.Application.Interfaces.Services;
+﻿using AutoMapper;
+using MediatR;
+using ReservationManagementSystem.Application.DTOs.Account;
+using ReservationManagementSystem.Application.Interfaces.Services;
+using ReservationManagementSystem.Application.Wrappers;
 
-//namespace ReservationManagementSystem.Application.Features.Users.Commands.AuthenticateUser;
+namespace ReservationManagementSystem.Application.Features.Users.Commands.AuthenticateUser;
 
-//public sealed class AuthenticateUserHandler : IRequestHandler<AuthenticateUserRequest, AuthenticationResponse>
-//{
-//    private readonly IAccountService _accountService;
-//    private readonly IMapper _mapper;
+public sealed class AuthenticateUserHandler : IRequestHandler<AuthenticateUserRequest, Result<AuthenticationResponse>>
+{
+    private readonly IAccountService _accountService;
 
-//    public AuthenticateUserHandler(IAccountService accountService, IMapper mapper)
-//    {
-//        _accountService = accountService;
-//        _mapper = mapper;
-//    }
+    public AuthenticateUserHandler(IAccountService accountService)
+    {
+        _accountService = accountService;
+    }
 
-//    public async Task<AuthenticationResponse> Handle(AuthenticateUserRequest request, CancellationToken cancellationToken)
-//    {
-//        var user = _mapper.Map<AuthenticationResponse>(request);
-//        await _accountService.AuthenticateAsync(request);
+    public async Task<Result<AuthenticationResponse>> Handle(AuthenticateUserRequest request, CancellationToken cancellationToken)
+    {
+        var response = await _accountService.AuthenticateAsync(request);
 
-//        return _mapper.Map<AuthenticationResponse>(user);
-//    }
-//}
+        if (response.IsSuccess)
+        {
+            return Result<AuthenticationResponse>.Success(response.Data);
+        }
+
+        return Result<AuthenticationResponse>.Failure(response.Error);
+    }
+}

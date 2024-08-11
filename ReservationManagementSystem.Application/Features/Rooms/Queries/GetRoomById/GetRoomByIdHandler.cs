@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using ReservationManagementSystem.Application.Common.Errors;
 using ReservationManagementSystem.Application.Features.Rooms.Common;
 using ReservationManagementSystem.Application.Interfaces.Repositories;
 using ReservationManagementSystem.Application.Wrappers;
@@ -19,9 +20,14 @@ public sealed class GetRoomByIdHandler : IRequestHandler<GetRoomByIdRequest, Res
 
     public async Task<Result<RoomResponse>> Handle(GetRoomByIdRequest request, CancellationToken cancellationToken)
     {
-        var hotel = await _roomRepository.Get(request.Id);
-        var response = _mapper.Map<RoomResponse>(hotel);
+        var room = await _roomRepository.Get(request.Id);
 
+        if (room is null)
+        {
+            return Result<RoomResponse>.Failure(NotFoundError.NotFound($"Room with ID {request.Id} was not found."));
+        }
+
+        var response = _mapper.Map<RoomResponse>(room);
         return Result<RoomResponse>.Success(response);
     }
 }

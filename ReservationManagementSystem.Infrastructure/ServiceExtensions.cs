@@ -1,5 +1,4 @@
-﻿using Infrastructure.Identity.Services;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +13,7 @@ using ReservationManagementSystem.Domain.Settings;
 using ReservationManagementSystem.Infrastructure.Context;
 using ReservationManagementSystem.Infrastructure.Identity.Models;
 using ReservationManagementSystem.Infrastructure.Identity.Services;
+using ReservationManagementSystem.Infrastructure.Identity.Services.Email;
 using ReservationManagementSystem.Infrastructure.Persistence.Repositories;
 using System.Text;
 
@@ -35,10 +35,13 @@ public static class ServiceExtensions
         services.AddScoped<IRoomTypeRepository, RoomTypeRepository>();
         services.AddScoped<IRateRoomTypeRepository, RateRoomTypeRepository>();
         services.AddScoped<IRateRepository, RateRepository>();
+        services.AddScoped<IRateTimelineRepository, RateTimelineRepository>();
+        services.AddScoped<IAvailibilityTimelineRepository, AvailibilityRepository>();
 
         services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<DataContext>().AddDefaultTokenProviders();
         services.AddTransient<IAccountService, AccountService>();
         services.AddTransient<IEmailService, EmailService>();
+        services.AddTransient<IEmailSender, SmtpEmailSender>();
         services.AddAuthentication(options =>
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

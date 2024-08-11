@@ -24,7 +24,7 @@ public class HotelsController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<List<HotelResponse>>> GetAll([FromQuery] GetAllQueryParams queryParams)
     {
-        var response = await _mediator.Send(new GetAllGuestsRequest(
+        var response = await _mediator.Send(new GetAllHotelsRequest(
             queryParams.FilterOn, queryParams.FilterQuery,
             queryParams.SortBy, queryParams.IsAscending,
             queryParams.PageNumber, queryParams.PageSize));

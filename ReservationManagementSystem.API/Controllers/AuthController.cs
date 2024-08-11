@@ -1,6 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using ReservationManagementSystem.Application.DTOs.Account;
-using ReservationManagementSystem.Application.Interfaces.Services;
+using ReservationManagementSystem.Application.Features.Users.Commands.AuthenticateUser;
+using ReservationManagementSystem.Application.Features.Users.Commands.ConfirmEmail;
+using ReservationManagementSystem.Application.Features.Users.Commands.ForgotPassword;
+using ReservationManagementSystem.Application.Features.Users.Commands.RegisterUser;
+using ReservationManagementSystem.Application.Features.Users.Commands.ResetPassword;
 
 namespace ReservationManagementSystem.API.Controllers;
 
@@ -8,49 +13,71 @@ namespace ReservationManagementSystem.API.Controllers;
 [ApiController]
 public class AuthController : ControllerBase
 {
-    private readonly IAccountService _accountService;
-    public AuthController(IAccountService accountService)
+    private readonly IMediator _mediator;
+
+    public AuthController(IMediator mediator)
     {
-        _accountService = accountService;
+        _mediator = mediator;
     }
 
     [HttpPost("authenticate")]
-    public async Task<IActionResult> AuthenticateAsync([FromBody] AuthenticationRequest request)
+    public async Task<ActionResult<AuthenticationResponse>> Authenticate([FromBody] AuthenticateUserRequest request)
     {
-        return Ok(await _accountService.AuthenticateAsync(request, GenerateIPAddress()));
+        var origin = Request.Headers["Origin"].FirstOrDefault();
+        request.IpAddress = HttpContext.Connection.RemoteIpAddress?.ToString();
+        var result = await _mediator.Send(request);
+        if (result.IsSuccess)
+        {
+            return Ok(result.Data);
+        }
+        return Unauthorized(result.Error);
     }
 
     [HttpPost("register")]
-    public async Task<IActionResult> RegisterAsync([FromBody] RegisterRequest request)
+    public async Task<ActionResult<string>> Register([FromBody] CreateUserRequest request)
     {
-        var origin = Request.Headers.Origin;
-        return Ok(await _accountService.RegisterAsync(request, origin));
+        var origin = Request.Headers["Origin"].FirstOrDefault();
+        request.Origin = origin;
+        var result = await _mediator.Send(request);
+        if (result.IsSuccess)
+        {
+            return Ok(result.Data);
+        }
+        return BadRequest(result.Error);
     }
 
     [HttpGet("confirm-email")]
-    public async Task<IActionResult> ConfirmEmailAsync([FromQuery] string userId, [FromQuery] string code)
+    public async Task<IActionResult> ConfirmEmail([FromQuery] string userId, [FromQuery] string code)
     {
-        return Ok(await _accountService.ConfirmEmailAsync(userId, code));
+        var result = await _mediator.Send(new ConfirmEmailRequest { UserId = userId, Code = code });
+        if (result.IsSuccess)
+        {
+            return Ok(result.Data);
+        }
+        return BadRequest(result.Error);
     }
 
     [HttpPost("forgot-password")]
-    public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequest model)
+    public async Task<ActionResult<string>> ForgotPassword([FromBody] ForgotPasswordRequest request)
     {
-        await _accountService.ForgotPassword(model, Request.Headers.Origin);
-        return Ok();
+        var origin = Request.Headers["Origin"].FirstOrDefault();
+        request.Origin = origin;
+        var result = await _mediator.Send(request);
+        if (result.IsSuccess)
+        {
+            return Ok(result.Data);
+        }
+        return BadRequest(result.Error);
     }
 
     [HttpPost("reset-password")]
-    public async Task<IActionResult> ResetPassword(ResetPasswordRequest model)
+    public async Task<ActionResult<string>> ResetPassword([FromBody] ResetPasswordRequest request)
     {
-        return Ok(await _accountService.ResetPassword(model));
-    }
-
-    private string GenerateIPAddress()
-    {
-        if (Request.Headers.ContainsKey("X-Forwarded-For"))
-            return Request.Headers["X-Forwarded-For"];
-        else
-            return HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+        var result = await _mediator.Send(request);
+        if (result.IsSuccess)
+        {
+            return Ok(result.Data);
+        }
+        return BadRequest(result.Error);
     }
 }

@@ -5,7 +5,7 @@ using ReservationManagementSystem.Application.Interfaces.Repositories;
 
 namespace ReservationManagementSystem.Application.Features.Hotels.Queries.GetAllHotels;
 
-public sealed class GetAllHotelsHandler : IRequestHandler<GetAllGuestsRequest, List<HotelResponse>>
+public sealed class GetAllHotelsHandler : IRequestHandler<GetAllHotelsRequest, List<HotelResponse>>
 {
     private readonly IHotelRepository _hotelRepository;
     private readonly IMapper _mapper;
@@ -16,7 +16,7 @@ public sealed class GetAllHotelsHandler : IRequestHandler<GetAllGuestsRequest, L
         _mapper = mapper;
     }
 
-    public async Task<List<HotelResponse>> Handle(GetAllGuestsRequest request, CancellationToken cancellationToken)
+    public async Task<List<HotelResponse>> Handle(GetAllHotelsRequest request, CancellationToken cancellationToken)
     {
         var hotels = await _hotelRepository.GetAll(
             request.FilterOn, request.FilterQuery, request.SortBy,

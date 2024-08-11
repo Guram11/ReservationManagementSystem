@@ -5,8 +5,8 @@ using ReservationManagementSystem.Application.Features.Guests.Queries.GetGuestBy
 using ReservationManagementSystem.Application.Features.Guests.Commands.CreateGuest;
 using ReservationManagementSystem.Application.Features.Guests.Commands.UpdateGuest;
 using ReservationManagementSystem.Application.Features.Guests.Common;
-using ReservationManagementSystem.Application.Features.Hotels.Queries.GetAllHotels;
 using ReservationManagementSystem.Domain.Settings;
+using ReservationManagementSystem.Application.Features.Guests.Queries.GetAllGuests;
 
 namespace ReservationManagementSystem.API.Controllers;
 

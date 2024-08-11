@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using ReservationManagementSystem.Application.Common.Errors;
 using ReservationManagementSystem.Application.Features.Rooms.Common;
 using ReservationManagementSystem.Application.Interfaces.Repositories;
 using ReservationManagementSystem.Application.Wrappers;
@@ -20,8 +21,13 @@ public sealed class DeleteRoomHandler : IRequestHandler<DeleteRoomRequest, Resul
     public async Task<Result<RoomResponse>> Handle(DeleteRoomRequest request, CancellationToken cancellationToken)
     {
         var room = await _roomRepository.Delete(request.Id);
-        var roomResponse = _mapper.Map<RoomResponse>(room);
 
+        if (room is null)
+        {
+            return Result<RoomResponse>.Failure(NotFoundError.NotFound($"Room with ID {request.Id} was not found."));
+        }
+
+        var roomResponse = _mapper.Map<RoomResponse>(room);
         return Result<RoomResponse>.Success(roomResponse);
     }
 }

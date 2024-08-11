@@ -37,10 +37,10 @@ public class RateRoomTypesController : ControllerBase
     }
 
     [HttpDelete]
-    [Route("{id:Guid}")]
-    public async Task<ActionResult<RateRoomTypeResponse>> Delete([FromRoute] Guid id)
+    [Route("{rateId:guid}/{roomTypeId:guid}")]
+    public async Task<ActionResult<RateRoomTypeResponse>> Delete([FromRoute] Guid rateId, [FromRoute] Guid roomTypeId)
     {
-        var response = await _mediator.Send(new DeleteRateRoomTypeRequest(id));
+        var response = await _mediator.Send(new DeleteRateRoomTypeRequest(rateId, roomTypeId));
         return Ok(response);
     }
 }   

@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using MediatR;
+using ReservationManagementSystem.Application.Common.Errors;
 using ReservationManagementSystem.Application.Features.RoomTypes.Common;
 using ReservationManagementSystem.Application.Interfaces.Repositories;
 using ReservationManagementSystem.Application.Wrappers;
+using ReservationManagementSystem.Domain.Entities;
 
 namespace ReservationManagementSystem.Application.Features.RoomTypes.Queries.GetRoomTypeById;
 
@@ -19,9 +21,14 @@ public sealed class GetRoomTypeByIdHandler : IRequestHandler<GetRoomTypeByIdRequ
 
     public async Task<Result<RoomTypeResponse>> Handle(GetRoomTypeByIdRequest request, CancellationToken cancellationToken)
     {
-        var hotel = await _roomTypeRepository.Get(request.Id);
-        var response = _mapper.Map<RoomTypeResponse>(hotel);
+        var roomType = await _roomTypeRepository.GetRoomTypeWithAvailabilityAsync(request.Id);
 
+        if (roomType is null)
+        {
+            return Result<RoomTypeResponse>.Failure(NotFoundError.NotFound($"RoomType with ID {request.Id} was not found."));
+        }
+
+        var response = _mapper.Map<RoomTypeResponse>(roomType);
         return Result<RoomTypeResponse>.Success(response);
     }
 }

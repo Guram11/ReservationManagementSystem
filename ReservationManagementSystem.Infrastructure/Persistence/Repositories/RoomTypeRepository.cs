@@ -16,9 +16,16 @@ public class RoomTypeRepository : BaseRepository<RoomType>, IRoomTypeRepository
 
     public async Task<RoomType?> GetRoomTypeWithAvailabilityAsync(Guid roomTypeId)
     {
-        return await _context.RoomTypes
+        var roomType = await _context.RoomTypes
            .Include(rt => rt.AvailabilityTimelines)
            .FirstOrDefaultAsync(rt => rt.Id == roomTypeId);
+
+        if (roomType == null)
+        {
+            return null;
+        }
+
+        return roomType;
     }
 
     public async Task SaveChangesAsync()
