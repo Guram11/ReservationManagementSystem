@@ -1,6 +1,6 @@
 ﻿using ReservationManagementSystem.Infrastructure.Identity.Helpers;
 
-namespace ReservationManagementSystem.Infrastructure.Tests;
+namespace ReservationManagementSystem.Infrastructure.Tests.Helpers;
 
 public class IpHelperTests
 {

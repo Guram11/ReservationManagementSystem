@@ -4,7 +4,6 @@ using ReservationManagementSystem.Application.Common.Errors;
 using ReservationManagementSystem.Application.Features.Hotels.Common;
 using ReservationManagementSystem.Application.Interfaces.Repositories;
 using ReservationManagementSystem.Application.Wrappers;
-using ReservationManagementSystem.Domain.Entities;
 
 namespace ReservationManagementSystem.Application.Features.Hotels.Commands.DeleteHotel;
 

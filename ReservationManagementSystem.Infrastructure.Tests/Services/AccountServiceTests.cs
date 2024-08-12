@@ -15,7 +15,7 @@ using Microsoft.Extensions.Logging;
 using ReservationManagementSystem.Application.Features.Users.Commands.ConfirmEmail;
 using ReservationManagementSystem.Application.Features.Users.Commands.ResetPassword;
 
-namespace ReservationManagementSystem.Infrastructure.Tests;
+namespace ReservationManagementSystem.Infrastructure.Tests.Services;
 
 public class AccountServiceTests
 {

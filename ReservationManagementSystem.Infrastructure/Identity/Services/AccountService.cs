@@ -148,67 +148,6 @@ public class AccountService : IAccountService
         }
     }
 
-    private async Task<JwtSecurityToken> GenerateJWToken(ApplicationUser user)
-    {
-        var userClaims = await _userManager.GetClaimsAsync(user);
-        var roles = await _userManager.GetRolesAsync(user);
-
-        var roleClaims = new List<Claim>();
-        for (int i = 0; i < roles.Count; i++)
-        {
-            roleClaims.Add(new Claim("roles", roles[i]));
-        }
-
-        string ipAddress = IpHelper.GetIpAddress();
-
-        if (user.UserName is null || user.Email is null)
-        {
-            throw new Exception($"Invalid Credentials for '{user.Email}'.");
-        }
-
-        var claims = new[]
-        {
-            new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new Claim(JwtRegisteredClaimNames.Email, user.Email),
-            new Claim("uid", user.Id),
-            new Claim("ip", ipAddress)
-        }
-        .Union(userClaims)
-        .Union(roleClaims);
-
-        var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
-        var signingCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256);
-
-        var jwtSecurityToken = new JwtSecurityToken(
-            issuer: _jwtSettings.Issuer,
-            audience: _jwtSettings.Audience,
-            claims: claims,
-            expires: DateTime.UtcNow.AddMinutes(_jwtSettings.DurationInMinutes),
-            signingCredentials: signingCredentials);
-
-        return jwtSecurityToken;
-    }
-
-    private string RandomTokenString()
-    {
-        var randomBytes = new byte[40];
-        RandomNumberGenerator.Fill(randomBytes);
-        return BitConverter.ToString(randomBytes).Replace("-", "");
-    }
-
-    private async Task<string> SendVerificationEmail(ApplicationUser user, string origin)
-    {
-        var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-        code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-        var route = "api/account/confirm-email/";
-        var _enpointUri = new Uri(string.Concat($"{origin}/", route));
-        var verificationUri = QueryHelpers.AddQueryString(_enpointUri.ToString(), "userId", user.Id);
-        verificationUri = QueryHelpers.AddQueryString(verificationUri, "code", code);
-
-        return verificationUri;
-    }
-
     public async Task<Result<string>> ConfirmEmailAsync(ConfirmEmailRequest request)
     {
         var user = await _userManager.FindByIdAsync(request.UserId);
@@ -228,17 +167,6 @@ public class AccountService : IAccountService
         {
             return Result<string>.Failure(AccountServiceErrors.EmailConfirmationFailed(user.Email));
         }
-    }
-
-    private RefreshToken GenerateRefreshToken(string ipAddress)
-    {
-        return new RefreshToken
-        {
-            Token = RandomTokenString(),
-            Expires = DateTime.UtcNow.AddDays(7),
-            Created = DateTime.UtcNow,
-            CreatedByIp = ipAddress
-        };
     }
 
     public async Task<Result<string>> ForgotPassword(ForgotPasswordRequest model)
@@ -290,5 +218,77 @@ public class AccountService : IAccountService
         {
             return Result<string>.Failure(AccountServiceErrors.PasswordResetFailed(model.Email));
         }
+    }
+
+    private async Task<JwtSecurityToken> GenerateJWToken(ApplicationUser user)
+    {
+        var userClaims = await _userManager.GetClaimsAsync(user);
+        var roles = await _userManager.GetRolesAsync(user);
+
+        var roleClaims = new List<Claim>();
+        for (int i = 0; i < roles.Count; i++)
+        {
+            roleClaims.Add(new Claim("roles", roles[i]));
+        }
+
+        string ipAddress = IpHelper.GetIpAddress();
+
+        if (user.UserName is null || user.Email is null)
+        {
+            throw new Exception($"Invalid Credentials for '{user.Email}'.");
+        }
+
+        var claims = new[]
+        {
+            new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            new Claim(JwtRegisteredClaimNames.Email, user.Email),
+            new Claim("uid", user.Id),
+            new Claim("ip", ipAddress)
+        }
+        .Union(userClaims)
+        .Union(roleClaims);
+
+        var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
+        var signingCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256);
+
+        var jwtSecurityToken = new JwtSecurityToken(
+            issuer: _jwtSettings.Issuer,
+            audience: _jwtSettings.Audience,
+            claims: claims,
+            expires: DateTime.UtcNow.AddMinutes(_jwtSettings.DurationInMinutes),
+            signingCredentials: signingCredentials);
+
+        return jwtSecurityToken;
+    }
+
+    private string RandomTokenString()
+    {
+        var randomBytes = new byte[40];
+        RandomNumberGenerator.Fill(randomBytes);
+        return BitConverter.ToString(randomBytes).Replace("-", "");
+    }
+
+    private async Task<string> SendVerificationEmail(ApplicationUser user, string? origin)
+    {
+        var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+        code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+        var route = "api/account/confirm-email/";
+        var _enpointUri = new Uri(string.Concat($"{origin}/", route));
+        var verificationUri = QueryHelpers.AddQueryString(_enpointUri.ToString(), "userId", user.Id);
+        verificationUri = QueryHelpers.AddQueryString(verificationUri, "code", code);
+
+        return verificationUri;
+    }
+
+    private RefreshToken GenerateRefreshToken(string? ipAddress)
+    {
+        return new RefreshToken
+        {
+            Token = RandomTokenString(),
+            Expires = DateTime.UtcNow.AddDays(7),
+            Created = DateTime.UtcNow,
+            CreatedByIp = ipAddress
+        };
     }
 }

@@ -29,6 +29,7 @@ public static class ServiceExtensions
 
         services.Configure<JWTSettings>(configuration.GetSection("JWTSettings"));
         services.Configure<MailSettings>(configuration.GetSection("MailSettings"));
+
         services.AddScoped<IGuestRepository, GuestRepository>();
         services.AddScoped<IHotelRepository, HotelRepository>();
         services.AddScoped<IRoomRepository, RoomRepository>();
@@ -38,10 +39,11 @@ public static class ServiceExtensions
         services.AddScoped<IRateTimelineRepository, RateTimelineRepository>();
         services.AddScoped<IAvailibilityTimelineRepository, AvailibilityRepository>();
 
-        services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<DataContext>().AddDefaultTokenProviders();
         services.AddTransient<IAccountService, AccountService>();
         services.AddTransient<IEmailService, EmailService>();
         services.AddTransient<IEmailSender, SmtpEmailSender>();
+
+        services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<DataContext>().AddDefaultTokenProviders();
         services.AddAuthentication(options =>
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -60,7 +62,7 @@ public static class ServiceExtensions
                     ClockSkew = TimeSpan.Zero,
                     ValidIssuer = configuration["JWTSettings:Issuer"],
                     ValidAudience = configuration["JWTSettings:Audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWTSettings:Key"]))
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWTSettings:Key"] ?? string.Empty))
                 };
                 o.Events = new JwtBearerEvents()
                 {

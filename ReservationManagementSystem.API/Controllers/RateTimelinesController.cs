@@ -1,7 +1,5 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using ReservationManagementSystem.Application.Features.AvailabilityTimelines.Common;
-using ReservationManagementSystem.Application.Features.AvailabilityTimelines.PushAvailability;
 using ReservationManagementSystem.Application.Features.RateTimelines.Common;
 using ReservationManagementSystem.Application.Features.RateTimelines.PushPrice;
 
