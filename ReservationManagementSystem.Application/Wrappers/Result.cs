@@ -7,7 +7,7 @@ public sealed class Result<T>
         if (isSuccess && error != Error.None ||
             !isSuccess && error == Error.None)
         {
-            throw new ArgumentException("Invalid error", nameof(error));
+            throw new ArgumentException("Invalid error!", nameof(error));
         }
 
         IsSuccess = isSuccess;
