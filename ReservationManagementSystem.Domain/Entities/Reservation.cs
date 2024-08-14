@@ -6,7 +6,7 @@ namespace ReservationManagementSystem.Domain.Entities;
 public class Reservation : BaseEntity
 {
     public Guid HotelId { get; set; }
-    public required string Number { get; set; } // Randomly generated unique string
+    public required string Number { get; set; }
     public decimal Price { get; set; }
     public ReservationStatus StatusId { get; set; }
     public DateTime Checkin { get; set; }
