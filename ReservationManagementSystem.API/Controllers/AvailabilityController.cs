@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using ReservationManagementSystem.Application.Features.AvailabilityTimelines.Common;
-using ReservationManagementSystem.Application.Features.AvailabilityTimelines.PushAvailability;
+using ReservationManagementSystem.Application.Features.AvailibilityTimeline.CheckAvailibility;
+using ReservationManagementSystem.Application.Features.AvailibilityTimeline.PushAvailability;
 
 namespace ReservationManagementSystem.API.Controllers;
 
@@ -18,6 +18,13 @@ public class AvailabilityController : ControllerBase
 
     [HttpPost]
     public async Task<ActionResult<AvailabilityResponse>> PushAvailability([FromBody] PushAvailabilityRequest request)
+    {
+        var response = await _mediator.Send(request);
+        return Ok(response);
+    }
+
+    [HttpGet("CheckAvailability")]
+    public async Task<ActionResult<List<CheckAvailabilityResponse>>> CheckAvailability([FromQuery] CheckAvailabilityRequest request)
     {
         var response = await _mediator.Send(request);
         return Ok(response);

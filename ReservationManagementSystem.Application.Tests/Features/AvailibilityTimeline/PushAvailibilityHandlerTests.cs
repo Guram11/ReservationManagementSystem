@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
 using FluentAssertions;
 using Moq;
-using ReservationManagementSystem.Application.Features.AvailabilityTimelines.Common;
-using ReservationManagementSystem.Application.Features.AvailabilityTimelines.PushAvailability;
+using ReservationManagementSystem.Application.Features.AvailibilityTimeline.PushAvailability;
 using ReservationManagementSystem.Application.Interfaces.Repositories;
 using ReservationManagementSystem.Domain.Entities;
 

@@ -3,8 +3,8 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using ReservationManagementSystem.API.Controllers;
-using ReservationManagementSystem.Application.Features.AvailabilityTimelines.Common;
-using ReservationManagementSystem.Application.Features.AvailabilityTimelines.PushAvailability;
+using ReservationManagementSystem.Application.Features.AvailibilityTimeline.CheckAvailibility;
+using ReservationManagementSystem.Application.Features.AvailibilityTimeline.PushAvailability;
 using ReservationManagementSystem.Application.Wrappers;
 
 namespace ReservationManagementSystem.Api.Tests.Controllers;
@@ -47,5 +47,30 @@ public class AvailibilityTimelineControllerTests
         actionResult.Should().BeOfType<ActionResult<AvailabilityResponse>>()
             .Which.Result.Should().BeOfType<OkObjectResult>()
             .Which.Value.Should().BeOfType<Result<AvailabilityResponse>>();
+    }
+
+    [Fact]
+    public async Task CheckAvailability_ShouldReturnOk_WhenRequestIsValid()
+    {
+        // Arrange
+        var request = new CheckAvailabilityRequest(DateTime.Now, DateTime.Now.AddDays(2));
+        var expectedResponse = new List<CheckAvailabilityResponse>
+        {
+            new CheckAvailabilityResponse { RoomType = "Deluxe", AvailableRooms = 5, TotalPrice = 300 }
+        };
+
+        var result = Result<List<CheckAvailabilityResponse>>.Success(expectedResponse);
+
+        _mediatorMock
+            .Setup(mediator => mediator.Send(request, default))
+            .ReturnsAsync(result);
+
+        // Act
+        var actionResult = await _controller.CheckAvailability(request);
+
+        // Assert
+        actionResult.Should().BeOfType<ActionResult<List<CheckAvailabilityResponse>>>()
+           .Which.Result.Should().BeOfType<OkObjectResult>()
+           .Which.Value.Should().BeOfType<Result<List<CheckAvailabilityResponse>>>();
     }
 }

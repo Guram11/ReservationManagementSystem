@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
-using ReservationManagementSystem.Application.Features.AvailabilityTimelines.PushAvailability;
 using ReservationManagementSystem.Domain.Entities;
 
-namespace ReservationManagementSystem.Application.Features.AvailabilityTimelines.Common;
+namespace ReservationManagementSystem.Application.Features.AvailibilityTimeline.PushAvailability;
 
 public class AvailabilityMapperProfiles : Profile
 {

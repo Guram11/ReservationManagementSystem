@@ -1,11 +1,10 @@
 ﻿using AutoMapper;
 using MediatR;
-using ReservationManagementSystem.Application.Features.AvailabilityTimelines.Common;
 using ReservationManagementSystem.Application.Interfaces.Repositories;
 using ReservationManagementSystem.Application.Wrappers;
 using ReservationManagementSystem.Domain.Entities;
 
-namespace ReservationManagementSystem.Application.Features.AvailabilityTimelines.PushAvailability;
+namespace ReservationManagementSystem.Application.Features.AvailibilityTimeline.PushAvailability;
 
 public sealed class PushAvailabilityHandler : IRequestHandler<PushAvailabilityRequest, Result<AvailabilityResponse>>
 {
@@ -39,8 +38,8 @@ public sealed class PushAvailabilityHandler : IRequestHandler<PushAvailabilityRe
 
         for (var date = request.StartDate; date <= request.EndDate; date = date.AddDays(1))
         {
-             availabilityTimeline = roomType?.AvailabilityTimelines?
-                .FirstOrDefault(at => at.Date == date);
+            availabilityTimeline = roomType?.AvailabilityTimelines?
+               .FirstOrDefault(at => at.Date == date);
 
             if (availabilityTimeline == null)
             {
@@ -50,8 +49,8 @@ public sealed class PushAvailabilityHandler : IRequestHandler<PushAvailabilityRe
                     RoomTypeId = request.RoomTypeId,
                     Available = request.AvailableRooms
                 };
-               await _availibilityTimelineRepository.Create(availabilityTimeline);
-               roomType?.AvailabilityTimelines?.Add(availabilityTimeline);
+                await _availibilityTimelineRepository.Create(availabilityTimeline);
+                roomType?.AvailabilityTimelines?.Add(availabilityTimeline);
             }
             else
             {

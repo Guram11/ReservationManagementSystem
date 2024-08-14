@@ -1,4 +1,4 @@
-﻿namespace ReservationManagementSystem.Application.Features.AvailabilityTimelines.Common;
+﻿namespace ReservationManagementSystem.Application.Features.AvailibilityTimeline.PushAvailability;
 
 public sealed record AvailabilityResponse
 {

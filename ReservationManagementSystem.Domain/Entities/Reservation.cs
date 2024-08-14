@@ -12,7 +12,6 @@ public class Reservation : BaseEntity
     public DateTime Checkin { get; set; }
     public DateTime Checkout { get; set; }
     public Currencies Currency { get; set; }
-
     public Hotel? Hotel { get; set; }
     public ICollection<ReservationRoom>? ReservationRooms { get; set; }
     public ICollection<ReservationInvoices>? Invoices { get; set; }
