@@ -32,6 +32,7 @@ public static class ServiceExtensions
 
         services.AddScoped<IGuestRepository, GuestRepository>();
         services.AddScoped<IHotelRepository, HotelRepository>();
+        services.AddScoped<IHotelServiceRepository, HotelServiceRepository>();
         services.AddScoped<IRoomRepository, RoomRepository>();
         services.AddScoped<IRoomTypeRepository, RoomTypeRepository>();
         services.AddScoped<IRateRoomTypeRepository, RateRoomTypeRepository>();

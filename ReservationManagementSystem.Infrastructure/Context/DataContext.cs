@@ -12,7 +12,7 @@ public class DataContext : IdentityDbContext<ApplicationUser>
     public DbSet<AvailabilityTimeline> AvailabilityTimelines { get; set; }
     public DbSet<Guest> Guests { get; set; }
     public DbSet<Hotel> Hotels { get; set; }
-    public DbSet<HotelServices> HotelServices { get; set; }
+    public DbSet<HotelService> HotelServices { get; set; }
     public DbSet<Rate> Rates { get; set; }
     public DbSet<RateRoomType> RateRoomTypes { get; set; }
     public DbSet<RateTimeline> RateTimelines { get; set; }
@@ -61,7 +61,7 @@ public class DataContext : IdentityDbContext<ApplicationUser>
             .HasForeignKey(hs => hs.HotelId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        modelBuilder.Entity<HotelServices>()
+        modelBuilder.Entity<HotelService>()
             .HasOne(hs => hs.Hotel)
             .WithMany(h => h.Services)
             .HasForeignKey(hs => hs.HotelId)
