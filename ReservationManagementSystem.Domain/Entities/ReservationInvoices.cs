@@ -10,6 +10,5 @@ public class ReservationInvoices : BaseEntity
     public decimal Paid { get; set; }
     public decimal Due { get; set; }
     public Currencies Currency { get; set; }
-
     public Reservation? Reservation { get; set; }
 }
