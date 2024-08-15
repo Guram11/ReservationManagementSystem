@@ -17,9 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReservationManagementSystem
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReservationManagementSystem.Application.Tests", "ReservationManagementSystem.Application.Tests\ReservationManagementSystem.Application.Tests.csproj", "{17A76B0E-F468-463F-A2D9-F029D7C8F7CE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReservationManagementSystem.Infrastructure.Tests", "ReservationManagementSystem.Infrastructure.Tests\ReservationManagementSystem.Infrastructure.Tests.csproj", "{DB5D4903-35D5-4E91-8DDA-FA6F4AB42936}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReservationManagementSystem.Infrastructure.Tests", "ReservationManagementSystem.Infrastructure.Tests\ReservationManagementSystem.Infrastructure.Tests.csproj", "{DB5D4903-35D5-4E91-8DDA-FA6F4AB42936}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReservationManagementSystem.Api.Tests", "ReservationManagementSystem.Api.Tests\ReservationManagementSystem.Api.Tests.csproj", "{9A7BCA62-1BB3-48CE-BF7C-5A9BCE9CE8A5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReservationManagementSystem.Api.Tests", "ReservationManagementSystem.Api.Tests\ReservationManagementSystem.Api.Tests.csproj", "{9A7BCA62-1BB3-48CE-BF7C-5A9BCE9CE8A5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
