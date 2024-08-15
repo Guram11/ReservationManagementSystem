@@ -60,7 +60,7 @@ public class ReservationsControllerTests
                 HotelId = Guid.NewGuid(),
                 Number = "124",
                 Price = 200.00m,
-                StatusId = ReservationStatus.Canceled,
+                StatusId = ReservationStatus.Created,
                 Checkin = DateTime.UtcNow.AddDays(4),
                 Checkout = DateTime.UtcNow.AddDays(6),
                 Currency = Currencies.USD

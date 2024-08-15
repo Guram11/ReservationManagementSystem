@@ -11,7 +11,6 @@ public class ReservationRoom : BaseEntity
     public DateTime Checkin { get; set; }
     public DateTime Checkout { get; set; }
     public decimal Price { get; set; } // Sum of prices of all child ReservationRoomTimeline rows
-
     public Reservation? Reservation { get; set; }
     public RateRoomType? RateRoomType { get; set; }
     public Room? Room { get; set; }
