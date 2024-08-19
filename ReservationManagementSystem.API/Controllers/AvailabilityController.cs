@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ReservationManagementSystem.Application.Features.AvailibilityTimeline.CheckAvailibility;
 using ReservationManagementSystem.Application.Features.AvailibilityTimeline.PushAvailability;
@@ -7,6 +8,7 @@ namespace ReservationManagementSystem.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize(Roles = "SuperAdmin")]
 public class AvailabilityController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -23,7 +25,7 @@ public class AvailabilityController : ControllerBase
         return Ok(response);
     }
 
-    [HttpGet("CheckAvailability")]
+    [HttpGet]
     public async Task<ActionResult<List<CheckAvailabilityResponse>>> CheckAvailability([FromQuery] CheckAvailabilityRequest request)
     {
         var response = await _mediator.Send(request);

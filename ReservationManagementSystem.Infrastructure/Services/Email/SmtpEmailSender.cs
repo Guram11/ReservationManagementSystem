@@ -5,7 +5,7 @@ using MimeKit;
 using ReservationManagementSystem.Application.Interfaces.Services;
 using ReservationManagementSystem.Domain.Settings;
 
-namespace ReservationManagementSystem.Infrastructure.Identity.Services.Email;
+namespace ReservationManagementSystem.Infrastructure.Services.Email;
 
 public class SmtpEmailSender : IEmailSender
 {

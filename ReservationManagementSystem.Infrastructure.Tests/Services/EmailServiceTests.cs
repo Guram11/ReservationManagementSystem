@@ -5,7 +5,7 @@ using Moq;
 using ReservationManagementSystem.Application.DTOs.Email;
 using ReservationManagementSystem.Application.Interfaces.Services;
 using ReservationManagementSystem.Domain.Settings;
-using ReservationManagementSystem.Infrastructure.Identity.Services.Email;
+using ReservationManagementSystem.Infrastructure.Services.Email;
 
 namespace ReservationManagementSystem.Infrastructure.Tests.Services;
 

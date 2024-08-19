@@ -7,11 +7,13 @@ using ReservationManagementSystem.Application.Features.Guests.Commands.UpdateGue
 using ReservationManagementSystem.Application.Features.Guests.Common;
 using ReservationManagementSystem.Domain.Settings;
 using ReservationManagementSystem.Application.Features.Guests.Queries.GetAllGuests;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ReservationManagementSystem.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize(Roles = "SuperAdmin, Basic")]
 public class GuestsController : ControllerBase
 {
     private readonly IMediator _mediator;

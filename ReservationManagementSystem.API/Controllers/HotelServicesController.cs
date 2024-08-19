@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ReservationManagementSystem.Application.Features.HotelServices.Commands.CreateHotelService;
 using ReservationManagementSystem.Application.Features.HotelServices.Commands.DeleteHotelService;
@@ -10,6 +11,7 @@ namespace ReservationManagementSystem.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize(Roles = "SuperAdmin, Basic")]
 public class HotelServicesController : ControllerBase
 {
     private readonly IMediator _mediator;

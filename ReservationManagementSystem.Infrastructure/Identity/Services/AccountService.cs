@@ -5,7 +5,6 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using ReservationManagementSystem.Infrastructure.Identity.Helpers;
 using ReservationManagementSystem.Infrastructure.Identity.Models;
 using ReservationManagementSystem.Application.Interfaces.Services;
 using ReservationManagementSystem.Application.DTOs.Account;
@@ -20,6 +19,7 @@ using ReservationManagementSystem.Application.Features.Users.Commands.Authentica
 using ReservationManagementSystem.Application.Features.Users.Commands.ForgotPassword;
 using ReservationManagementSystem.Application.Features.Users.Commands.ResetPassword;
 using ReservationManagementSystem.Application.Features.Users.Commands.ConfirmEmail;
+using ReservationManagementSystem.Infrastructure.Helpers;
 
 namespace ReservationManagementSystem.Infrastructure.Identity.Services;
 
@@ -217,6 +217,32 @@ public class AccountService : IAccountService
         else
         {
             return Result<string>.Failure(AccountServiceErrors.PasswordResetFailed(model.Email));
+        }
+    }
+
+    public async Task<Result<string>> AssignRoleToUserAsync(string userId, string roleName)
+    {
+        var user = await _userManager.FindByIdAsync(userId);
+        if (user == null)
+        {
+            return Result<string>.Failure(AccountServiceErrors.UserNotFound(userId));
+        }
+
+        var roleExists = await _userManager.IsInRoleAsync(user, roleName);
+        if (roleExists)
+        {
+            return Result<string>.Failure(AccountServiceErrors.UserAlreadyInRole(userId));
+        }
+
+        var result = await _userManager.AddToRoleAsync(user, roleName);
+        if (result.Succeeded)
+        {
+            return Result<string>.Success($"Role '{roleName}' assigned to user successfully.");
+        }
+        else
+        {
+            var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+            return Result<string>.Failure(new Error("Role.AssignmentFailed", $"Role assignment failed: {errors}"));
         }
     }
 

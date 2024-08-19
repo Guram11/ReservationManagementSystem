@@ -1,4 +1,4 @@
-﻿using ReservationManagementSystem.Infrastructure.Identity.Helpers;
+﻿using ReservationManagementSystem.Infrastructure.Helpers;
 
 namespace ReservationManagementSystem.Infrastructure.Tests.Helpers;
 

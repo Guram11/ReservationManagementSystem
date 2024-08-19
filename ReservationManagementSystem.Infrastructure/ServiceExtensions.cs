@@ -13,8 +13,9 @@ using ReservationManagementSystem.Domain.Settings;
 using ReservationManagementSystem.Infrastructure.Context;
 using ReservationManagementSystem.Infrastructure.Identity.Models;
 using ReservationManagementSystem.Infrastructure.Identity.Services;
-using ReservationManagementSystem.Infrastructure.Identity.Services.Email;
 using ReservationManagementSystem.Infrastructure.Persistence.Repositories;
+using ReservationManagementSystem.Infrastructure.Services.CurrencyRatesRetriever;
+using ReservationManagementSystem.Infrastructure.Services.Email;
 using System.Text;
 
 namespace ReservationManagementSystem.Infrastructure;
@@ -38,6 +39,9 @@ public static class ServiceExtensions
         services.AddScoped<IReservationRepository, ReservationRepository>();
         services.AddScoped<IReservationInvoiceRepository, ReservationInvoiceRepository>();
         services.AddScoped<IReservationRoomRepository, ReservationRoomRepository>();
+        services.AddScoped<IReservationRoomServiceRepository, ReservationRoomServiceRepository>();
+        services.AddScoped<IReservationRoomTimelineRepository, ReservationRoomTimelineRepository>();
+        services.AddScoped<IReservationRoomPaymentRepository, ReservationRoomPaymentRepository>();
         services.AddScoped<IRateRoomTypeRepository, RateRoomTypeRepository>();
         services.AddScoped<IRateRepository, RateRepository>();
         services.AddScoped<IRateTimelineRepository, RateTimelineRepository>();
@@ -46,6 +50,7 @@ public static class ServiceExtensions
         services.AddTransient<IAccountService, AccountService>();
         services.AddTransient<IEmailService, EmailService>();
         services.AddTransient<IEmailSender, SmtpEmailSender>();
+        services.AddHostedService<CurrencyRatesService>().AddHttpClient();
 
         services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<DataContext>().AddDefaultTokenProviders();
         services.AddAuthentication(options =>

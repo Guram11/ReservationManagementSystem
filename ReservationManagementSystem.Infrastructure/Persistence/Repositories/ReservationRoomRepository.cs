@@ -29,5 +29,24 @@ public class ReservationRoomRepository : BaseRepository<ReservationRoom>, IReser
 
         return reservationRoom;
     }
+
+    public async Task<ReservationRoom?> GetReservationRoomWithTimeline(Guid id)
+    {
+        var reservationRoom = await _context.ReservationRooms
+          .Include(rt => rt.ReservationRoomTimelines)
+          .FirstOrDefaultAsync(rt => rt.Id == id);
+
+        if (reservationRoom == null)
+        {
+            return null;
+        }
+
+        return reservationRoom;
+    }
+
+    public async Task SaveChangesAsync()
+    {
+        await _context.SaveChangesAsync();
+    }
 }
 

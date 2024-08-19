@@ -2,12 +2,11 @@
 using ReservationManagementSystem.Domain.Entities;
 using ReservationManagementSystem.Infrastructure.Context;
 
-
 namespace ReservationManagementSystem.Infrastructure.Persistence.Repositories;
 
-public class RateRepository : BaseRepository<Rate>, IRateRepository
+public class ReservationRoomPaymentRepository : BaseRepository<ReservationRoomPayments>, IReservationRoomPaymentRepository
 {
-    public RateRepository(DataContext context) : base(context)
+    public ReservationRoomPaymentRepository(DataContext context) : base(context)
     {
     }
 }

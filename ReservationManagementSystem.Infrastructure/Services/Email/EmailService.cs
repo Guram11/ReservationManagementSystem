@@ -6,7 +6,7 @@ using ReservationManagementSystem.Application.DTOs.Email;
 using ReservationManagementSystem.Application.Wrappers;
 using ReservationManagementSystem.Infrastructure.Common;
 
-namespace ReservationManagementSystem.Infrastructure.Identity.Services.Email;
+namespace ReservationManagementSystem.Infrastructure.Services.Email;
 
 public class EmailService : IEmailService
 {

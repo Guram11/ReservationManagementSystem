@@ -19,6 +19,9 @@ public static class AccountServiceErrors
     public static Error UsernameTaken(string username) => new Error(
         "Account.UsernameTaken", $"Username '{username}' is already taken.");
 
+    public static Error UserAlreadyInRole(string username) => new Error(
+        "Account.UserAlreadyInRole", $"User: '{username}' is already in role.");
+
     public static Error PasswordsDoNotMatch() => new Error(
     "Account.PasswordsDoNotMatch", $"Passwords do not match!");
 
