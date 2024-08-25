@@ -15,9 +15,9 @@ public sealed class CreateHotelHandler : IRequestHandler<CreateHotelRequest, Res
     private readonly IMapper _mapper;
     private readonly IValidator<CreateHotelRequest> _validator;
 
-    public CreateHotelHandler(IHotelRepository hostRepository, IMapper mapper, IValidator<CreateHotelRequest> validator)
+    public CreateHotelHandler(IHotelRepository hotelRepository, IMapper mapper, IValidator<CreateHotelRequest> validator)
     {
-        _hotelRepository = hostRepository;
+        _hotelRepository = hotelRepository;
         _mapper = mapper;
         _validator = validator;
     }

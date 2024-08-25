@@ -3,6 +3,7 @@ using FluentAssertions;
 using Moq;
 using ReservationManagementSystem.Application.Features.Reservations.Common;
 using ReservationManagementSystem.Application.Features.Reservations.Queries;
+using ReservationManagementSystem.Application.Features.Reservations.Queries.GetAllReservations;
 using ReservationManagementSystem.Application.Interfaces.Repositories;
 using ReservationManagementSystem.Domain.Entities;
 using ReservationManagementSystem.Domain.Enums;
@@ -41,8 +42,6 @@ public class GetAllReservationsHandlerTests
             {
                 Id = Guid.NewGuid(),
                 HotelId = Guid.NewGuid(),
-                Number = "R12345",
-                Price = 150.00m,
                 StatusId = ReservationStatus.Reserved,
                 Checkin = DateTime.UtcNow.AddDays(1),
                 Checkout = DateTime.UtcNow.AddDays(3),
@@ -54,8 +53,6 @@ public class GetAllReservationsHandlerTests
             {
                 Id = Guid.NewGuid(),
                 HotelId = Guid.NewGuid(),
-                Number = "R67890",
-                Price = 250.00m,
                 StatusId = ReservationStatus.Created,
                 Checkin = DateTime.UtcNow.AddDays(5),
                 Checkout = DateTime.UtcNow.AddDays(7),
@@ -71,8 +68,6 @@ public class GetAllReservationsHandlerTests
             {
                 Id = reservations[0].Id,
                 HotelId = reservations[0].HotelId,
-                Number = reservations[0].Number,
-                Price = reservations[0].Price,
                 StatusId = reservations[0].StatusId,
                 Checkin = reservations[0].Checkin,
                 Checkout = reservations[0].Checkout,
@@ -84,8 +79,6 @@ public class GetAllReservationsHandlerTests
             {
                 Id = reservations[1].Id,
                 HotelId = reservations[1].HotelId,
-                Number = reservations[1].Number,
-                Price = reservations[1].Price,
                 StatusId = reservations[1].StatusId,
                 Checkin = reservations[1].Checkin,
                 Checkout = reservations[1].Checkout,

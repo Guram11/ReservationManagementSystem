@@ -44,6 +44,19 @@ public class ReservationRoomRepository : BaseRepository<ReservationRoom>, IReser
         return reservationRoom;
     }
 
+    public async Task<ReservationRoom?> GetReservationRoomByReservationId(Guid reservationId)
+    {
+        var reservationRoom = await _context.ReservationRooms
+                .FirstOrDefaultAsync(rt => rt.ReservationId == reservationId);
+
+        if (reservationRoom == null)
+        {
+            return null;
+        }
+
+        return reservationRoom;
+    }
+
     public async Task SaveChangesAsync()
     {
         await _context.SaveChangesAsync();

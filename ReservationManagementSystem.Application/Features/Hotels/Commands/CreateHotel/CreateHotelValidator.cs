@@ -8,7 +8,6 @@ public sealed class CreateHotelValidator : AbstractValidator<CreateHotelRequest>
     {
         RuleFor(x => x.Name)
             .NotEmpty()
-            .MinimumLength(5).WithMessage($"Name must be at least 5 characters.")
-            .MaximumLength(50);
+            .MinimumLength(5).WithMessage($"Name must be at least 5 characters.");
     }
 }

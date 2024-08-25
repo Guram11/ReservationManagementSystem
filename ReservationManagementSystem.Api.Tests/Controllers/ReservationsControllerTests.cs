@@ -6,7 +6,7 @@ using ReservationManagementSystem.API.Controllers;
 using ReservationManagementSystem.Application.Features.Reservations.Commands.CreateReservation;
 using ReservationManagementSystem.Application.Features.Reservations.Commands.DeleteReservation;
 using ReservationManagementSystem.Application.Features.Reservations.Common;
-using ReservationManagementSystem.Application.Features.Reservations.Queries;
+using ReservationManagementSystem.Application.Features.Reservations.Queries.GetAllReservations;
 using ReservationManagementSystem.Application.Wrappers;
 using ReservationManagementSystem.Domain.Enums;
 using ReservationManagementSystem.Domain.Settings;
@@ -45,8 +45,6 @@ public class ReservationsControllerTests
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow,
                 HotelId = Guid.NewGuid(),
-                Number = "123",
-                Price = 150.00m,
                 StatusId = ReservationStatus.Reserved,
                 Checkin = DateTime.UtcNow.AddDays(1),
                 Checkout = DateTime.UtcNow.AddDays(3),
@@ -58,8 +56,6 @@ public class ReservationsControllerTests
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow,
                 HotelId = Guid.NewGuid(),
-                Number = "124",
-                Price = 200.00m,
                 StatusId = ReservationStatus.Created,
                 Checkin = DateTime.UtcNow.AddDays(4),
                 Checkout = DateTime.UtcNow.AddDays(6),
@@ -86,16 +82,15 @@ public class ReservationsControllerTests
     public async Task Create_ReturnsOkResult_WithReservationResponse()
     {
         // Arrange
-        var request = new CreateReservationRequest(Guid.NewGuid(), "123", 150.00m, ReservationStatus.Reserved, DateTime.UtcNow.AddDays(1), DateTime.UtcNow.AddDays(3), Currencies.USD);
+        var request = new CreateReservationRequest(DateTime.UtcNow, DateTime.UtcNow, Guid.NewGuid(), Guid.NewGuid(),
+            Guid.NewGuid(), 2, Currencies.USD);
         var reservation = new ReservationResponse
         {
             Id = Guid.NewGuid(),
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow,
             HotelId = request.HotelId,
-            Number = request.Number,
-            Price = request.Price,
-            StatusId = request.StatusId,
+            StatusId = ReservationStatus.Created,
             Checkin = request.Checkin,
             Checkout = request.Checkout,
             Currency = request.Currency
@@ -127,8 +122,6 @@ public class ReservationsControllerTests
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow,
             HotelId = Guid.NewGuid(),
-            Number = "123",
-            Price = 150.00m,
             StatusId = ReservationStatus.Canceled,
             Checkin = DateTime.UtcNow.AddDays(1),
             Checkout = DateTime.UtcNow.AddDays(3),

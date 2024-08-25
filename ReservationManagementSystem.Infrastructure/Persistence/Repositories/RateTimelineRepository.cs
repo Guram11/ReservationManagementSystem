@@ -16,8 +16,11 @@ public class RateTimelineRepository : BaseRepository<RateTimeline>, IRateTimelin
 
     public async Task<IEnumerable<RateTimeline>> GetRatesByDateRange(DateTime startDate, DateTime endDate)
     {
+        var startDateWithoutTime = startDate.Date;
+        var endDateWithoutTime = endDate.Date.AddDays(1);
+
         return await _context.RateTimelines
-            .Where(rt => rt.Date >= startDate && rt.Date <= endDate)
+            .Where(at => at.Date >= startDateWithoutTime && at.Date < endDateWithoutTime)
             .ToListAsync();
     }
 }

@@ -3,7 +3,7 @@ using MediatR;
 using ReservationManagementSystem.Application.Features.Reservations.Common;
 using ReservationManagementSystem.Application.Interfaces.Repositories;
 
-namespace ReservationManagementSystem.Application.Features.Reservations.Queries;
+namespace ReservationManagementSystem.Application.Features.Reservations.Queries.GetAllReservations;
 
 public sealed class GetAllReservationsHandler : IRequestHandler<GetAllReservationsRequest, List<ReservationResponse>>
 {

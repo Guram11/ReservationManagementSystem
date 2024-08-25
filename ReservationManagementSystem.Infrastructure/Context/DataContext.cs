@@ -24,6 +24,8 @@ public class DataContext : IdentityDbContext<ApplicationUser>
     public DbSet<ReservationRoomTimeline> ReservationRoomTimelines { get; set; }
     public DbSet<Room> Rooms { get; set; }
     public DbSet<RoomType> RoomTypes { get; set; }
+    public DbSet<CurrencyRate> CurrencyRates { get; set; }
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

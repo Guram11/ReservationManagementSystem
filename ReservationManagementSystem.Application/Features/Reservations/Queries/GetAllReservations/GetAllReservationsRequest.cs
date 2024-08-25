@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using ReservationManagementSystem.Application.Features.Reservations.Common;
 
-namespace ReservationManagementSystem.Application.Features.Reservations.Queries;
+namespace ReservationManagementSystem.Application.Features.Reservations.Queries.GetAllReservations;
 
 public sealed record GetAllReservationsRequest(string? FilterOn, string? FilterQuery,
         string? SortBy, bool IsAscending,

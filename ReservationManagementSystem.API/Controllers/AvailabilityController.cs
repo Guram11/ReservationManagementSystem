@@ -8,7 +8,6 @@ namespace ReservationManagementSystem.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize(Roles = "SuperAdmin")]
 public class AvailabilityController : ControllerBase
 {
     private readonly IMediator _mediator;

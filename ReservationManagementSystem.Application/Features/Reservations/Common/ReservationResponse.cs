@@ -8,10 +8,11 @@ public sealed record ReservationResponse
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
     public Guid HotelId { get; set; }
-    public required string Number { get; set; }
-    public decimal Price { get; set; }
-    public ReservationStatus StatusId { get; set; }
     public DateTime Checkin { get; set; }
     public DateTime Checkout { get; set; }
+    public Guid RoomTypeId { get; set; }
+    public Guid RateId { get; set; }
+    public int NumberOfRooms { get; set; }
     public Currencies Currency { get; set; }
+    public ReservationStatus StatusId { get; set; }
 }

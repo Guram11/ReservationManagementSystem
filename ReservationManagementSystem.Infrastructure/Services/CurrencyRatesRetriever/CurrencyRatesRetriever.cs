@@ -1,19 +1,33 @@
 ﻿using HtmlAgilityPack;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using ReservationManagementSystem.Application.Interfaces.Services;
+using ReservationManagementSystem.Domain.Entities;
 using ReservationManagementSystem.Domain.Settings;
-using ReservationManagementSystem.Infrastructure.Helpers;
+using ReservationManagementSystem.Infrastructure.Context;
 using System.Xml.Linq;
 
 namespace ReservationManagementSystem.Infrastructure.Services.CurrencyRatesRetriever;
 
-internal class CurrencyRatesService(ILogger<CurrencyRatesService> logger, IHttpClientFactory httpClientFactory) : IHostedService, IDisposable, ICurrencyRatesRetriever
+internal class CurrencyRatesService : IHostedService, IDisposable, ICurrencyRatesRetriever
 {
-    private readonly ILogger<CurrencyRatesService> _logger = logger;
+    private readonly ILogger<CurrencyRatesService> _logger;
+    private readonly IHttpClientFactory _httpClientFactory;
+    private readonly IServiceScopeFactory _scopeFactory;
     private Timer? _timer = null;
     private static CurrencyRatesResponse? _currentRates;
     private DateTime _lastFetchTime;
+
+    public CurrencyRatesService(
+        ILogger<CurrencyRatesService> logger,
+        IHttpClientFactory httpClientFactory,
+        IServiceScopeFactory scopeFactory)
+    {
+        _logger = logger;
+        _httpClientFactory = httpClientFactory;
+        _scopeFactory = scopeFactory;
+    }
 
     public Task StartAsync(CancellationToken stoppingToken)
     {
@@ -34,14 +48,41 @@ internal class CurrencyRatesService(ILogger<CurrencyRatesService> logger, IHttpC
 
             if (_currentRates != null)
             {
-                WriteDataToFile.WriteCurrenciesToFile(_currentRates, _lastFetchTime);
+                await SaveRatesToDatabase(_currentRates, _lastFetchTime);
             }
 
-            _logger.LogInformation("Fetched new currency rates and wrote to file.");
+            _logger.LogInformation("Fetched new currency rates and stored them in the database.");
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "An error occurred while fetching currency rates.");
+        }
+    }
+
+    private async Task SaveRatesToDatabase(CurrencyRatesResponse rates, DateTime retrievedAt)
+    {
+        using var scope = _scopeFactory.CreateScope();
+        var dbContext = scope.ServiceProvider.GetRequiredService<DataContext>();
+
+        dbContext.CurrencyRates.RemoveRange(dbContext.CurrencyRates);
+
+        if (rates.Rates != null && rates.MainCurrency !=null)
+        {
+            foreach (var rate in rates.Rates)
+            {
+                var currencyRate = new CurrencyRate
+                {
+                    MainCurrency = rates.MainCurrency,
+                    Currency = rate.Key,
+                    CurrencyCode = rate.Key,
+                    Rate = rate.Value,
+                    UpdatedAt = retrievedAt
+                };
+
+                dbContext.CurrencyRates.Add(currencyRate);
+            }
+
+            await dbContext.SaveChangesAsync();
         }
     }
 
@@ -62,7 +103,7 @@ internal class CurrencyRatesService(ILogger<CurrencyRatesService> logger, IHttpC
     {
         string url = $"https://nbg.gov.ge/gw/api/ct/monetarypolicy/currencies/ka/rss?date={date}";
 
-        using HttpClient client = httpClientFactory.CreateClient();
+        using HttpClient client = _httpClientFactory.CreateClient();
 
         var response = await client.GetAsync(url);
         response.EnsureSuccessStatusCode();

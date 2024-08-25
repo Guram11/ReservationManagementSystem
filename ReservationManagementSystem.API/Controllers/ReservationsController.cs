@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ReservationManagementSystem.Application.Features.Reservations.Commands.CreateReservation;
 using ReservationManagementSystem.Application.Features.Reservations.Commands.DeleteReservation;
 using ReservationManagementSystem.Application.Features.Reservations.Common;
-using ReservationManagementSystem.Application.Features.Reservations.Queries;
+using ReservationManagementSystem.Application.Features.Reservations.Queries.GetAllReservations;
 using ReservationManagementSystem.Domain.Settings;
 
 namespace ReservationManagementSystem.API.Controllers;

@@ -5,5 +5,5 @@ using ReservationManagementSystem.Domain.Enums;
 
 namespace ReservationManagementSystem.Application.Features.ResrevationInvoices.Commands.CreateReservationInvoice;
 
-public sealed record CreateReservationInvoiceRequest(Guid ReservationId, decimal Amount, decimal Paid,
-    decimal Due, Currencies Currency) : IRequest<Result<ReservationInvoiceResponse>>;
+public sealed record CreateReservationInvoiceRequest(Guid ReservationId, decimal Paid,
+    Currencies Currency) : IRequest<Result<ReservationInvoiceResponse>>;

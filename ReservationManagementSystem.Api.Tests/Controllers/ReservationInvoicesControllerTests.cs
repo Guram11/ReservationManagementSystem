@@ -84,7 +84,7 @@ public class ReservationInvoicesControllerTests
     public async Task Create_ReturnsOkResult_WithReservationInvoiceResponse()
     {
         // Arrange
-        var request = new CreateReservationInvoiceRequest(Guid.NewGuid(), 2, 3, 4, Currencies.USD);
+        var request = new CreateReservationInvoiceRequest(Guid.NewGuid(), 2, Currencies.USD);
         var reservationInvoiceResponse = new ReservationInvoiceResponse
         {
             Id = Guid.NewGuid(),

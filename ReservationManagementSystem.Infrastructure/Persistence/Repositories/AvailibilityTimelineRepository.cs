@@ -16,8 +16,11 @@ public class AvailibilityRepository : BaseRepository<AvailabilityTimeline>, IAva
 
     public async Task<IEnumerable<AvailabilityTimeline>> GetAvailabilityByDateRange(DateTime startDate, DateTime endDate)
     {
+        var startDateWithoutTime = startDate.Date;
+        var endDateWithoutTime = endDate.Date.AddDays(1);
+
         return await _context.AvailabilityTimelines
-            .Where(at => at.Date >= startDate && at.Date <= endDate)
+            .Where(at => at.Date >= startDateWithoutTime && at.Date < endDateWithoutTime)
             .ToListAsync();
     }
 }

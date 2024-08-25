@@ -2,18 +2,19 @@
 using FluentAssertions;
 using FluentValidation;
 using Moq;
-using ReservationManagementSystem.Application.Features.HotelServices.Common;
 using ReservationManagementSystem.Application.Features.Reservations.Commands.CreateReservation;
 using ReservationManagementSystem.Application.Features.Reservations.Common;
 using ReservationManagementSystem.Application.Interfaces.Repositories;
 using ReservationManagementSystem.Domain.Entities;
 using ReservationManagementSystem.Domain.Enums;
 
-namespace ReservationManagementSystem.Application.Tests.Features.ReservationTests;
-
 public class CreateReservationHandlerTests
 {
     private readonly Mock<IReservationRepository> _reservationRepositoryMock;
+    private readonly Mock<IAvailibilityTimelineRepository> _availibilityRepositoryMock;
+    private readonly Mock<IRoomTypeRepository> _roomTypeRepositoryMock;
+    private readonly Mock<IRateRepository> _rateRepositoryMock;
+    private readonly Mock<IRateTimelineRepository> _rateTimelineRepositoryMock;
     private readonly Mock<IMapper> _mapperMock;
     private readonly Mock<IValidator<CreateReservationRequest>> _validatorMock;
     private readonly CreateReservationlHandler _handler;
@@ -21,85 +22,27 @@ public class CreateReservationHandlerTests
     public CreateReservationHandlerTests()
     {
         _reservationRepositoryMock = new Mock<IReservationRepository>();
+        _availibilityRepositoryMock = new Mock<IAvailibilityTimelineRepository>();
+        _roomTypeRepositoryMock = new Mock<IRoomTypeRepository>();
+        _rateRepositoryMock = new Mock<IRateRepository>();
+        _rateTimelineRepositoryMock = new Mock<IRateTimelineRepository>();
         _mapperMock = new Mock<IMapper>();
         _validatorMock = new Mock<IValidator<CreateReservationRequest>>();
-        _handler = new CreateReservationlHandler(_reservationRepositoryMock.Object, _mapperMock.Object, _validatorMock.Object);
-    }
-
-    [Fact]
-    public async Task Handle_WhenRequestIsValid_ReturnsSuccessResult()
-    {
-        // Arrange
-        var request = new CreateReservationRequest(
-            Guid.NewGuid(),
-            "12345",
-            200.00m,
-            ReservationStatus.Reserved,
-            DateTime.UtcNow.AddDays(1),
-            DateTime.UtcNow.AddDays(3),
-            Currencies.USD
-        );
-
-        var reservation = new Reservation
-        {
-            Id = Guid.NewGuid(),
-            CreatedAt = DateTime.UtcNow,
-            UpdatedAt = DateTime.UtcNow,
-            HotelId = request.HotelId,
-            Number = request.Number,
-            Price = request.Price,
-            StatusId = request.StatusId,
-            Checkin = request.Checkin,
-            Checkout = request.Checkout,
-            Currency = request.Currency
-        };
-
-        var reservationResponse = new ReservationResponse
-        {
-            Id = reservation.Id,
-            CreatedAt = reservation.CreatedAt,
-            UpdatedAt = reservation.UpdatedAt,
-            HotelId = reservation.HotelId,
-            Number = reservation.Number,
-            Price = reservation.Price,
-            StatusId = reservation.StatusId,
-            Checkin = reservation.Checkin,
-            Checkout = reservation.Checkout,
-            Currency = reservation.Currency
-        };
-
-        _validatorMock.Setup(v => v.ValidateAsync(request, It.IsAny<CancellationToken>()))
-           .ReturnsAsync(new FluentValidation.Results.ValidationResult());
-        _mapperMock.Setup(m => m.Map<Reservation>(request)).Returns(reservation);
-        _mapperMock.Setup(m => m.Map<ReservationResponse>(reservation)).Returns(reservationResponse);
-
-        _reservationRepositoryMock.Setup(repo => repo.Create(reservation)).ReturnsAsync(reservation);
-
-        // Act
-        var result = await _handler.Handle(request, CancellationToken.None);
-
-        // Assert
-        result.IsSuccess.Should().BeTrue();
-        result.Data.Should().BeEquivalentTo(reservationResponse);
+        _handler = new CreateReservationlHandler(_reservationRepositoryMock.Object, _mapperMock.Object,
+            _validatorMock.Object, _availibilityRepositoryMock.Object, _roomTypeRepositoryMock.Object,
+            _rateTimelineRepositoryMock.Object, _rateRepositoryMock.Object);
     }
 
     [Fact]
     public async Task Handle_WhenRequestIsInvalid_ReturnsFailureResult()
     {
         // Arrange
-        var request = new CreateReservationRequest(
-            Guid.NewGuid(),
-            "12345",
-            200.00m,
-            (ReservationStatus)999,
-            DateTime.UtcNow.AddDays(1),
-            DateTime.UtcNow.AddDays(3),
-            (Currencies)1
-        );
+        var request = new CreateReservationRequest(DateTime.UtcNow, DateTime.UtcNow.AddDays(1), Guid.NewGuid(), Guid.NewGuid(),
+            Guid.NewGuid(), 2, Currencies.USD);
 
         var validationErrors = new List<FluentValidation.Results.ValidationFailure>
         {
-            new FluentValidation.Results.ValidationFailure("StatusId", "Invalid status type."),
+            new FluentValidation.Results.ValidationFailure("Currency", "Invalid currency type."),
         };
 
         _validatorMock
@@ -111,6 +54,71 @@ public class CreateReservationHandlerTests
 
         // Assert
         result.IsSuccess.Should().BeFalse();
-        result.Error.Description.Should().Contain("Invalid status type.");
+        result.Error.Description.Should().Contain("Invalid currency type.");
+    }
+
+    [Fact]
+    public async Task Handle_WhenAvailabilityIsNotSufficient_ReturnsFailureResult()
+    {
+        // Arrange
+        var request = new CreateReservationRequest(DateTime.UtcNow, DateTime.UtcNow.AddDays(1), Guid.NewGuid(), Guid.NewGuid(),
+            Guid.NewGuid(), 3, Currencies.USD);
+
+        _validatorMock.Setup(v => v.ValidateAsync(request, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new FluentValidation.Results.ValidationResult());
+
+        _availibilityRepositoryMock
+            .Setup(repo => repo.GetAvailabilityByDateRange(request.Checkin, request.Checkout))
+            .ReturnsAsync(new List<AvailabilityTimeline>
+            {
+                new AvailabilityTimeline { RoomTypeId = request.RoomTypeId, Available = 2 }
+            });
+
+        _roomTypeRepositoryMock.Setup(repo => repo.GetAll(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), true, 1, 10))
+            .ReturnsAsync(new List<RoomType> { new RoomType { Id = request.RoomTypeId, Name = "Standard" } });
+
+        _rateTimelineRepositoryMock.Setup(repo => repo.GetRatesByDateRange(request.Checkin, request.Checkout))
+            .ReturnsAsync(new List<RateTimeline>
+            {
+                new RateTimeline { RoomTypeId = request.RoomTypeId, RateId = request.RateId, Price = 100 }
+            });
+
+        // Act
+        var result = await _handler.Handle(request, CancellationToken.None);
+
+        // Assert
+        result.IsSuccess.Should().BeFalse();
+        result.Error.Description.Should().Contain("Validation error. Invalid data passed, Please check room availibility");
+    }
+
+    [Fact]
+    public async Task Handle_WhenNoRatesAvailable_ReturnsFailureResult()
+    {
+        // Arrange
+        var request = new CreateReservationRequest(DateTime.UtcNow, DateTime.UtcNow.AddDays(1), Guid.NewGuid(), Guid.NewGuid(),
+            Guid.NewGuid(), 2, Currencies.USD);
+
+        _validatorMock.Setup(v => v.ValidateAsync(request, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new FluentValidation.Results.ValidationResult());
+
+        _availibilityRepositoryMock
+            .Setup(repo => repo.GetAvailabilityByDateRange(request.Checkin, request.Checkout))
+            .ReturnsAsync(new List<AvailabilityTimeline>
+            {
+                new AvailabilityTimeline { RoomTypeId = request.RoomTypeId, Available = 2 }
+            });
+
+        _roomTypeRepositoryMock.Setup(repo => repo.GetAll(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), true, 1, 10))
+            .ReturnsAsync(new List<RoomType> { new RoomType { Id = request.RoomTypeId, Name = "Standard" } });
+
+        _rateTimelineRepositoryMock.Setup(repo => repo.GetRatesByDateRange(request.Checkin, request.Checkout))
+            .ReturnsAsync(new List<RateTimeline>());
+
+        // Act
+        var result = await _handler.Handle(request, CancellationToken.None);
+
+        // Assert
+        result.IsSuccess.Should().BeFalse();
+        result.Error.Description.Should().Contain("Validation error. Invalid data passed, Please check room availibility");
     }
 }

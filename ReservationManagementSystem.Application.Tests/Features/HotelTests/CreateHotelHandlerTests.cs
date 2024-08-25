@@ -29,6 +29,7 @@ public class CreateHotelHandlerTests
     {
         // Arrange
         var request = new CreateHotelRequest("H");
+
         _mockValidator.Setup(v => v.ValidateAsync(request, It.IsAny<CancellationToken>()))
             .ReturnsAsync(new FluentValidation.Results.ValidationResult(
                 new[] { new FluentValidation.Results.ValidationFailure("Name", "Name must be at least 5 characters.") }));

@@ -50,7 +50,8 @@ public class AccountServiceTests
             new Mock<IUserConfirmation<ApplicationUser>>().Object);
 
         _emailServiceMock = new Mock<IEmailService>();
-        _jwtSettings = Options.Create(new JWTSettings { Key = "my_jwt_key-which-is-ultra-long", Issuer = "your_issuer", Audience = "your_audience", DurationInMinutes = 60 });
+        _jwtSettings = Options.Create(new JWTSettings { Key = "my_jwt_key-which-is-ultra-long", Issuer = "your_issuer",
+            Audience = "your_audience", DurationInMinutes = 60 });
         _mailSettings = Options.Create(new MailSettings
         {
             SmtpHost = "localhost",

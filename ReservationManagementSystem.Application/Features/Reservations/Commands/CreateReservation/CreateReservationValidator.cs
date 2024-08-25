@@ -9,9 +9,5 @@ public sealed class CreateResevationValidator : AbstractValidator<CreateReservat
         RuleFor(x => x.Currency)
             .IsInEnum()
             .WithMessage("Invalid currency type.");
-
-        RuleFor(x => x.StatusId)
-           .IsInEnum()
-           .WithMessage("Invalid status type.");
     }
 }
