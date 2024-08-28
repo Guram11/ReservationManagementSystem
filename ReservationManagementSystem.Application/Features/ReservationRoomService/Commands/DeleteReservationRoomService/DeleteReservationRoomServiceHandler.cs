@@ -1,8 +1,5 @@
 ﻿using AutoMapper;
 using MediatR;
-using ReservationManagementSystem.Application.Common.Errors;
-using ReservationManagementSystem.Application.Features.RateRoomTypes.Commands.DeleteRateRoomType;
-using ReservationManagementSystem.Application.Features.RateRoomTypes.Common;
 using ReservationManagementSystem.Application.Features.ReservationRoomService.Common;
 using ReservationManagementSystem.Application.Interfaces.Repositories;
 using ReservationManagementSystem.Application.Wrappers;
@@ -26,7 +23,7 @@ public sealed class DeleteReservationRoomServiceHandler : IRequestHandler<Delete
 
         if (reservationRoomService == null)
         {
-            return Result<ReservationRoomServiceResponse>.Failure(NotFoundError.NotFound("RateRoomType was not found!"));
+            return Result<ReservationRoomServiceResponse>.Failure(ReservationRoomServiceErrors.NotFound());
         }
 
         var response = _mapper.Map<ReservationRoomServiceResponse>(reservationRoomService);

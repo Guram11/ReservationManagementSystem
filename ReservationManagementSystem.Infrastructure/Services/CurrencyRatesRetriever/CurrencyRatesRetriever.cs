@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using ReservationManagementSystem.Application.Interfaces.Services;
 using ReservationManagementSystem.Domain.Entities;
 using ReservationManagementSystem.Domain.Settings;
@@ -14,6 +15,7 @@ public class CurrencyRatesService : IHostedService, IDisposable, ICurrencyRatesR
     private readonly ILogger<CurrencyRatesService> _logger;
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly IServiceScopeFactory _scopeFactory;
+    private readonly CurrencyRatesSettings _currencyRateSettings;
     private Timer? _timer = null;
     private static CurrencyRatesResponse? _currentRates;
     private DateTime _lastFetchTime;
@@ -21,11 +23,13 @@ public class CurrencyRatesService : IHostedService, IDisposable, ICurrencyRatesR
     public CurrencyRatesService(
         ILogger<CurrencyRatesService> logger,
         IHttpClientFactory httpClientFactory,
-        IServiceScopeFactory scopeFactory)
+        IServiceScopeFactory scopeFactory,
+        IOptions<CurrencyRatesSettings> currencyRateSettings)
     {
         _logger = logger;
         _httpClientFactory = httpClientFactory;
         _scopeFactory = scopeFactory;
+        _currencyRateSettings = currencyRateSettings.Value;
     }
 
     public Task StartAsync(CancellationToken stoppingToken)
@@ -42,7 +46,7 @@ public class CurrencyRatesService : IHostedService, IDisposable, ICurrencyRatesR
         {
             var now = DateTime.UtcNow;
 
-            _currentRates = await FetchRatesAsync(DateTime.Now);
+            _currentRates = await FetchRatesAsync();
             _lastFetchTime = now;
 
             if (_currentRates != null)
@@ -98,13 +102,11 @@ public class CurrencyRatesService : IHostedService, IDisposable, ICurrencyRatesR
         _timer?.Dispose();
     }
 
-    public async Task<CurrencyRatesResponse> FetchRatesAsync(DateTime date)
+    public async Task<CurrencyRatesResponse> FetchRatesAsync()
     {
-        string url = $"https://nbg.gov.ge/gw/api/ct/monetarypolicy/currencies/ka/rss?date={date}";
-
         using HttpClient client = _httpClientFactory.CreateClient();
 
-        var response = await client.GetAsync(url);
+        var response = await client.GetAsync($"{_currencyRateSettings.Url}{DateTime.Now}");
         response.EnsureSuccessStatusCode();
         string data = await response.Content.ReadAsStringAsync();
 

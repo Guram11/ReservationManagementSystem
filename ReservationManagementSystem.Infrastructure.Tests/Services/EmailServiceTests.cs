@@ -54,7 +54,7 @@ public class EmailServiceTests
 
         // Assert
         result.IsSuccess.Should().BeTrue();
-        result.Data.Should().Be("Email sent successfully!");
+        result.Data.Should().Be("Email sent successfully.");
     }
 
     [Fact]

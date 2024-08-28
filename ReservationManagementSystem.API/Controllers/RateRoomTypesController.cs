@@ -5,7 +5,7 @@ using ReservationManagementSystem.Application.Features.RateRoomTypes.Commands.Cr
 using ReservationManagementSystem.Application.Features.RateRoomTypes.Commands.DeleteRateRoomType;
 using ReservationManagementSystem.Domain.Settings;
 using ReservationManagementSystem.Application.Features.RateRoomTypes.Queries.GetAllRateRoomTypes;
-using Microsoft.AspNetCore.Authorization;
+using ReservationManagementSystem.API.Extensions;
 
 namespace ReservationManagementSystem.API.Controllers;
 
@@ -27,14 +27,14 @@ public class RateRoomTypesController : ControllerBase
             queryParams.FilterOn, queryParams.FilterQuery,
             queryParams.SortBy, queryParams.IsAscending,
             queryParams.PageNumber, queryParams.PageSize));
-        return Ok(response);
+        return ResponseHandler.HandleResponse(response);
     }
 
     [HttpPost]
     public async Task<ActionResult<RateRoomTypeResponse>> Create(CreateRateRoomTypeRequest request)
     {
         var response = await _mediator.Send(request);
-        return Ok(response);
+        return ResponseHandler.HandleResponse(response);
     }
 
     [HttpDelete]
@@ -42,6 +42,6 @@ public class RateRoomTypesController : ControllerBase
     public async Task<ActionResult<RateRoomTypeResponse>> Delete([FromRoute] Guid rateId, [FromRoute] Guid roomTypeId)
     {
         var response = await _mediator.Send(new DeleteRateRoomTypeRequest(rateId, roomTypeId));
-        return Ok(response);
+        return ResponseHandler.HandleResponse(response);
     }
 }   

@@ -82,7 +82,7 @@ public class UpdateGuestHandlerTests
 
         // Assert
         result.IsSuccess.Should().BeFalse();
-        result.Error.Code.Should().Be("ValidationFailed");
+        result.Error.Code.Should().Be("ValidationError");
         result.Error.Description.Should().Be("Validation error. Email is not valid.");
     }
 

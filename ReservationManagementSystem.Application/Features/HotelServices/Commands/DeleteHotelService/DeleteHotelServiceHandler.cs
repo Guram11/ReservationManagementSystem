@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using MediatR;
-using ReservationManagementSystem.Application.Common.Errors;
 using ReservationManagementSystem.Application.Features.HotelServices.Common;
 using ReservationManagementSystem.Application.Interfaces.Repositories;
 using ReservationManagementSystem.Application.Wrappers;
@@ -24,7 +23,7 @@ public sealed class DeleteHoteServicelHandler : IRequestHandler<DeleteHotelServi
 
         if (hotelService is null)
         {
-            return Result<HotelServiceResponse>.Failure(NotFoundError.NotFound($"Hotel service with ID {request.Id} was not found."));
+            return Result<HotelServiceResponse>.Failure(HotelServiceErrors.NotFound(request.Id));
         }
 
         var response = _mapper.Map<HotelServiceResponse>(hotelService);

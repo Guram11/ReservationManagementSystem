@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using ReservationManagementSystem.API.Extensions;
 using ReservationManagementSystem.Application.Features.RateTimelines.Common;
 using ReservationManagementSystem.Application.Features.RateTimelines.PushPrice;
 
@@ -20,6 +21,6 @@ public class RateTimelinesController : ControllerBase
     public async Task<ActionResult<RateTimelineResponse>> PushPrice([FromBody] PushPriceRequest request)
     {
         var response = await _mediator.Send(request);
-        return Ok(response);
+        return ResponseHandler.HandleResponse(response);
     }
 }

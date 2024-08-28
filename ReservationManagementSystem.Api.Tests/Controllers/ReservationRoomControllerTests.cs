@@ -65,20 +65,19 @@ public class ReservationRoomsControllerTests
                 Price = 200.00m
             }
         };
+        var result = Result<List<ReservationRoomResponse>>.Success(reservations);
+
         _mediatorMock
             .Setup(m => m.Send(It.IsAny<GetAllReservationRoomsRequest>(), default))
-            .ReturnsAsync(reservations);
+            .ReturnsAsync(result);
 
         // Act
-        var result = await _controller.GetAll(queryParams);
+        var actionResult = await _controller.GetAll(queryParams);
 
         // Assert
-        result.Should().BeOfType<ActionResult<List<ReservationRoomResponse>>>();
-
-        var okResult = result.Result as OkObjectResult;
+        var okResult = actionResult.Result as OkObjectResult;
         okResult.Should().NotBeNull();
-        okResult?.StatusCode.Should().Be(200);
-        okResult?.Value.Should().BeEquivalentTo(reservations);
+        okResult!.Value.Should().BeEquivalentTo(reservations);
     }
 
     [Fact]
@@ -109,9 +108,9 @@ public class ReservationRoomsControllerTests
         var actionResult = await _controller.Create(request);
 
         // Assert
-        actionResult.Should().BeOfType<ActionResult<ReservationRoomResponse>>()
-            .Which.Result.Should().BeOfType<OkObjectResult>()
-            .Which.Value.Should().BeOfType<Result<ReservationRoomResponse>>();
+        var okResult = actionResult.Result as OkObjectResult;
+        okResult.Should().NotBeNull();
+        okResult!.Value.Should().BeEquivalentTo(reservation);
     }
 
     [Fact]
@@ -143,8 +142,8 @@ public class ReservationRoomsControllerTests
         var actionResult = await _controller.Delete(reservationId, roomId);
 
         // Assert
-        actionResult.Should().BeOfType<ActionResult<ReservationRoomResponse>>()
-            .Which.Result.Should().BeOfType<OkObjectResult>()
-            .Which.Value.Should().BeOfType<Result<ReservationRoomResponse>>();
+        var okResult = actionResult.Result as OkObjectResult;
+        okResult.Should().NotBeNull();
+        okResult!.Value.Should().BeEquivalentTo(reservation);
     }
 }

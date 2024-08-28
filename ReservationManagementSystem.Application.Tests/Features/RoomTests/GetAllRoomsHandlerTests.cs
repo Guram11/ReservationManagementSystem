@@ -50,6 +50,7 @@ public class GetAllRoomsHandlerTests
         var result = await _handler.Handle(request, CancellationToken.None);
 
         // Assert
-        result.Should().BeEquivalentTo(roomResponses);
+        result.IsSuccess.Should().BeTrue();
+        result.Data.Should().BeEquivalentTo(roomResponses);
     }
 }

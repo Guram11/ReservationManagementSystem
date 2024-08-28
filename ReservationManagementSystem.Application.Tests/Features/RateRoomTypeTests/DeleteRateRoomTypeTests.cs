@@ -35,7 +35,7 @@ public class DeleteRateRoomTypeHandlerTests
         // Assert
         result.IsSuccess.Should().BeFalse();
         result.Error.Code.Should().Be("NotFound");
-        result.Error.Description.Should().Be("RateRoomType was not found!");
+        result.Error.Description.Should().Be("RateRoomType was not found.");
     }
 
     [Fact]

@@ -1,7 +1,5 @@
 ﻿using AutoMapper;
 using MediatR;
-using ReservationManagementSystem.Application.Common.Errors;
-using ReservationManagementSystem.Application.Features.Hotels.Common;
 using ReservationManagementSystem.Application.Features.RoomTypes.Common;
 using ReservationManagementSystem.Application.Interfaces.Repositories;
 using ReservationManagementSystem.Application.Wrappers;
@@ -25,7 +23,7 @@ public sealed class DeleteRoomTypeHandler : IRequestHandler<DeleteRoomTypeReques
 
         if (roomType is null)
         {
-            return Result<RoomTypeResponse>.Failure(NotFoundError.NotFound($"RoomType with ID {request.Id} was not found."));
+            return Result<RoomTypeResponse>.Failure(RoomTypeErrors.NotFound(request.Id));
         }
 
         var response = _mapper.Map<RoomTypeResponse>(roomType);

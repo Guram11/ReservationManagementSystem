@@ -3,6 +3,7 @@ using FluentAssertions;
 using Moq;
 using ReservationManagementSystem.Application.Features.ReservationRooms.Common;
 using ReservationManagementSystem.Application.Features.ReservationRooms.Queries;
+using ReservationManagementSystem.Application.Features.RoomTypes.Common;
 using ReservationManagementSystem.Application.Interfaces.Repositories;
 using ReservationManagementSystem.Domain.Entities;
 
@@ -110,6 +111,7 @@ public class GetAllRateReservationRoomsHandlerTests
         var result = await _handler.Handle(request, CancellationToken.None);
 
         // Assert
-        result.Should().BeEquivalentTo(reservationRoomResponses);
+        result.IsSuccess.Should().BeTrue();
+        result.Data.Should().BeEquivalentTo(reservationRoomResponses);
     }
 }

@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using ReservationManagementSystem.Application.DTOs.Account;
+using ReservationManagementSystem.Application.Features.Users.Commands.Common;
 using ReservationManagementSystem.Application.Interfaces.Services;
 using ReservationManagementSystem.Application.Wrappers;
 
@@ -20,7 +20,7 @@ public class ForgotPasswordHandler : IRequestHandler<ForgotPasswordRequest, Resu
 
         if (response.IsSuccess)
         {
-            return Result<string>.Success("Reset token has been sent to your email.");
+            return Result<string>.Success(SuccessResponses.ResetTokenSent);
         }
 
         return Result<string>.Failure(response.Error);

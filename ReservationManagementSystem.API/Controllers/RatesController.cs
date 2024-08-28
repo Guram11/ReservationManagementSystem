@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using ReservationManagementSystem.API.Extensions;
 using ReservationManagementSystem.Application.Features.Rates.Commands.CreateRate;
 using ReservationManagementSystem.Application.Features.Rates.Commands.DeleteRate;
 using ReservationManagementSystem.Application.Features.Rates.Commands.UpdateRate;
@@ -28,7 +29,7 @@ public class RatesController : ControllerBase
             queryParams.FilterOn, queryParams.FilterQuery,
             queryParams.SortBy, queryParams.IsAscending,
             queryParams.PageNumber, queryParams.PageSize));
-        return Ok(response);
+        return ResponseHandler.HandleResponse(response);
     }
 
     [HttpGet]
@@ -36,21 +37,21 @@ public class RatesController : ControllerBase
     public async Task<ActionResult<RateResponse>> Get([FromRoute] Guid id)
     {
         var response = await _mediator.Send(new GetRateByIdRequest(id));
-        return Ok(response);
+        return ResponseHandler.HandleResponse(response);
     }
 
     [HttpPost]
     public async Task<ActionResult<RateResponse>> Create(CreateRateRequest request)
     {
         var response = await _mediator.Send(request);
-        return Ok(response);
+        return ResponseHandler.HandleResponse(response);
     }
 
     [HttpPut]
     public async Task<ActionResult<RateResponse>> Update(UpdateRateRequest request)
     {
         var response = await _mediator.Send(request);
-        return Ok(response);
+        return ResponseHandler.HandleResponse(response);
     }
 
     [HttpDelete]
@@ -58,6 +59,6 @@ public class RatesController : ControllerBase
     public async Task<ActionResult<RateResponse>> Delete([FromRoute] Guid id)
     {
         var response = await _mediator.Send(new DeleteRateRequest(id));
-        return Ok(response);
+        return ResponseHandler.HandleResponse(response);
     }
 }

@@ -38,7 +38,7 @@ public class CreateGuestHandlerTests
 
         // Assert
         result.IsSuccess.Should().BeFalse();
-        result.Error.Code.Should().Be("ValidationFailed");
+        result.Error.Code.Should().Be("ValidationError");
         result.Error.Description.Should().Contain("Email is not valid.");
     }
 

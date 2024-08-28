@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FluentAssertions;
 using Moq;
+using ReservationManagementSystem.Application.Features.ReservationRooms.Common;
 using ReservationManagementSystem.Application.Features.ResrevationInvoices.Common;
 using ReservationManagementSystem.Application.Features.ResrevationInvoices.Queries;
 using ReservationManagementSystem.Application.Interfaces.Repositories;
@@ -106,6 +107,7 @@ public class GetAllReservationInvoicesHandlerTests
         var result = await _handler.Handle(request, CancellationToken.None);
 
         // Assert
-        result.Should().BeEquivalentTo(reservationInvoiceResponses);
+        result.IsSuccess.Should().BeTrue();
+        result.Data.Should().BeEquivalentTo(reservationInvoiceResponses);
     }
 }

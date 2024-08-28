@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using MediatR;
-using ReservationManagementSystem.Application.Common.Errors;
 using ReservationManagementSystem.Application.Features.Guests.Common;
 using ReservationManagementSystem.Application.Interfaces.Repositories;
 using ReservationManagementSystem.Application.Wrappers;
@@ -24,7 +23,7 @@ public sealed class DeleteGuestHandler : IRequestHandler<DeleteGuestRequest, Res
 
         if (guest is null)
         {
-            return Result<GuestResponse>.Failure(NotFoundError.NotFound($"Guest with ID {request.Id} was not found."));
+            return Result<GuestResponse>.Failure(GuestErrors.NotFound(request.Id));
         }
 
         var response = _mapper.Map<GuestResponse>(guest);

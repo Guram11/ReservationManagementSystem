@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using MediatR;
-using ReservationManagementSystem.Application.Common.Errors;
 using ReservationManagementSystem.Application.Features.ReservationRooms.Common;
 using ReservationManagementSystem.Application.Interfaces.Repositories;
 using ReservationManagementSystem.Application.Wrappers;
@@ -24,7 +23,7 @@ public sealed class DeleteReservationRoomHandler : IRequestHandler<DeleteReserva
 
         if (reservationRoom == null)
         {
-            return Result<ReservationRoomResponse>.Failure(NotFoundError.NotFound("ReservationRoom was not found!"));
+            return Result<ReservationRoomResponse>.Failure(ReservationRoomErrors.NotFound());
         }
 
         var response = _mapper.Map<ReservationRoomResponse>(reservationRoom);

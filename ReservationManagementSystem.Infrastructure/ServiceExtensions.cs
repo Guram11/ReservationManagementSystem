@@ -6,10 +6,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using Polly;
+using Polly.Extensions.Http;
 using ReservationManagementSystem.Application.Interfaces.Repositories;
 using ReservationManagementSystem.Application.Interfaces.Services;
 using ReservationManagementSystem.Application.Wrappers;
 using ReservationManagementSystem.Domain.Settings;
+using ReservationManagementSystem.Infrastructure.Common;
 using ReservationManagementSystem.Infrastructure.Context;
 using ReservationManagementSystem.Infrastructure.Identity.Models;
 using ReservationManagementSystem.Infrastructure.Identity.Services;
@@ -28,8 +31,18 @@ public static class ServiceExtensions
             options.UseSqlServer(configuration.GetConnectionString("DataContextConnectionString"),
             b => b.MigrationsAssembly(typeof(DataContext).Assembly.FullName)));
 
+        // Polly Configuration
+        var retryPolicy = HttpPolicyExtensions
+            .HandleTransientHttpError()
+            .OrResult(msg => msg.StatusCode == System.Net.HttpStatusCode.NotFound)
+            .WaitAndRetryAsync(5, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt))
+            );
+        services.AddHostedService<CurrencyRatesService>().AddHttpClient<ICurrencyRatesRetriever, CurrencyRatesService>()
+            .AddPolicyHandler(retryPolicy);
+
         services.Configure<JWTSettings>(configuration.GetSection("JWTSettings"));
         services.Configure<MailSettings>(configuration.GetSection("MailSettings"));
+        services.Configure<CurrencyRatesSettings>(configuration.GetSection("CurrencyRatesSettings"));
 
         services.AddScoped<IGuestRepository, GuestRepository>();
         services.AddScoped<IHotelRepository, HotelRepository>();
@@ -50,7 +63,6 @@ public static class ServiceExtensions
         services.AddTransient<IAccountService, AccountService>();
         services.AddTransient<IEmailService, EmailService>();
         services.AddTransient<IEmailSender, SmtpEmailSender>();
-        services.AddHostedService<CurrencyRatesService>().AddHttpClient();
 
         services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<DataContext>().AddDefaultTokenProviders();
         services.AddAuthentication(options =>
@@ -87,7 +99,7 @@ public static class ServiceExtensions
                         context.HandleResponse();
                         context.Response.StatusCode = 401;
                         context.Response.ContentType = "application/json";
-                        var result = Result<object>.Failure(new Error("Authorization.Unauthorized", "You are not Authorized"));
+                        var result = Result<object>.Failure(AuthErrors.Unauthorized());
                         var resultJson = JsonConvert.SerializeObject(result);
                         return context.Response.WriteAsync(resultJson);
                     },
@@ -95,7 +107,7 @@ public static class ServiceExtensions
                     {
                         context.Response.StatusCode = 403;
                         context.Response.ContentType = "application/json";
-                        var result = Result<object>.Failure(new Error("Authorization.Forbidden", "You are not authorized to access this resource"));
+                        var result = Result<object>.Failure(AuthErrors.Forbidden());
                         var resultJson = JsonConvert.SerializeObject(result);
                         return context.Response.WriteAsync(resultJson);
                     },

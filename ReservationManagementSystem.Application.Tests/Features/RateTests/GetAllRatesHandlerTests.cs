@@ -3,6 +3,7 @@ using FluentAssertions;
 using Moq;
 using ReservationManagementSystem.Application.Features.Rates.Common;
 using ReservationManagementSystem.Application.Features.Rates.Queries.GetAllRates;
+using ReservationManagementSystem.Application.Features.ResrevationInvoices.Common;
 using ReservationManagementSystem.Application.Interfaces.Repositories;
 using ReservationManagementSystem.Domain.Entities;
 
@@ -51,7 +52,8 @@ public class GetAllRatesHandlerTests
         var result = await _handler.Handle(request, CancellationToken.None);
 
         // Assert
-        result.Should().BeEquivalentTo(rateResponses);
+        result.IsSuccess.Should().BeTrue();
+        result.Data.Should().BeEquivalentTo(rateResponses);
     }
 
     [Fact]
@@ -76,6 +78,6 @@ public class GetAllRatesHandlerTests
         var result = await _handler.Handle(request, CancellationToken.None);
 
         // Assert
-        result.Should().BeEmpty();
+        result.Data.Should().BeEmpty();
     }
 }

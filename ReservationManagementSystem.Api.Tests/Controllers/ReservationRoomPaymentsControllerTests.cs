@@ -60,20 +60,19 @@ public class ReservationRoomPaymentsControllerTests
                 Currency = Currencies.EUR
             }
         };
+        var result = Result<List<ReservationRoomPaymentsResponse>>.Success(payments);
+
         _mediatorMock
             .Setup(m => m.Send(It.IsAny<GetAllReservationRoomPaymentsRequest>(), default))
-            .ReturnsAsync(payments);
+            .ReturnsAsync(result);
 
         // Act
-        var result = await _controller.GetAll(queryParams);
+        var actionResult = await _controller.GetAll(queryParams);
 
         // Assert
-        result.Should().BeOfType<ActionResult<List<ReservationRoomPaymentsResponse>>>();
-
-        var okResult = result.Result as OkObjectResult;
+        var okResult = actionResult.Result as OkObjectResult;
         okResult.Should().NotBeNull();
-        okResult?.StatusCode.Should().Be(200);
-        okResult?.Value.Should().BeEquivalentTo(payments);
+        okResult!.Value.Should().BeEquivalentTo(payments);
     }
 
     [Fact]
@@ -101,9 +100,9 @@ public class ReservationRoomPaymentsControllerTests
         var actionResult = await _controller.Create(request);
 
         // Assert
-        actionResult.Should().BeOfType<ActionResult<ReservationRoomPaymentsResponse>>()
-            .Which.Result.Should().BeOfType<OkObjectResult>()
-            .Which.Value.Should().BeOfType<Result<ReservationRoomPaymentsResponse>>();
+        var okResult = actionResult.Result as OkObjectResult;
+        okResult.Should().NotBeNull();
+        okResult!.Value.Should().BeEquivalentTo(payment);
     }
 
     [Fact]
@@ -131,8 +130,8 @@ public class ReservationRoomPaymentsControllerTests
         var actionResult = await _controller.Delete(paymentId);
 
         // Assert
-        actionResult.Should().BeOfType<ActionResult<ReservationRoomPaymentsResponse>>()
-            .Which.Result.Should().BeOfType<OkObjectResult>()
-            .Which.Value.Should().BeOfType<Result<ReservationRoomPaymentsResponse>>();
+        var okResult = actionResult.Result as OkObjectResult;
+        okResult.Should().NotBeNull();
+        okResult!.Value.Should().BeEquivalentTo(payment);
     }
 }

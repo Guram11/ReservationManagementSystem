@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using ReservationManagementSystem.Application.Common.Errors;
+using ReservationManagementSystem.Application.Features.AvailibilityTimeline.Common;
 using ReservationManagementSystem.Application.Interfaces.Repositories;
 using ReservationManagementSystem.Application.Wrappers;
 
@@ -100,7 +101,7 @@ public sealed class CheckAvailabilityHandler : IRequestHandler<CheckAvailability
 
         if (allOptionsHaveMissingDates)
         {
-            return Result<List<CheckAvailabilityResponse>>.Failure(NoAvailableOptionsError.NoAvailableOptions());
+            return Result<List<CheckAvailabilityResponse>>.Failure(AvailibilityErrors.NoAvailableOptions());
         }
 
         return Result<List<CheckAvailabilityResponse>>.Success(new List<CheckAvailabilityResponse>());

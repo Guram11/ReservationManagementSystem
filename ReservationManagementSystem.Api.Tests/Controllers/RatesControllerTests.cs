@@ -40,35 +40,33 @@ public class RatesControllerTests
         };
 
         var rateResponses = new List<RateResponse>
-            {
-                new RateResponse { Id = Guid.NewGuid(), CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow, Name = "Hotel A", HotelId = Guid.NewGuid() },
-                new RateResponse { Id = Guid.NewGuid(), CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow, Name = "Hotel B", HotelId = Guid.NewGuid() }
-            };
+        {
+            new RateResponse { Id = Guid.NewGuid(), CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow, Name = "Hotel A", HotelId = Guid.NewGuid() },
+            new RateResponse { Id = Guid.NewGuid(), CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow, Name = "Hotel B", HotelId = Guid.NewGuid() }
+        };
+        var result = Result<List<RateResponse>>.Success(rateResponses);
 
         _mediatorMock
             .Setup(m => m.Send(It.IsAny<GetAllRatesRequest>(), default))
-            .ReturnsAsync(rateResponses);
+            .ReturnsAsync(result);
 
         // Act
-        var result = await _controller.GetAll(queryParams);
+        var actionResult = await _controller.GetAll(queryParams);
 
         // Assert
-        result.Should().BeOfType<ActionResult<List<RateResponse>>>();
-
-        var okResult = result.Result as OkObjectResult;
+        var okResult = actionResult.Result as OkObjectResult;
         okResult.Should().NotBeNull();
-        okResult?.StatusCode.Should().Be(200);
-        okResult?.Value.Should().BeEquivalentTo(rateResponses);
+        okResult!.Value.Should().BeEquivalentTo(rateResponses);
     }
 
     [Fact]
     public async Task Get_WhenCalled_ReturnsOkResultWithRateResponse()
     {
         // Arrange
-        var ratelId = Guid.NewGuid();
+        var rateId = Guid.NewGuid();
         var rateResponse = new RateResponse
         {
-            Id = ratelId,
+            Id = rateId,
             Name = "Hotel Name",
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow,
@@ -81,11 +79,12 @@ public class RatesControllerTests
             .ReturnsAsync(result);
 
         // Act
-        var actionResult = await _controller.Get(ratelId);
+        var actionResult = await _controller.Get(rateId);
 
         // Assert
-        var okResult = actionResult.Result.Should().BeOfType<OkObjectResult>().Subject;
-        var resultData = okResult.Value.Should().BeOfType<Result<RateResponse>>().Subject;
+        var okResult = actionResult.Result as OkObjectResult;
+        okResult.Should().NotBeNull();
+        okResult!.Value.Should().BeEquivalentTo(rateResponse);
     }
 
     [Fact]
@@ -99,7 +98,7 @@ public class RatesControllerTests
             Name = "Rate A",
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow,
-            HotelId = Guid.NewGuid()            
+            HotelId = Guid.NewGuid()
         };
         var result = Result<RateResponse>.Success(rateResponse);
 
@@ -111,9 +110,9 @@ public class RatesControllerTests
         var actionResult = await _controller.Create(createRateRequest);
 
         // Assert
-        actionResult.Should().BeOfType<ActionResult<RateResponse>>()
-            .Which.Result.Should().BeOfType<OkObjectResult>()
-            .Which.Value.Should().BeOfType<Result<RateResponse>>();
+        var okResult = actionResult.Result as OkObjectResult;
+        okResult.Should().NotBeNull();
+        okResult!.Value.Should().BeEquivalentTo(rateResponse);
     }
 
     [Fact]
@@ -139,9 +138,9 @@ public class RatesControllerTests
         var actionResult = await _controller.Update(updateRateRequest);
 
         // Assert
-        actionResult.Should().BeOfType<ActionResult<RateResponse>>()
-            .Which.Result.Should().BeOfType<OkObjectResult>()
-            .Which.Value.Should().BeOfType<Result<RateResponse>>();
+        var okResult = actionResult.Result as OkObjectResult;
+        okResult.Should().NotBeNull();
+        okResult!.Value.Should().BeEquivalentTo(rateResponse);
     }
 
     [Fact]
@@ -167,8 +166,8 @@ public class RatesControllerTests
         var actionResult = await _controller.Delete(rateId);
 
         // Assert
-        actionResult.Should().BeOfType<ActionResult<RateResponse>>()
-            .Which.Result.Should().BeOfType<OkObjectResult>()
-            .Which.Value.Should().BeOfType<Result<RateResponse>>();
+        var okResult = actionResult.Result as OkObjectResult;
+        okResult.Should().NotBeNull();
+        okResult!.Value.Should().BeEquivalentTo(rateResponse);
     }
 }

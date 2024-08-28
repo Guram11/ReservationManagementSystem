@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using ReservationManagementSystem.Application.Features.AvailibilityTimeline.Common;
 using ReservationManagementSystem.Application.Interfaces.Repositories;
 using ReservationManagementSystem.Application.Wrappers;
 using ReservationManagementSystem.Domain.Entities;
@@ -31,7 +32,7 @@ public sealed class PushAvailabilityHandler : IRequestHandler<PushAvailabilityRe
 
         if (request.AvailableRooms > roomType.NumberOfRooms)
         {
-            return Result<AvailabilityResponse>.Failure(new Error("Exceeding total number", $"Requested available rooms exceed the total number of rooms ({roomType.NumberOfRooms})."));
+            return Result<AvailabilityResponse>.Failure(AvailibilityErrors.ExceedingNumberOfRooms(roomType.NumberOfRooms));
         }
 
         var availabilityTimeline = new AvailabilityTimeline();

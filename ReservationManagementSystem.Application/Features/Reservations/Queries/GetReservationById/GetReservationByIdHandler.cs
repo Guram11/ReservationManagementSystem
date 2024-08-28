@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using MediatR;
-using ReservationManagementSystem.Application.Common.Errors;
 using ReservationManagementSystem.Application.Features.Reservations.Common;
 using ReservationManagementSystem.Application.Interfaces.Repositories;
 using ReservationManagementSystem.Application.Wrappers;
@@ -24,7 +23,7 @@ public sealed class GetReservationByIdHandler : IRequestHandler<GetReservationBy
 
         if (reservation is null)
         {
-            return Result<ReservationResponse>.Failure(NotFoundError.NotFound($"Rate with ID {request.Id} was not found."));
+            return Result<ReservationResponse>.Failure(ReservationErrors.NotFound(request.Id));
         }
 
         var response = _mapper.Map<ReservationResponse>(reservation);

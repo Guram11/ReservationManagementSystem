@@ -38,7 +38,7 @@ public class EmailService : IEmailService
 
             await _emailSender.SendAsync(email);
 
-            return Result<string>.Success("Email sent successfully!");
+            return Result<string>.Success(SuccessResponses.EmailSentSuccessfully);
         }
         catch (Exception ex)
         {

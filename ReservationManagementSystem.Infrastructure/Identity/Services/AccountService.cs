@@ -121,10 +121,8 @@ public class AccountService : IAccountService
         if (!createUserResult.Succeeded)
         {
             var errors = string.Join(", ", createUserResult.Errors.Select(e => e.Description));
-            foreach (var error in errors)
-            {
-                return Result<string>.Failure(new Error("User.CreationFailed", $"User creation failed: {error}"));
-            }
+            return Result<string>.Failure(AccountServiceErrors.UserCreationFailed(errors));
+  
         }
 
         await _userManager.AddToRoleAsync(user, Roles.Basic.ToString());
@@ -192,7 +190,7 @@ public class AccountService : IAccountService
         try
         {
             await _emailService.SendAsync(emailRequest);
-            return Result<string>.Success("Email sent successfully.");
+            return Result<string>.Success(SuccessResponses.EmailSentSuccessfully);
         }
         catch (Exception ex)
         {
@@ -217,32 +215,6 @@ public class AccountService : IAccountService
         else
         {
             return Result<string>.Failure(AccountServiceErrors.PasswordResetFailed(model.Email));
-        }
-    }
-
-    public async Task<Result<string>> AssignRoleToUserAsync(string userId, string roleName)
-    {
-        var user = await _userManager.FindByIdAsync(userId);
-        if (user == null)
-        {
-            return Result<string>.Failure(AccountServiceErrors.UserNotFound(userId));
-        }
-
-        var roleExists = await _userManager.IsInRoleAsync(user, roleName);
-        if (roleExists)
-        {
-            return Result<string>.Failure(AccountServiceErrors.UserAlreadyInRole(userId));
-        }
-
-        var result = await _userManager.AddToRoleAsync(user, roleName);
-        if (result.Succeeded)
-        {
-            return Result<string>.Success($"Role '{roleName}' assigned to user successfully.");
-        }
-        else
-        {
-            var errors = string.Join(", ", result.Errors.Select(e => e.Description));
-            return Result<string>.Failure(new Error("Role.AssignmentFailed", $"Role assignment failed: {errors}"));
         }
     }
 

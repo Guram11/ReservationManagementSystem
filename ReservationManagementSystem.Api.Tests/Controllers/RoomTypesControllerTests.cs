@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using ReservationManagementSystem.API.Controllers;
+using ReservationManagementSystem.Application.Features.Rooms.Common;
 using ReservationManagementSystem.Application.Features.RoomTypes.Commands.CreateRoomType;
 using ReservationManagementSystem.Application.Features.RoomTypes.Commands.DeleteRoomType;
 using ReservationManagementSystem.Application.Features.RoomTypes.Commands.UpdateRoomType;
@@ -48,21 +49,19 @@ public class RoomTypesControllerTests
                     UpdatedAt = DateTime.UtcNow, HotelId = Guid.NewGuid(), IsActive = true,
                     MaxCapacity = 3, MinCapacity = 1, Name = "RoomType 2", NumberOfRooms = 2 },
             };
+        var result = Result<List<RoomTypeResponse>>.Success(roomTypeResponses);
 
         _mediatorMock
             .Setup(m => m.Send(It.IsAny<GetAllRoomTypesRequest>(), default))
-            .ReturnsAsync(roomTypeResponses);
+            .ReturnsAsync(result);
 
         // Act
-        var result = await _controller.GetAll(queryParams);
+        var actionResult = await _controller.GetAll(queryParams);
 
         // Assert
-        result.Should().BeOfType<ActionResult<List<RoomTypeResponse>>>();
-
-        var okResult = result.Result as OkObjectResult;
+        var okResult = actionResult.Result as OkObjectResult;
         okResult.Should().NotBeNull();
-        okResult?.StatusCode.Should().Be(200);
-        okResult?.Value.Should().BeEquivalentTo(roomTypeResponses);
+        okResult!.Value.Should().BeEquivalentTo(roomTypeResponses);
     }
 
     [Fact]
@@ -92,8 +91,9 @@ public class RoomTypesControllerTests
         var actionResult = await _controller.Get(roomTypeId);
 
         // Assert
-        var okResult = actionResult.Result.Should().BeOfType<OkObjectResult>().Subject;
-        var resultData = okResult.Value.Should().BeOfType<Result<RoomTypeResponse>>().Subject;
+        var okResult = actionResult.Result as OkObjectResult;
+        okResult.Should().NotBeNull();
+        okResult!.Value.Should().BeEquivalentTo(roomTypeResponse);
     }
 
     [Fact]
@@ -123,9 +123,9 @@ public class RoomTypesControllerTests
         var actionResult = await _controller.Create(createRoomTypeRequest);
 
         // Assert
-        actionResult.Should().BeOfType<ActionResult<RoomTypeResponse>>()
-            .Which.Result.Should().BeOfType<OkObjectResult>()
-            .Which.Value.Should().BeOfType<Result<RoomTypeResponse>>();
+        var okResult = actionResult.Result as OkObjectResult;
+        okResult.Should().NotBeNull();
+        okResult!.Value.Should().BeEquivalentTo(roomTypeResponse);
     }
 
     [Fact]
@@ -155,9 +155,9 @@ public class RoomTypesControllerTests
         var actionResult = await _controller.Update(updateRoomTypeRequest);
 
         // Assert
-        actionResult.Should().BeOfType<ActionResult<RoomTypeResponse>>()
-            .Which.Result.Should().BeOfType<OkObjectResult>()
-            .Which.Value.Should().BeOfType<Result<RoomTypeResponse>>();
+        var okResult = actionResult.Result as OkObjectResult;
+        okResult.Should().NotBeNull();
+        okResult!.Value.Should().BeEquivalentTo(roomTypeResponse);
     }
 
     [Fact]
@@ -187,8 +187,8 @@ public class RoomTypesControllerTests
         var actionResult = await _controller.Delete(roomTypeId);
 
         // Assert
-        actionResult.Should().BeOfType<ActionResult<RoomTypeResponse>>()
-            .Which.Result.Should().BeOfType<OkObjectResult>()
-            .Which.Value.Should().BeOfType<Result<RoomTypeResponse>>();
+        var okResult = actionResult.Result as OkObjectResult;
+        okResult.Should().NotBeNull();
+        okResult!.Value.Should().BeEquivalentTo(roomTypeResponse);
     }
 }

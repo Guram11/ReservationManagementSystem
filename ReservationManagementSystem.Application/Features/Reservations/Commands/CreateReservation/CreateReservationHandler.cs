@@ -45,7 +45,7 @@ public sealed class CreateReservationHandler : IRequestHandler<CreateReservation
 
         if (!availabilityResult.IsSuccess)
         {
-            return Result<ReservationResponse>.Failure(ValidationError.ValidationFailed("Invalid data passed, Please check room availability"));
+            return Result<ReservationResponse>.Failure(ReservationErrors.InvalidDataPassed());
         }
 
         var validResponse = availabilityResult.Data.FirstOrDefault(r =>
@@ -55,7 +55,7 @@ public sealed class CreateReservationHandler : IRequestHandler<CreateReservation
 
         if (validResponse == null)
         {
-            return Result<ReservationResponse>.Failure(ValidationError.ValidationFailed("Invalid data passed, Please check room availability"));
+            return Result<ReservationResponse>.Failure(ReservationErrors.InvalidDataPassed());
         }
 
         var reservation = _mapper.Map<Reservation>(request);

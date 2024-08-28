@@ -26,6 +26,7 @@ public class AuthController : ControllerBase
         var origin = Request.Headers["Origin"].FirstOrDefault();
         request.IpAddress = HttpContext.Connection.RemoteIpAddress?.ToString();
         var result = await _mediator.Send(request);
+
         if (result.IsSuccess)
         {
             return Ok(result.Data);
@@ -39,6 +40,7 @@ public class AuthController : ControllerBase
         var origin = Request.Headers["Origin"].FirstOrDefault();
         request.Origin = origin;
         var result = await _mediator.Send(request);
+
         if (result.IsSuccess)
         {
             return Ok(result.Data);
@@ -50,6 +52,7 @@ public class AuthController : ControllerBase
     public async Task<IActionResult> ConfirmEmail([FromQuery] string userId, [FromQuery] string code)
     {
         var result = await _mediator.Send(new ConfirmEmailRequest { UserId = userId, Code = code });
+
         if (result.IsSuccess)
         {
             return Ok(result.Data);
@@ -63,6 +66,7 @@ public class AuthController : ControllerBase
         var origin = Request.Headers["Origin"].FirstOrDefault();
         request.Origin = origin;
         var result = await _mediator.Send(request);
+
         if (result.IsSuccess)
         {
             return Ok(result.Data);
@@ -74,6 +78,7 @@ public class AuthController : ControllerBase
     public async Task<ActionResult<string>> ResetPassword([FromBody] ResetPasswordRequest request)
     {
         var result = await _mediator.Send(request);
+
         if (result.IsSuccess)
         {
             return Ok(result.Data);

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FluentAssertions;
 using Moq;
+using ReservationManagementSystem.Application.Features.Hotels.Common;
 using ReservationManagementSystem.Application.Features.HotelServices.Common;
 using ReservationManagementSystem.Application.Features.HotelServices.Queries;
 using ReservationManagementSystem.Application.Interfaces.Repositories;
@@ -71,6 +72,7 @@ public class GetAllHotelServicesHandlerTests
         var result = await _handler.Handle(request, CancellationToken.None);
 
         // Assert
-        result.Should().BeEquivalentTo(hotelServiceResponses);
+        result.IsSuccess.Should().BeTrue();
+        result.Data.Should().BeEquivalentTo(hotelServiceResponses);
     }
 }

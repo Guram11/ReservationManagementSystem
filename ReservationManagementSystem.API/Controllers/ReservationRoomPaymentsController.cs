@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using ReservationManagementSystem.API.Extensions;
 using ReservationManagementSystem.Application.Features.ReservationRoomPayment.Commands.CreateReservationRoomPayment;
 using ReservationManagementSystem.Application.Features.ReservationRoomPayment.Commands.DeleteReservationRoomPayment;
 using ReservationManagementSystem.Application.Features.ReservationRoomPayment.Common;
@@ -26,14 +27,14 @@ public class ReservationRoomPaymentsController : ControllerBase
             queryParams.FilterOn, queryParams.FilterQuery,
             queryParams.SortBy, queryParams.IsAscending,
             queryParams.PageNumber, queryParams.PageSize));
-        return Ok(response);
+        return ResponseHandler.HandleResponse(response);
     }
 
     [HttpPost]
     public async Task<ActionResult<ReservationRoomPaymentsResponse>> Create(CreateReservationRoomPaymentRequest request)
     {
         var response = await _mediator.Send(request);
-        return Ok(response);
+        return ResponseHandler.HandleResponse(response);
     }
 
     [HttpDelete]
@@ -41,6 +42,6 @@ public class ReservationRoomPaymentsController : ControllerBase
     public async Task<ActionResult<ReservationRoomPaymentsResponse>> Delete([FromRoute] Guid id)
     {
         var response = await _mediator.Send(new DeleteReservationRoomPaymentRequest(id));
-        return Ok(response);
+        return ResponseHandler.HandleResponse(response);
     }
 }

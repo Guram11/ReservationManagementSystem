@@ -7,6 +7,7 @@ using ReservationManagementSystem.Application.Features.Guests.Commands.UpdateGue
 using ReservationManagementSystem.Application.Features.Guests.Common;
 using ReservationManagementSystem.Domain.Settings;
 using ReservationManagementSystem.Application.Features.Guests.Queries.GetAllGuests;
+using ReservationManagementSystem.API.Extensions;
 
 namespace ReservationManagementSystem.API.Controllers;
 
@@ -28,7 +29,7 @@ public class GuestsController : ControllerBase
             queryParams.FilterOn, queryParams.FilterQuery,
             queryParams.SortBy, queryParams.IsAscending,
             queryParams.PageNumber, queryParams.PageSize));
-        return Ok(response);
+        return ResponseHandler.HandleResponse(response);
     }
 
     [HttpGet]
@@ -36,21 +37,21 @@ public class GuestsController : ControllerBase
     public async Task<ActionResult<GuestResponse>> Get([FromRoute] Guid id)
     {
         var response = await _mediator.Send(new GetGuestByIdRequest(id));
-        return Ok(response);
+        return ResponseHandler.HandleResponse(response);
     }
 
     [HttpPost]
     public async Task<ActionResult<GuestResponse>> Create(CreateGuestRequest request)
     {
         var response = await _mediator.Send(request);
-        return Ok(response);
+        return ResponseHandler.HandleResponse(response);
     }
 
     [HttpPut]
     public async Task<ActionResult<GuestResponse>> Update(UpdateGuestRequest request)
     {
         var response = await _mediator.Send(request);
-        return Ok(response);
+        return ResponseHandler.HandleResponse(response);
     }
 
     [HttpDelete]
@@ -58,6 +59,6 @@ public class GuestsController : ControllerBase
     public async Task<ActionResult<GuestResponse>> Delete([FromRoute] Guid id)
     {
         var response = await _mediator.Send(new DeleteGuestRequest(id));
-        return Ok(response);
+        return ResponseHandler.HandleResponse(response);
     }
 }

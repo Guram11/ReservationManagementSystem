@@ -2,6 +2,7 @@
 using FluentValidation;
 using MediatR;
 using ReservationManagementSystem.Application.Common.Errors;
+using ReservationManagementSystem.Application.Features.ReservationRooms.Common;
 using ReservationManagementSystem.Application.Features.ResrevationInvoices.Common;
 using ReservationManagementSystem.Application.Interfaces.Repositories;
 using ReservationManagementSystem.Application.Wrappers;
@@ -48,7 +49,7 @@ public sealed class CreateReservationInvoicelHandler : IRequestHandler<CreateRes
 
         if (currencyRate == null || reservationRoom == null)
         {
-            return Result<ReservationInvoiceResponse>.Failure(NotFoundError.NotFound("ReservationRoom not found!"));
+            return Result<ReservationInvoiceResponse>.Failure(ReservationRoomErrors.NotFound());
         }
 
         var roomTimeline = await _roomTimelineRepository.GetReservationRoomTimelinesByReservationRoomId(reservationRoom.Id);

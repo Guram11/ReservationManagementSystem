@@ -87,6 +87,6 @@ public class PushPriceHandlerTests
 
         // Assert
         result.IsSuccess.Should().BeFalse();
-        result.Error.Description.Should().Be("RateRoomType not found.");
+        result.Error.Description.Should().Be("RateRoomType was not found.");
     }
 }

@@ -39,7 +39,7 @@ public sealed class CreateGuestHandler : IRequestHandler<CreateGuestRequest, Res
 
         if (createdGuest != null)
         {
-            return Result<GuestResponse>.Failure(AlreadyCreatedError.AlreadyCreated("Email is already in use!"));
+            return Result<GuestResponse>.Failure(GuestErrors.EmailAlreadyInUse());
         }
 
         var guest = _mapper.Map<Guest>(request);

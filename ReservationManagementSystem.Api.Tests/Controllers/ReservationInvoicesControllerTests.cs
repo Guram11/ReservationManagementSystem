@@ -63,21 +63,19 @@ public class ReservationInvoicesControllerTests
                 UpdatedAt = DateTime.UtcNow
             }
         };
+        var result = Result<List<ReservationInvoiceResponse>>.Success(reservationInvoices);
 
         _mediatorMock
             .Setup(m => m.Send(It.IsAny<GetAllReservationInvoicesRequest>(), default))
-            .ReturnsAsync(reservationInvoices);
+            .ReturnsAsync(result);
 
         // Act
-        var result = await _controller.GetAll(queryParams);
+        var actionResult = await _controller.GetAll(queryParams);
 
         // Assert
-        result.Should().BeOfType<ActionResult<List<ReservationInvoiceResponse>>>();
-
-        var okResult = result.Result as OkObjectResult;
+        var okResult = actionResult.Result as OkObjectResult;
         okResult.Should().NotBeNull();
-        okResult?.StatusCode.Should().Be(200);
-        okResult?.Value.Should().BeEquivalentTo(reservationInvoices);
+        okResult!.Value.Should().BeEquivalentTo(reservationInvoices);
     }
 
     [Fact]
@@ -107,10 +105,9 @@ public class ReservationInvoicesControllerTests
         var actionResult = await _controller.Create(request);
 
         // Assert
-        actionResult.Should().BeOfType<ActionResult<ReservationInvoiceResponse>>()
-            .Which.Result.Should().BeOfType<OkObjectResult>()
-            .Which.Value.Should().BeOfType<Result<ReservationInvoiceResponse>>()
-            .Which.Data.Should().BeEquivalentTo(reservationInvoiceResponse);
+        var okResult = actionResult.Result as OkObjectResult;
+        okResult.Should().NotBeNull();
+        okResult!.Value.Should().BeEquivalentTo(reservationInvoiceResponse);
     }
 
     [Fact]
@@ -140,9 +137,8 @@ public class ReservationInvoicesControllerTests
         var actionResult = await _controller.Delete(id);
 
         // Assert
-        actionResult.Should().BeOfType<ActionResult<ReservationInvoiceResponse>>()
-            .Which.Result.Should().BeOfType<OkObjectResult>()
-            .Which.Value.Should().BeOfType<Result<ReservationInvoiceResponse>>()
-            .Which.Data.Should().BeEquivalentTo(reservationInvoiceResponse);
+        var okResult = actionResult.Result as OkObjectResult;
+        okResult.Should().NotBeNull();
+        okResult!.Value.Should().BeEquivalentTo(reservationInvoiceResponse);
     }
 }

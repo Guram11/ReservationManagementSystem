@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FluentAssertions;
 using Moq;
+using ReservationManagementSystem.Application.Features.Reservations.Common;
 using ReservationManagementSystem.Application.Features.RoomTypes.Common;
 using ReservationManagementSystem.Application.Features.RoomTypes.Queries.GetAllRoomTypes;
 using ReservationManagementSystem.Application.Interfaces.Repositories;
@@ -47,7 +48,8 @@ public class GetAllRoomTypesHandlerTests
         var result = await _handler.Handle(request, CancellationToken.None);
 
         // Assert
-        result.Should().BeEquivalentTo(roomTypeResponses);
+        result.IsSuccess.Should().BeTrue();
+        result.Data.Should().BeEquivalentTo(roomTypeResponses);
     }
 
     [Fact]
@@ -68,6 +70,6 @@ public class GetAllRoomTypesHandlerTests
         var result = await _handler.Handle(request, CancellationToken.None);
 
         // Assert
-        result.Should().BeEmpty();
+        result.Data.Should().BeEmpty();
     }
 }

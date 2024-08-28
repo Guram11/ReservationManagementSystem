@@ -37,7 +37,7 @@ public class CreateRateRoomTypeHandlerTests
         // Assert
         result.IsSuccess.Should().BeFalse();
         result.Error.Should().NotBeNull();
-        result.Error.Description.Should().Contain("RateRoomType was not found!");
+        result.Error.Description.Should().Contain("RateRoomType was not found.");
     }
 
     [Fact]

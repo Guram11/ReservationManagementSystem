@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using ReservationManagementSystem.Application.Features.Users.Commands.Common;
 using ReservationManagementSystem.Application.Interfaces.Services;
 using ReservationManagementSystem.Application.Wrappers;
 
@@ -19,7 +20,7 @@ public sealed class CreateUserHandler : IRequestHandler<CreateUserRequest, Resul
 
         if (response.IsSuccess)
         {
-            return Result<string>.Success("Verification email has been sent.");
+            return Result<string>.Success(SuccessResponses.VerificationEmailSent);
         }
 
         return Result<string>.Failure(response.Error);

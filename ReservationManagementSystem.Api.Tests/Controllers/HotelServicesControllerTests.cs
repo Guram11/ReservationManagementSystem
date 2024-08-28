@@ -3,11 +3,16 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using ReservationManagementSystem.API.Controllers;
+using ReservationManagementSystem.Application.Features.Hotels.Commands.CreateHotel;
+using ReservationManagementSystem.Application.Features.Hotels.Commands.DeleteHotel;
+using ReservationManagementSystem.Application.Features.Hotels.Common;
 using ReservationManagementSystem.Application.Features.HotelServices.Commands.CreateHotelService;
 using ReservationManagementSystem.Application.Features.HotelServices.Commands.DeleteHotelService;
 using ReservationManagementSystem.Application.Features.HotelServices.Common;
 using ReservationManagementSystem.Application.Features.HotelServices.Queries;
+using ReservationManagementSystem.Application.Features.RateRoomTypes.Common;
 using ReservationManagementSystem.Application.Wrappers;
+using ReservationManagementSystem.Domain.Entities;
 using ReservationManagementSystem.Domain.Enums;
 using ReservationManagementSystem.Domain.Settings;
 
@@ -15,8 +20,8 @@ namespace ReservationManagementSystem.Api.Tests.Controllers;
 
 public class HotelServiceControllerTests
 {
-    private readonly HotelServicesController _controller;
     private readonly Mock<IMediator> _mediatorMock;
+    private readonly HotelServicesController _controller;
 
     public HotelServiceControllerTests()
     {
@@ -37,6 +42,7 @@ public class HotelServiceControllerTests
             PageNumber = 1,
             PageSize = 10
         };
+
         var hotelServices = new List<HotelServiceResponse>
         {
             new HotelServiceResponse
@@ -60,20 +66,19 @@ public class HotelServiceControllerTests
                 Price = 50.00m
             }
         };
+        var result = Result<List<HotelServiceResponse>>.Success(hotelServices);
+
         _mediatorMock
-            .Setup(m => m.Send(It.IsAny<GetAllHotelServicesRequest>(), default))
-            .ReturnsAsync(hotelServices);
+            .Setup(m => m.Send(It.IsAny<GetAllHotelServicesRequest>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(result);
 
         // Act
-        var result = await _controller.GetAll(queryParams);
+        var actionResult = await _controller.GetAll(queryParams);
 
         // Assert
-        result.Should().BeOfType<ActionResult<List<HotelServiceResponse>>>();
-
-        var okResult = result.Result as OkObjectResult;
+        var okResult = actionResult.Result as OkObjectResult;
         okResult.Should().NotBeNull();
-        okResult?.StatusCode.Should().Be(200);
-        okResult?.Value.Should().BeEquivalentTo(hotelServices);
+        okResult!.Value.Should().BeEquivalentTo(hotelServices);
     }
 
     [Fact]
@@ -92,18 +97,17 @@ public class HotelServiceControllerTests
             Price = request.Price
         };
         var result = Result<HotelServiceResponse>.Success(hotelService);
-
         _mediatorMock
-            .Setup(m => m.Send(request, default))
+            .Setup(m => m.Send(request, It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
 
         // Act
         var actionResult = await _controller.Create(request);
 
         // Assert
-        actionResult.Should().BeOfType<ActionResult<HotelServiceResponse>>()
-            .Which.Result.Should().BeOfType<OkObjectResult>()
-            .Which.Value.Should().BeOfType<Result<HotelServiceResponse>>();
+        var okResult = actionResult.Result as OkObjectResult;
+        okResult.Should().NotBeNull();
+        okResult!.Value.Should().BeEquivalentTo(hotelService);
     }
 
     [Fact]
@@ -124,15 +128,63 @@ public class HotelServiceControllerTests
         var result = Result<HotelServiceResponse>.Success(hotelService);
 
         _mediatorMock
-            .Setup(m => m.Send(It.IsAny<DeleteHotelServiceRequest>(), default))
+            .Setup(m => m.Send(It.IsAny<DeleteHotelServiceRequest>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
 
         // Act
         var actionResult = await _controller.Delete(id);
 
         // Assert
-        actionResult.Should().BeOfType<ActionResult<HotelServiceResponse>>()
-            .Which.Result.Should().BeOfType<OkObjectResult>()
-            .Which.Value.Should().BeOfType<Result<HotelServiceResponse>>();
+        var okResult = actionResult.Result as OkObjectResult;
+        okResult.Should().NotBeNull();
+        okResult!.Value.Should().BeEquivalentTo(hotelService);
+    }
+
+    [Fact]
+    public async Task GetAll_ReturnsBadRequest_WhenValidationFails()
+    {
+        // Arrange
+        var queryParams = new GetAllQueryParams
+        {
+            FilterOn = null,
+            FilterQuery = null,
+            SortBy = null,
+            IsAscending = true,
+            PageNumber = 0,
+            PageSize = 0
+        };
+        var result = Result<List<HotelServiceResponse>>.Failure(new Error("ValidationError", "Invalid request parameters."));
+
+        _mediatorMock
+            .Setup(m => m.Send(It.IsAny<GetAllHotelServicesRequest>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(result);
+
+        // Act
+        var actionResult = await _controller.GetAll(queryParams);
+
+        // Assert
+        var badRequestResult = actionResult.Result as BadRequestObjectResult;
+        badRequestResult.Should().NotBeNull();
+        badRequestResult!.Value.Should().Be("Invalid request parameters.");
+    }
+
+    [Fact]
+    public async Task Delete_ReturnsNotFound_WhenServiceDoesNotExist()
+    {
+        // Arrange
+        var id = Guid.NewGuid();
+        var result = Result<HotelServiceResponse>.Failure(new Error("NotFound", "Service not found."));
+
+        _mediatorMock
+            .Setup(m => m.Send(It.IsAny<DeleteHotelServiceRequest>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(result);
+
+        // Act
+        var actionResult = await _controller.Delete(id);
+
+        // Assert
+        var notFoundResult = actionResult.Result as NotFoundObjectResult;
+        notFoundResult.Should().NotBeNull();
+        notFoundResult!.Value.Should().Be("Service not found.");
     }
 }

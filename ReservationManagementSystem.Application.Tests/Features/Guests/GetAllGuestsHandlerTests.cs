@@ -3,6 +3,7 @@ using FluentAssertions;
 using Moq;
 using ReservationManagementSystem.Application.Features.Guests.Common;
 using ReservationManagementSystem.Application.Features.Guests.Queries.GetAllGuests;
+using ReservationManagementSystem.Application.Features.HotelServices.Common;
 using ReservationManagementSystem.Application.Interfaces.Repositories;
 using ReservationManagementSystem.Domain.Entities;
 
@@ -62,6 +63,7 @@ public class GetAllUserHandlerTests
         var result = await _handler.Handle(request, CancellationToken.None);
 
         // Assert
-        result.Should().BeEquivalentTo(guestResponses);
+        result.IsSuccess.Should().BeTrue();
+        result.Data.Should().BeEquivalentTo(guestResponses);
     }
 }

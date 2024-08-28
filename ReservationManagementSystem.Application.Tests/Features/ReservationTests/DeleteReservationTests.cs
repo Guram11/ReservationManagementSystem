@@ -79,7 +79,7 @@ public class DeleteReservationHandlerTests
         // Assert
         result.IsSuccess.Should().BeFalse();
         result.Error.Code.Should().Be("NotFound");
-        result.Error.Description.Should().Be($"Hotel service with ID {reservationId} was not found.");
+        result.Error.Description.Should().Be($"Reservation with ID {reservationId} was not found.");
     }
 
     [Fact]

@@ -82,7 +82,7 @@ public class DeleteReservationInvoiceHandlerTests
         // Assert
         result.IsSuccess.Should().BeFalse();
         result.Error.Code.Should().Be("NotFound");
-        result.Error.Description.Should().Be($"Reservation Invoice with ID {invoiceId} was not found.");
+        result.Error.Description.Should().Be($"ReservationInvoice with ID {invoiceId} was not found.");
     }
 
     [Fact]

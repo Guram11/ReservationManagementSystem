@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using ReservationManagementSystem.Application.Features.RateRoomTypes.Common;
 using ReservationManagementSystem.Application.Features.RateTimelines.Common;
 using ReservationManagementSystem.Application.Interfaces.Repositories;
 using ReservationManagementSystem.Application.Wrappers;
@@ -27,7 +28,7 @@ public sealed class PushPriceHandler : IRequestHandler<PushPriceRequest, Result<
 
         if (rateRoomType is null)
         {
-            return Result<RateTimelineResponse>.Failure(new Error("Not found.", "RateRoomType not found."));
+            return Result<RateTimelineResponse>.Failure(RateRoomTypeErrors.NotFound());
         }
 
         var rateTimeline = new RateTimeline();

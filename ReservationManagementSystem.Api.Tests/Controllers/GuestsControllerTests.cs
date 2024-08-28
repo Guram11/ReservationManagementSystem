@@ -26,192 +26,138 @@ public class GuestsControllerTests
     }
 
     [Fact]
-    public async Task GetAll_ShouldReturnOkResult_WithGuestResponses()
+    public async Task GetAll_ReturnsOkResultWithListOfGuests_WhenRequestIsSuccessful()
     {
         // Arrange
-        var queryParams = new GetAllQueryParams
+        var guests = new List<GuestResponse>
         {
-            FilterOn = "Email",
-            FilterQuery = "example@example.com",
-            SortBy = "LastName",
-            IsAscending = true,
-            PageNumber = 1,
-            PageSize = 10
+            new GuestResponse { Id = Guid.NewGuid(), PhoneNumber = "123", FirstName = "John", LastName = "Doe", Email = "john.doe@example.com" },
+            new GuestResponse { Id = Guid.NewGuid(), PhoneNumber = "123", FirstName = "Jane", LastName = "Doe", Email = "jane.doe@example.com" }
         };
 
-        var guestResponses = new List<GuestResponse>
-        {
-            new GuestResponse
-            {
-                Id = Guid.NewGuid(),
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
-                ReservationRoomId = Guid.NewGuid(),
-                Email = "john.doe@example.com",
-                FirstName = "John",
-                LastName = "Doe",
-                PhoneNumber = "123-456-7890"
-            },
-            new GuestResponse
-            {
-                Id = Guid.NewGuid(),
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
-                ReservationRoomId = Guid.NewGuid(),
-                Email = "jane.smith@example.com",
-                FirstName = "Jane",
-                LastName = "Smith",
-                PhoneNumber = "098-765-4321"
-            }
-        };
+        var result = Result<List<GuestResponse>>.Success(guests);
 
-        _mediatorMock
-            .Setup(m => m.Send(It.IsAny<GetAllGuestsRequest>(), default))
-            .ReturnsAsync(guestResponses);
-
-        // Act
-        var result = await _controller.GetAll(queryParams);
-
-        // Assert
-        result.Should().BeOfType<ActionResult<List<GuestResponse>>>();
-
-        var okResult = result.Result as OkObjectResult;
-        okResult.Should().NotBeNull();
-        okResult?.StatusCode.Should().Be(200);
-        okResult?.Value.Should().BeEquivalentTo(guestResponses);
-    }
-
-    [Fact]
-    public async Task Get_WhenCalled_ReturnsOkResultWithGuestResponse()
-    {
-        // Arrange
-        var guestId = Guid.NewGuid();
-        var guestResponse = new GuestResponse
-        {
-            Id = guestId,
-            CreatedAt = DateTime.UtcNow,
-            UpdatedAt = DateTime.UtcNow,
-            ReservationRoomId = Guid.NewGuid(),
-            Email = "john.doe@example.com",
-            FirstName = "John",
-            LastName = "Doe",
-            PhoneNumber = "123-456-7890"
-        };
-        var result = Result<GuestResponse>.Success(guestResponse);
-
-        _mediatorMock
-            .Setup(m => m.Send(It.IsAny<GetGuestByIdRequest>(), default))
+        _mediatorMock.Setup(m => m.Send(It.IsAny<GetAllGuestsRequest>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
 
         // Act
-        var actionResult = await _controller.Get(guestId);
+        var actionResult = await _controller.GetAll(new GetAllQueryParams());
 
         // Assert
-        var okResult = actionResult.Result.Should().BeOfType<OkObjectResult>().Subject;
-        var resultData = okResult.Value.Should().BeOfType<Result<GuestResponse>>().Subject;
+        var okResult = actionResult.Result as OkObjectResult;
+        okResult.Should().NotBeNull();
+        okResult!.Value.Should().BeEquivalentTo(guests);
     }
 
     [Fact]
-    public async Task Create_WhenCalled_ReturnsOkResultWithGuestResponse()
+    public async Task Get_ReturnsOkResultWithGuest_WhenRequestIsSuccessful()
     {
         // Arrange
-        var createGuestRequest = new CreateGuestRequest(
-            Email: "john.doe@example.com",
-            FirstName: "John",
-            LastName: "Doe",
-            PhoneNumber: "123-456-7890",
-            ReservationRoomId: Guid.NewGuid()
-        );
+        var guest = new GuestResponse { Id = Guid.NewGuid(), FirstName = "John", PhoneNumber = "123", LastName = "Doe", Email = "john.doe@example.com" };
+        var result = Result<GuestResponse>.Success(guest);
 
-        var guestResponse = new GuestResponse
-        {
-            Id = Guid.NewGuid(),
-            CreatedAt = DateTime.UtcNow,
-            UpdatedAt = DateTime.UtcNow,
-            ReservationRoomId = createGuestRequest.ReservationRoomId,
-            Email = createGuestRequest.Email,
-            FirstName = createGuestRequest.FirstName,
-            LastName = createGuestRequest.LastName,
-            PhoneNumber = createGuestRequest.PhoneNumber
-        };
-
-        _mediatorMock
-            .Setup(m => m.Send(createGuestRequest, default))
-            .ReturnsAsync(Result<GuestResponse>.Success(guestResponse));
+        _mediatorMock.Setup(m => m.Send(It.IsAny<GetGuestByIdRequest>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(result);
 
         // Act
-        var actionResult = await _controller.Create(createGuestRequest);
+        var actionResult = await _controller.Get(guest.Id);
 
         // Assert
-        actionResult.Should().BeOfType<ActionResult<GuestResponse>>()
-            .Which.Result.Should().BeOfType<OkObjectResult>()
-            .Which.Value.Should().BeEquivalentTo(Result<GuestResponse>.Success(guestResponse));
+        var okResult = actionResult.Result as OkObjectResult;
+        okResult.Should().NotBeNull();
+        okResult!.Value.Should().BeEquivalentTo(guest);
     }
 
     [Fact]
-    public async Task Update_WhenCalled_ReturnsOkResultWithGuestResponse()
+    public async Task Create_ReturnsOkResultWithCreatedGuest_WhenRequestIsSuccessful()
     {
         // Arrange
-        var updateGuestRequest = new UpdateGuestRequest(
-            Id: Guid.NewGuid(),
-            Email: "john.updated@example.com",
-            FirstName: "John",
-            LastName: "Doe",
-            PhoneNumber: "987-654-3210"
-         );
+        var guest = new GuestResponse { Id = Guid.NewGuid(), FirstName = "John", PhoneNumber = "123", LastName = "Doe", Email = "john.doe@example.com" };
+        var result = Result<GuestResponse>.Success(guest);
 
-        var guestResponse = new GuestResponse
-        {
-            Id = updateGuestRequest.Id,
-            CreatedAt = DateTime.UtcNow,
-            UpdatedAt = DateTime.UtcNow,
-            ReservationRoomId = Guid.NewGuid(),
-            Email = updateGuestRequest.Email,
-            FirstName = updateGuestRequest.FirstName,
-            LastName = updateGuestRequest.LastName,
-            PhoneNumber = updateGuestRequest.PhoneNumber
-        };
-
-        _mediatorMock
-            .Setup(m => m.Send(updateGuestRequest, default))
-            .ReturnsAsync(Result<GuestResponse>.Success(guestResponse));
+        _mediatorMock.Setup(m => m.Send(It.IsAny<CreateGuestRequest>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(result);
 
         // Act
-        var actionResult = await _controller.Update(updateGuestRequest);
+        var actionResult = await _controller.Create(new CreateGuestRequest("guest1", "guest", "guest", "123", Guid.NewGuid()));
 
         // Assert
-        actionResult.Should().BeOfType<ActionResult<GuestResponse>>()
-            .Which.Result.Should().BeOfType<OkObjectResult>()
-            .Which.Value.Should().BeEquivalentTo(Result<GuestResponse>.Success(guestResponse));
+        var okResult = actionResult.Result as OkObjectResult;
+        okResult.Should().NotBeNull();
+        okResult!.Value.Should().BeEquivalentTo(guest);
     }
 
     [Fact]
-    public async Task Delete_WhenCalled_ReturnsOkResultWithGuestResponse()
+    public async Task Update_ReturnsOkResultWithUpdatedGuest_WhenRequestIsSuccessful()
     {
         // Arrange
-        var guestId = Guid.NewGuid();
-        var guestResponse = new GuestResponse
-        {
-            Id = guestId,
-            CreatedAt = DateTime.UtcNow,
-            UpdatedAt = DateTime.UtcNow,
-            ReservationRoomId = Guid.NewGuid(),
-            Email = "deleted.guest@example.com",
-            FirstName = "Deleted",
-            LastName = "Guest",
-            PhoneNumber = "000-000-0000"
-        };
+        var guest = new GuestResponse { Id = Guid.NewGuid(), FirstName = "John", LastName = "Doe", PhoneNumber = "123", Email = "john.doe@example.com" };
+        var result = Result<GuestResponse>.Success(guest);
 
-        _mediatorMock
-            .Setup(m => m.Send(It.IsAny<DeleteGuestRequest>(), default))
-            .ReturnsAsync(Result<GuestResponse>.Success(guestResponse));
+        _mediatorMock.Setup(m => m.Send(It.IsAny<UpdateGuestRequest>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(result);
 
         // Act
-        var actionResult = await _controller.Delete(guestId);
+        var actionResult = await _controller.Update(new UpdateGuestRequest(Guid.NewGuid(), "email@mail.com", "guest1", "guest", "123"));
 
         // Assert
-        actionResult.Should().BeOfType<ActionResult<GuestResponse>>()
-            .Which.Result.Should().BeOfType<OkObjectResult>()
-            .Which.Value.Should().BeEquivalentTo(Result<GuestResponse>.Success(guestResponse));
+        var okResult = actionResult.Result as OkObjectResult;
+        okResult.Should().NotBeNull();
+        okResult!.Value.Should().BeEquivalentTo(guest);
+    }
+
+    [Fact]
+    public async Task Delete_ReturnsOkResultWithDeletedGuest_WhenRequestIsSuccessful()
+    {
+        // Arrange
+        var guest = new GuestResponse { Id = Guid.NewGuid(), FirstName = "John", LastName = "Doe", PhoneNumber = "123", Email = "john.doe@example.com" };
+        var result = Result<GuestResponse>.Success(guest);
+
+        _mediatorMock.Setup(m => m.Send(It.IsAny<DeleteGuestRequest>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(result);
+
+        // Act
+        var actionResult = await _controller.Delete(guest.Id);
+
+        // Assert
+        var okResult = actionResult.Result as OkObjectResult;
+        okResult.Should().NotBeNull();
+        okResult!.Value.Should().BeEquivalentTo(guest);
+    }
+
+    [Fact]
+    public async Task Get_ReturnsNotFound_WhenGuestIsNotFound()
+    {
+        // Arrange
+        var result = Result<GuestResponse>.Failure(new Error("NotFound", "Guest not found."));
+
+        _mediatorMock.Setup(m => m.Send(It.IsAny<GetGuestByIdRequest>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(result);
+
+        // Act
+        var actionResult = await _controller.Get(Guid.NewGuid());
+
+        // Assert
+        var notFoundResult = actionResult.Result as NotFoundObjectResult;
+        notFoundResult.Should().NotBeNull();
+        notFoundResult!.Value.Should().Be("Guest not found.");
+    }
+
+    [Fact]
+    public async Task Create_ReturnsBadRequest_WhenValidationFails()
+    {
+        // Arrange
+        var result = Result<GuestResponse>.Failure(new Error("ValidationError", "Invalid request data."));
+
+        _mediatorMock.Setup(m => m.Send(It.IsAny<CreateGuestRequest>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(result);
+
+        // Act
+        var actionResult = await _controller.Create(new CreateGuestRequest("guest1", "guest", "guest", "123", Guid.NewGuid()));
+
+        // Assert
+        var badRequestResult = actionResult.Result as BadRequestObjectResult;
+        badRequestResult.Should().NotBeNull();
+        badRequestResult!.Value.Should().Be("Invalid request data.");
     }
 }

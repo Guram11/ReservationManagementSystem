@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using ReservationManagementSystem.API.Extensions;
 using ReservationManagementSystem.Application.Features.Rooms.Commands.CreateRoom;
 using ReservationManagementSystem.Application.Features.Rooms.Commands.DeleteRoom;
 using ReservationManagementSystem.Application.Features.Rooms.Commands.UpdateRoom;
@@ -28,7 +29,7 @@ public class RoomsController : ControllerBase
             queryParams.FilterOn, queryParams.FilterQuery,
             queryParams.SortBy, queryParams.IsAscending,
             queryParams.PageNumber, queryParams.PageSize));
-        return Ok(response);
+        return ResponseHandler.HandleResponse(response);
     }
 
     [HttpGet]
@@ -36,21 +37,21 @@ public class RoomsController : ControllerBase
     public async Task<ActionResult<RoomResponse>> Get([FromRoute] Guid id)
     {
         var response = await _mediator.Send(new GetRoomByIdRequest(id));
-        return Ok(response);
+        return ResponseHandler.HandleResponse(response);
     }
 
     [HttpPost]
     public async Task<ActionResult<RoomResponse>> Create(CreateRoomRequest request)
     {
         var response = await _mediator.Send(request);
-        return Ok(response);
+        return ResponseHandler.HandleResponse(response);
     }
 
     [HttpPut]
     public async Task<ActionResult<RoomResponse>> Update(UpdateRoomRequest request)
     {
         var response = await _mediator.Send(request);
-        return Ok(response);
+        return ResponseHandler.HandleResponse(response);
     }
 
     [HttpDelete]
@@ -58,6 +59,6 @@ public class RoomsController : ControllerBase
     public async Task<ActionResult<RoomResponse>> Delete([FromRoute] Guid id)
     {
         var response = await _mediator.Send(new DeleteRoomRequest(id));
-        return Ok(response);
+        return ResponseHandler.HandleResponse(response);
     }
 }

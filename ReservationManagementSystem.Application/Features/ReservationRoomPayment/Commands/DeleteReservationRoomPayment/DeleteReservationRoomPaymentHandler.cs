@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using MediatR;
-using ReservationManagementSystem.Application.Common.Errors;
 using ReservationManagementSystem.Application.Features.ReservationRoomPayment.Common;
 using ReservationManagementSystem.Application.Interfaces.Repositories;
 using ReservationManagementSystem.Application.Wrappers;
@@ -24,7 +23,7 @@ public sealed class DeleteReservationRoomPaymentHandler : IRequestHandler<Delete
 
         if (reservationRoomPayment == null)
         {
-            return Result<ReservationRoomPaymentsResponse>.Failure(NotFoundError.NotFound("ReservationRoomPayment was not found!"));
+            return Result<ReservationRoomPaymentsResponse>.Failure(ReservationRoomPaymentErrors.NotFound(request.Id));
         }
 
         var response = _mapper.Map<ReservationRoomPaymentsResponse>(reservationRoomPayment);

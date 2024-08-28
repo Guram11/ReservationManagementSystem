@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using ReservationManagementSystem.Application.Features.Users.Commands.Common;
 using ReservationManagementSystem.Application.Interfaces.Services;
 using ReservationManagementSystem.Application.Wrappers;
 
@@ -19,7 +20,7 @@ public class ResetPasswordHandler : IRequestHandler<ResetPasswordRequest, Result
 
         if (response.IsSuccess)
         {
-            return Result<string>.Success("Password reset successfully!");
+            return Result<string>.Success(SuccessResponses.PasswordResetSuccessfull);
         }
 
         return Result<string>.Failure(response.Error);

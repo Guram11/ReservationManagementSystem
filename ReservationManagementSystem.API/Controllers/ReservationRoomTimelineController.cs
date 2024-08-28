@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using ReservationManagementSystem.API.Extensions;
 using ReservationManagementSystem.Application.Features.ReservationRoomTimelines.Common;
 using ReservationManagementSystem.Application.Features.ReservationRoomTimelines.PushReservationTimeline;
 
@@ -20,6 +21,6 @@ public class ReservationRoomTimelineController : ControllerBase
     public async Task<ActionResult<ReservationRoomTimelineResponse>> PushReservationRoomTimeline([FromBody] PushReservationTimelineRequest request)
     {
         var response = await _mediator.Send(request);
-        return Ok(response);
+        return ResponseHandler.HandleResponse(response);
     }
 }

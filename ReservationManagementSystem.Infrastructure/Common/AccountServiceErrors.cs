@@ -33,4 +33,7 @@ public static class AccountServiceErrors
 
     public static Error PasswordResetFailed(string email) => new Error(
         "Account.PasswordResetFailed", $"Error occurred while resetting the password for '{email}'.");
+
+    public static Error UserCreationFailed(string error) => new Error(
+    "UserCreationFailed", $"UserCreationFailed: '{error}'.");
 }

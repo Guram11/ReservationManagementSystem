@@ -1,7 +1,5 @@
 ﻿using AutoMapper;
 using MediatR;
-using ReservationManagementSystem.Application.Common.Errors;
-using ReservationManagementSystem.Application.Features.Hotels.Common;
 using ReservationManagementSystem.Application.Features.Rates.Common;
 using ReservationManagementSystem.Application.Interfaces.Repositories;
 using ReservationManagementSystem.Application.Wrappers;
@@ -25,7 +23,7 @@ public sealed class DeleteRateHandler : IRequestHandler<DeleteRateRequest, Resul
         
         if (rate == null)
         {
-            return Result<RateResponse>.Failure(NotFoundError.NotFound($"Rate with ID {request.Id} was not found."));
+            return Result<RateResponse>.Failure(RateErrors.NotFound(request.Id));
         }
         
         var response = _mapper.Map<RateResponse>(rate);

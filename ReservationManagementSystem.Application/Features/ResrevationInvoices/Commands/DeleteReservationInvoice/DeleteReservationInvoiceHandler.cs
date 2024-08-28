@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using MediatR;
-using ReservationManagementSystem.Application.Common.Errors;
 using ReservationManagementSystem.Application.Features.ResrevationInvoices.Common;
 using ReservationManagementSystem.Application.Interfaces.Repositories;
 using ReservationManagementSystem.Application.Wrappers;
@@ -24,7 +23,7 @@ public sealed class DeleteReservationInvoiceHandler : IRequestHandler<DeleteRese
 
         if (reservationInvoice is null)
         {
-            return Result<ReservationInvoiceResponse>.Failure(NotFoundError.NotFound($"Reservation Invoice with ID {request.Id} was not found."));
+            return Result<ReservationInvoiceResponse>.Failure(ReservationInvoiceErrors.NotFound(request.Id));
         }
 
         var response = _mapper.Map<ReservationInvoiceResponse>(reservationInvoice);

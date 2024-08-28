@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using ReservationManagementSystem.Application.Features.ReservationRooms.Common;
 using ReservationManagementSystem.Application.Features.ReservationRoomTimelines.Common;
 using ReservationManagementSystem.Application.Interfaces.Repositories;
 using ReservationManagementSystem.Application.Wrappers;
@@ -27,7 +28,7 @@ public sealed class PushReservationRoomTimeline : IRequestHandler<PushReservatio
 
         if (reservationRoom is null)
         {
-            return Result<ReservationRoomTimelineResponse>.Failure(new Error("Not found.", "RateRoomType not found."));
+            return Result<ReservationRoomTimelineResponse>.Failure(ReservationRoomErrors.NotFound());
         }
 
         var lastModifiedRateTimeline = new ReservationRoomTimeline();

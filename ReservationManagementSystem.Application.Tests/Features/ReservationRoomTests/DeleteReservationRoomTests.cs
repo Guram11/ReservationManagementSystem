@@ -83,7 +83,7 @@ public class DeleteReservationRoomHandlerTests
         // Assert
         result.IsSuccess.Should().BeFalse();
         result.Error.Code.Should().Be("NotFound");
-        result.Error.Description.Should().Be("ReservationRoom was not found!");
+        result.Error.Description.Should().Be("ReservationRoom was not found.");
     }
 
     [Fact]

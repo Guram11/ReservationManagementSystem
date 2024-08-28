@@ -2,10 +2,11 @@
 using MediatR;
 using ReservationManagementSystem.Application.Features.Rooms.Common;
 using ReservationManagementSystem.Application.Interfaces.Repositories;
+using ReservationManagementSystem.Application.Wrappers;
 
 namespace ReservationManagementSystem.Application.Features.Rooms.Queries.GetAllRooms;
 
-public sealed class GetAllRoomsHandler : IRequestHandler<GetAllRoomsRequest, List<RoomResponse>>
+public sealed class GetAllRoomsHandler : IRequestHandler<GetAllRoomsRequest, Result<List<RoomResponse>>>
 {
     private readonly IRoomRepository _roomRepository;
     private readonly IMapper _mapper;
@@ -16,13 +17,15 @@ public sealed class GetAllRoomsHandler : IRequestHandler<GetAllRoomsRequest, Lis
         _mapper = mapper;
     }
 
-    public async Task<List<RoomResponse>> Handle(GetAllRoomsRequest request, CancellationToken cancellationToken)
+    public async Task<Result<List<RoomResponse>>> Handle(GetAllRoomsRequest request, CancellationToken cancellationToken)
     {
         var rooms = await _roomRepository.GetAll(
             request.FilterOn, request.FilterQuery, request.SortBy,
             request.IsAscending, request.PageNumber, request.PageSize);
 
-        return _mapper.Map<List<RoomResponse>>(rooms);
+        var response = _mapper.Map<List<RoomResponse>>(rooms);
+
+        return Result<List<RoomResponse>>.Success(response);
     }
 }
 

@@ -4,6 +4,7 @@ using Moq;
 using ReservationManagementSystem.Application.Features.Hotels.Common;
 using ReservationManagementSystem.Application.Features.RateRoomTypes.Common;
 using ReservationManagementSystem.Application.Features.RateRoomTypes.Queries.GetAllRateRoomTypes;
+using ReservationManagementSystem.Application.Features.Rates.Common;
 using ReservationManagementSystem.Application.Interfaces.Repositories;
 using ReservationManagementSystem.Domain.Entities;
 
@@ -52,7 +53,8 @@ public class GetAllRateRoomTypesHandlerTests
         var result = await _handler.Handle(request, CancellationToken.None);
 
         // Assert
-        result.Should().BeEquivalentTo(rateRoomTypeResponses);
+        result.IsSuccess.Should().BeTrue();
+        result.Data.Should().BeEquivalentTo(rateRoomTypeResponses);
     }
 
     [Fact]
@@ -77,6 +79,6 @@ public class GetAllRateRoomTypesHandlerTests
         var result = await _handler.Handle(request, CancellationToken.None);
 
         // Assert
-        result.Should().BeEquivalentTo(rateRoomTypeResponses);
+        result.Data.Should().BeEmpty();
     }
 }

@@ -98,6 +98,6 @@ public class CreateReservationRoomlHandlerTests
 
         // Assert
         result.IsSuccess.Should().BeFalse();
-        result.Error.Description.Should().Contain("ReservationRoom not found");
+        result.Error.Description.Should().Contain("ReservationRoom was not found");
     }
 }

@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using MediatR;
-using ReservationManagementSystem.Application.Common.Errors;
 using ReservationManagementSystem.Application.Features.RateRoomTypes.Common;
 using ReservationManagementSystem.Application.Interfaces.Repositories;
 using ReservationManagementSystem.Application.Wrappers;
@@ -24,7 +23,7 @@ public sealed class DeleteRateRoomTypeHandler : IRequestHandler<DeleteRateRoomTy
 
         if (rateRoomType == null)
         {
-            return Result<RateRoomTypeResponse>.Failure(NotFoundError.NotFound("RateRoomType was not found!"));
+            return Result<RateRoomTypeResponse>.Failure(RateRoomTypeErrors.NotFound());
         }
 
         var response = _mapper.Map<RateRoomTypeResponse>(rateRoomType);

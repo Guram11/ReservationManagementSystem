@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using ReservationManagementSystem.API.Controllers;
+using ReservationManagementSystem.Application.Features.Hotels.Common;
 using ReservationManagementSystem.Application.Features.RateTimelines.Common;
 using ReservationManagementSystem.Application.Features.RateTimelines.PushPrice;
 using ReservationManagementSystem.Application.Wrappers;
@@ -45,9 +46,8 @@ public class RateTimelinesControllerTests
         var actionResult = await _controller.PushPrice(request);
 
         // Assert
-        actionResult.Should().BeOfType<ActionResult<RateTimelineResponse>>()
-            .Which.Result.Should().BeOfType<OkObjectResult>()
-            .Which.Value.Should().BeOfType<Result<RateTimelineResponse>>()
-            .Which.Data.Should().Be(expectedResponse);
+        var okResult = actionResult.Result as OkObjectResult;
+        okResult.Should().NotBeNull();
+        okResult!.Value.Should().BeEquivalentTo(expectedResponse);
     }
 }

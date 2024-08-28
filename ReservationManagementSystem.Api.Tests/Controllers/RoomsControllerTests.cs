@@ -46,21 +46,19 @@ public class RoomsControllerTests
                 new RoomResponse { Id = Guid.NewGuid(), CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow, Number = "113", Floor = 1, Note = "None", RoomTypeId = Guid.NewGuid() }
             };
+        var result = Result<List<RoomResponse>>.Success(roomResponses);
 
         _mediatorMock
             .Setup(m => m.Send(It.IsAny<GetAllRoomsRequest>(), default))
-            .ReturnsAsync(roomResponses);
+            .ReturnsAsync(result);
 
         // Act
-        var result = await _controller.GetAll(queryParams);
+        var actionResult = await _controller.GetAll(queryParams);
 
         // Assert
-        result.Should().BeOfType<ActionResult<List<RoomResponse>>>();
-
-        var okResult = result.Result as OkObjectResult;
+        var okResult = actionResult.Result as OkObjectResult;
         okResult.Should().NotBeNull();
-        okResult?.StatusCode.Should().Be(200);
-        okResult?.Value.Should().BeEquivalentTo(roomResponses);
+        okResult!.Value.Should().BeEquivalentTo(roomResponses);
     }
 
     [Fact]
@@ -88,8 +86,9 @@ public class RoomsControllerTests
         var actionResult = await _controller.Get(roomlId);
 
         // Assert
-        var okResult = actionResult.Result.Should().BeOfType<OkObjectResult>().Subject;
-        var resultData = okResult.Value.Should().BeOfType<Result<RoomResponse>>().Subject;
+        var okResult = actionResult.Result as OkObjectResult;
+        okResult.Should().NotBeNull();
+        okResult!.Value.Should().BeEquivalentTo(roomResponse);
     }
 
     [Fact]
@@ -117,9 +116,9 @@ public class RoomsControllerTests
         var actionResult = await _controller.Create(createRoomRequest);
 
         // Assert
-        actionResult.Should().BeOfType<ActionResult<RoomResponse>>()
-            .Which.Result.Should().BeOfType<OkObjectResult>()
-            .Which.Value.Should().BeOfType<Result<RoomResponse>>();
+        var okResult = actionResult.Result as OkObjectResult;
+        okResult.Should().NotBeNull();
+        okResult!.Value.Should().BeEquivalentTo(roomResponse);
     }
 
     [Fact]
@@ -147,9 +146,9 @@ public class RoomsControllerTests
         var actionResult = await _controller.Update(updateRoomRequest);
 
         // Assert
-        actionResult.Should().BeOfType<ActionResult<RoomResponse>>()
-            .Which.Result.Should().BeOfType<OkObjectResult>()
-            .Which.Value.Should().BeOfType<Result<RoomResponse>>();
+        var okResult = actionResult.Result as OkObjectResult;
+        okResult.Should().NotBeNull();
+        okResult!.Value.Should().BeEquivalentTo(roomResponse);
     }
 
     [Fact]
@@ -177,8 +176,8 @@ public class RoomsControllerTests
         var actionResult = await _controller.Delete(roomId);
 
         // Assert
-        actionResult.Should().BeOfType<ActionResult<RoomResponse>>()
-            .Which.Result.Should().BeOfType<OkObjectResult>()
-            .Which.Value.Should().BeOfType<Result<RoomResponse>>();
+        var okResult = actionResult.Result as OkObjectResult;
+        okResult.Should().NotBeNull();
+        okResult!.Value.Should().BeEquivalentTo(roomResponse);
     }
 }

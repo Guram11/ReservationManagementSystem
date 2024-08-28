@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using ReservationManagementSystem.Application.Features.Users.Commands.ForgotPassword;
+using ReservationManagementSystem.Application.Features.Users.Commands.Common;
 using ReservationManagementSystem.Application.Interfaces.Services;
 using ReservationManagementSystem.Application.Wrappers;
 
@@ -20,7 +20,7 @@ public class ConfirmEmailHandler : IRequestHandler<ConfirmEmailRequest, Result<s
 
         if (response.IsSuccess)
         {
-            return Result<string>.Success("Email confirmed successfully.");
+            return Result<string>.Success(SuccessResponses.EmailConfirmed);
         }
 
         return Result<string>.Failure(response.Error);

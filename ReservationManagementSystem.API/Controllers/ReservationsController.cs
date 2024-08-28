@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using ReservationManagementSystem.API.Extensions;
 using ReservationManagementSystem.Application.Features.Reservations.Commands.CreateReservation;
 using ReservationManagementSystem.Application.Features.Reservations.Commands.DeleteReservation;
 using ReservationManagementSystem.Application.Features.Reservations.Common;
@@ -26,14 +27,14 @@ public class ReservationsController : ControllerBase
             queryParams.FilterOn, queryParams.FilterQuery,
             queryParams.SortBy, queryParams.IsAscending,
             queryParams.PageNumber, queryParams.PageSize));
-        return Ok(response);
+        return ResponseHandler.HandleResponse(response);
     }
 
     [HttpPost]
     public async Task<ActionResult<ReservationResponse>> Create(CreateReservationRequest request)
     {
         var response = await _mediator.Send(request);
-        return Ok(response);
+        return ResponseHandler.HandleResponse(response);
     }
 
     [HttpDelete]
@@ -41,6 +42,6 @@ public class ReservationsController : ControllerBase
     public async Task<ActionResult<ReservationResponse>> Delete([FromRoute] Guid id)
     {
         var response = await _mediator.Send(new DeleteReservationRequest(id));
-        return Ok(response);
+        return ResponseHandler.HandleResponse(response);
     }
 }
