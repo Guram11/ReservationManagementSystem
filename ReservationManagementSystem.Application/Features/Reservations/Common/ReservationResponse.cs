@@ -4,15 +4,15 @@ namespace ReservationManagementSystem.Application.Features.Reservations.Common;
 
 public sealed record ReservationResponse
 {
-    public Guid Id { get; set; }
-    public DateTime CreatedAt { get; set; }
-    public DateTime UpdatedAt { get; set; }
-    public Guid HotelId { get; set; }
-    public DateTime Checkin { get; set; }
-    public DateTime Checkout { get; set; }
-    public Guid RoomTypeId { get; set; }
-    public Guid RateId { get; set; }
-    public int NumberOfRooms { get; set; }
-    public Currencies Currency { get; set; }
-    public ReservationStatus StatusId { get; set; }
+    public Guid Id { get; init; }
+    public DateTime CreatedAt { get; init; }
+    public DateTime UpdatedAt { get; init; }
+    public Guid HotelId { get; init; }
+    public DateTime Checkin { get; init; }
+    public DateTime Checkout { get; init; }
+    public Guid RoomTypeId { get; init; }
+    public Guid RateId { get; init; }
+    public int NumberOfRooms { get; init; }
+    public Currencies Currency { get; init; }
+    public ReservationStatus StatusId { get; init; }
 }

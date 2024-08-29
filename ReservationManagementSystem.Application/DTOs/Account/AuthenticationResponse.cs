@@ -2,14 +2,14 @@
 
 namespace ReservationManagementSystem.Application.DTOs.Account;
 
-public class AuthenticationResponse
+public sealed record AuthenticationResponse
 {
-    public required string Id { get; set; }
-    public required string UserName { get; set; }
-    public required string Email { get; set; }
-    public required List<string> Roles { get; set; }
-    public bool IsVerified { get; set; }
-    public required string JWToken { get; set; }
+    public required string Id { get; init; }
+    public required string UserName { get; init; }
+    public required string Email { get; init; }
+    public required List<string> Roles { get; init; }
+    public bool IsVerified { get; init; }
+    public required string JWToken { get; init; }
     [JsonIgnore]
-    public string? RefreshToken { get; set; }
+    public string? RefreshToken { get; init; }
 }

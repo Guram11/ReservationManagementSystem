@@ -2,11 +2,11 @@
 
 public sealed record RoomResponse
 {
-    public Guid Id { get; set; }
-    public DateTime CreatedAt { get; set; }
-    public DateTime UpdatedAt { get; set; }
-    public Guid RoomTypeId { get; set; }
-    public required string Number { get; set; }
-    public byte Floor { get; set; }
-    public string? Note { get; set; }
+    public Guid Id { get; init; }
+    public DateTime CreatedAt { get; init; }
+    public DateTime UpdatedAt { get; init; }
+    public Guid RoomTypeId { get; init; }
+    public required string Number { get; init; }
+    public byte Floor { get; init; }
+    public string? Note { get; init; }
 }

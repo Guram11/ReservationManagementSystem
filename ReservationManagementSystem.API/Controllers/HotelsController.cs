@@ -14,7 +14,7 @@ namespace ReservationManagementSystem.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize(Roles = "SuperAdmin, Basic")]
+//[Authorize(Roles = "SuperAdmin, Basic")]
 public class HotelsController : ControllerBase
 {
     private readonly IMediator _mediator;

@@ -1,8 +1,8 @@
 ﻿namespace ReservationManagementSystem.Application.DTOs.Account;
 
-public class AuthenticationRequest
+public sealed record AuthenticationRequest
 {
-    public required string Email { get; set; }
-    public required string Password { get; set; }
-    public string? IpAddress { get; set; }
+    public required string Email { get; init; }
+    public required string Password { get; init; }
+    public string? IpAddress { get; init; }
 }

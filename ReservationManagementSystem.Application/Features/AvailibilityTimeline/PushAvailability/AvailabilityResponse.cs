@@ -2,10 +2,10 @@
 
 public sealed record AvailabilityResponse
 {
-    public Guid Id { get; set; }
-    public DateTime CreatedAt { get; set; }
-    public DateTime UpdatedAt { get; set; }
-    public DateTime Date { get; set; }
-    public Guid RoomTypeId { get; set; }
-    public byte Available { get; set; }
+    public Guid Id { get; init; }
+    public DateTime CreatedAt { get; init; }
+    public DateTime UpdatedAt { get; init; }
+    public DateTime Date { get; init; }
+    public Guid RoomTypeId { get; init; }
+    public byte Available { get; init; }
 }

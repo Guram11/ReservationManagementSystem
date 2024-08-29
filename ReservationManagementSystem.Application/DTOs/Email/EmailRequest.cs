@@ -1,9 +1,9 @@
 ﻿namespace ReservationManagementSystem.Application.DTOs.Email;
 
-public class EmailRequest
+public sealed record EmailRequest
 {
-    public required string To { get; set; }
-    public required string Subject { get; set; }
-    public required string Body { get; set; }
-    public string? From { get; set; }
+    public required string To { get; init; }
+    public required string Subject { get; init; }
+    public required string Body { get; init; }
+    public string? From { get; init; }
 }

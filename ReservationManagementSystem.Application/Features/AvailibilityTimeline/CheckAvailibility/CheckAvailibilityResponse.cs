@@ -2,9 +2,9 @@
 
 public sealed record CheckAvailabilityResponse
 {
-    public Guid RoomTypeId  { get; set; }
-    public Guid RateId  { get; set; }
-    public required string RoomType { get; set; }
-    public int AvailableRooms { get; set; }
-    public decimal TotalPrice { get; set; }
+    public Guid RoomTypeId { get; init; }
+    public Guid RateId { get; init; }
+    public required string RoomType { get; init; }
+    public int AvailableRooms { get; init; }
+    public decimal TotalPrice { get; init; }
 }

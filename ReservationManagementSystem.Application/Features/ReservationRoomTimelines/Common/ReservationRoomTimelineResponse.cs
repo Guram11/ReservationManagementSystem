@@ -2,10 +2,10 @@
 
 public sealed record ReservationRoomTimelineResponse
 {
-    public Guid Id { get; set; }
-    public DateTime CreatedAt { get; set; }
-    public DateTime UpdatedAt { get; set; }
-    public Guid ReservationRoomId { get; set; }
-    public DateTime Date { get; set; }
-    public decimal Price { get; set; }
+    public Guid Id { get; init; }
+    public DateTime CreatedAt { get; init; }
+    public DateTime UpdatedAt { get; init; }
+    public Guid ReservationRoomId { get; init; }
+    public DateTime Date { get; init; }
+    public decimal Price { get; init; }
 }

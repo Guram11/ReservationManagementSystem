@@ -4,12 +4,12 @@ namespace ReservationManagementSystem.Application.Features.ResrevationInvoices.C
 
 public sealed record ReservationInvoiceResponse
 {
-    public Guid Id { get; set; }
-    public DateTime CreatedAt { get; set; }
-    public DateTime UpdatedAt { get; set; }
-    public Guid ReservationId { get; set; }
-    public decimal Amount { get; set; }
-    public decimal Paid { get; set; }
-    public decimal Due { get; set; }
-    public Currencies Currency { get; set; }
+    public Guid Id { get; init; }
+    public DateTime CreatedAt { get; init; }
+    public DateTime UpdatedAt { get; init; }
+    public Guid ReservationId { get; init; }
+    public decimal Amount { get; init; }
+    public decimal Paid { get; init; }
+    public decimal Due { get; init; }
+    public Currencies Currency { get; init; }
 }

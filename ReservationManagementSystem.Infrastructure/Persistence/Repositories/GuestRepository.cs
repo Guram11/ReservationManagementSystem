@@ -17,12 +17,6 @@ public class GuestRepository : BaseRepository<Guest>, IGuestRepository
     public async Task<Guest?> GetGuestByEmail(string email)
     {
         var guest  = await _context.Guests.FirstOrDefaultAsync(g => g.Email == email);
-
-        if (guest == null)
-        {
-            return null;
-        }
-
         return guest;
     }
 }

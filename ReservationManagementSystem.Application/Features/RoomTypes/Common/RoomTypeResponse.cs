@@ -2,13 +2,13 @@
 
 public sealed record RoomTypeResponse
 {
-    public Guid Id { get; set; }
-    public DateTime CreatedAt { get; set; }
-    public DateTime UpdatedAt { get; set; }
-    public Guid HotelId { get; set; }
-    public required string Name { get; set; }
-    public byte NumberOfRooms { get; set; }
-    public bool IsActive { get; set; }
-    public byte MinCapacity { get; set; }
-    public byte MaxCapacity { get; set; }
+    public Guid Id { get; init; }
+    public DateTime CreatedAt { get; init; }
+    public DateTime UpdatedAt { get; init; }
+    public Guid HotelId { get; init; }
+    public required string Name { get; init; }
+    public byte NumberOfRooms { get; init; }
+    public bool IsActive { get; init; }
+    public byte MinCapacity { get; init; }
+    public byte MaxCapacity { get; init; }
 }

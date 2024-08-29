@@ -2,8 +2,8 @@
 
 public sealed record ReservationRoomServiceResponse
 {
-    public Guid ReservationRoomId { get; set; }
-    public Guid HotelServiceId { get; set; }
-    public DateTime CreatedAt { get; set; }
-    public DateTime UpdatedAt { get; set; }
+    public Guid ReservationRoomId { get; init; }
+    public Guid HotelServiceId { get; init; }
+    public DateTime CreatedAt { get; init; }
+    public DateTime UpdatedAt { get; init; }
 }

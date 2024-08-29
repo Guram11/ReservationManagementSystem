@@ -4,11 +4,11 @@ namespace ReservationManagementSystem.Application.Features.HotelServices.Common;
 
 public sealed record HotelServiceResponse
 {
-    public Guid Id { get; set; }
-    public DateTime CreatedAt { get; set; }
-    public DateTime UpdatedAt { get; set; }
-    public Guid HotelId { get; set; }
-    public HotelServiceTypes ServiceTypeId { get; set; }
-    public required string Description { get; set; }
-    public decimal Price { get; set; }
+    public Guid Id { get; init; }
+    public DateTime CreatedAt { get; init; }
+    public DateTime UpdatedAt { get; init; }
+    public Guid HotelId { get; init; }
+    public HotelServiceTypes ServiceTypeId { get; init; }
+    public required string Description { get; init; }
+    public decimal Price { get; init; }
 }
