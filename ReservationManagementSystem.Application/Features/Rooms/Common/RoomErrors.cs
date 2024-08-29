@@ -1,9 +1,10 @@
-﻿using ReservationManagementSystem.Application.Wrappers;
+﻿using ReservationManagementSystem.Application.Enums;
+using ReservationManagementSystem.Application.Wrappers;
 
 namespace ReservationManagementSystem.Application.Features.Rooms.Common;
 
 public static class RoomErrors
 {
     public static Error NotFound(Guid id) => new Error(
-    "NotFound", $"Room with ID {id} was not found.");
+    ErrorType.NotFoundError, $"Room with ID {id} was not found.");
 }

@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using ReservationManagementSystem.API.Controllers;
+using ReservationManagementSystem.Application.Enums;
 using ReservationManagementSystem.Application.Features.Hotels.Commands.CreateHotel;
 using ReservationManagementSystem.Application.Features.Hotels.Commands.DeleteHotel;
 using ReservationManagementSystem.Application.Features.Hotels.Commands.UpdateHotel;
@@ -172,7 +173,7 @@ public class HotelsControllerTests
     public async Task Get_WhenCalled_ReturnsNotFound_WhenHotelIsNotFound()
     {
         // Arrange
-        var result = Result<HotelResponse>.Failure(new Error("NotFound", "Hotel not found."));
+        var result = Result<HotelResponse>.Failure(new Error(ErrorType.NotFoundError, "Hotel not found."));
 
         _mediatorMock
             .Setup(m => m.Send(It.IsAny<GetHotelByIdRequest>(), It.IsAny<CancellationToken>()))
@@ -191,7 +192,7 @@ public class HotelsControllerTests
     public async Task Create_WhenCalled_ReturnsBadRequest_WhenValidationFails()
     {
         // Arrange
-        var result = Result<HotelResponse>.Failure(new Error("ValidationError", "Invalid request data."));
+        var result = Result<HotelResponse>.Failure(new Error(ErrorType.ValidationError, "Invalid request data."));
 
         _mediatorMock
             .Setup(m => m.Send(It.IsAny<CreateHotelRequest>(), It.IsAny<CancellationToken>()))

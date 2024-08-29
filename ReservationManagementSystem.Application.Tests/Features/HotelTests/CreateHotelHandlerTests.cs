@@ -39,7 +39,7 @@ public class CreateHotelHandlerTests
 
         // Assert
         result.IsSuccess.Should().BeFalse();
-        result.Error.Code.Should().Be("ValidationError");
+        result.Error.ErrorType.Should().Be(Enums.ErrorType.ValidationError);
         result.Error.Description.Should().Contain("Name must be at least 5 characters.");
     }
 

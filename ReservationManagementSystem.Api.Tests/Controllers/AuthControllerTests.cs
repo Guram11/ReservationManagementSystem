@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using ReservationManagementSystem.API.Controllers;
 using ReservationManagementSystem.Application.DTOs.Account;
+using ReservationManagementSystem.Application.Enums;
 using ReservationManagementSystem.Application.Features.Users.Commands.AuthenticateUser;
 using ReservationManagementSystem.Application.Features.Users.Commands.ConfirmEmail;
 using ReservationManagementSystem.Application.Features.Users.Commands.ForgotPassword;
@@ -74,7 +75,7 @@ public class AuthControllerTests
             Password = "wrongpassword"
         };
 
-        var error = new Error("InvalidCredentials", "Invalid credentials");
+        var error = new Error(ErrorType.InvalidCredentials, "Invalid credentials");
         _mediatorMock
             .Setup(m => m.Send(request, default))
             .ReturnsAsync(Result<AuthenticationResponse>.Failure(error));
@@ -130,7 +131,7 @@ public class AuthControllerTests
             PasswordConfirm = "password123"
         };
 
-        var error = new Error("RegistrationFailed", "Registration failed");
+        var error = new Error(ErrorType.Unauthorized, "Registration failed");
         _mediatorMock
             .Setup(m => m.Send(request, default))
             .ReturnsAsync(Result<string>.Failure(error));
@@ -171,7 +172,7 @@ public class AuthControllerTests
         // Arrange
         var userId = "userId123";
         var code = "confirmationCode";
-        var error = new Error("ConfirmationFailed", "Confirmation failed");
+        var error = new Error(ErrorType.EmailNotSentError, "Confirmation failed");
 
         _mediatorMock
             .Setup(m => m.Send(It.Is<ConfirmEmailRequest>(req => req.UserId == userId && req.Code == code), default))
@@ -218,7 +219,7 @@ public class AuthControllerTests
             Email = "user@example.com"
         };
 
-        var error = new Error("Failed", "Forgot password failed");
+        var error = new Error(ErrorType.EmailNotSentError, "Forgot password failed");
         _mediatorMock
             .Setup(m => m.Send(request, default))
             .ReturnsAsync(Result<string>.Failure(error));
@@ -268,7 +269,7 @@ public class AuthControllerTests
             Password = "newPassword"
         };
 
-        var error = new Error("Failed", "Reset password failed");
+        var error = new Error(ErrorType.EmailNotSentError, "Reset password failed");
         _mediatorMock
             .Setup(m => m.Send(request, default))
             .ReturnsAsync(Result<string>.Failure(error));

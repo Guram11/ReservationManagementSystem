@@ -56,7 +56,7 @@ public class DeleteHotelHandlerTests
 
         // Assert
         result.IsSuccess.Should().BeFalse();
-        result.Error.Code.Should().Be("NotFound");
+        result.Error.ErrorType.Should().Be(Enums.ErrorType.NotFoundError);
         result.Error.Description.Should().Be($"Hotel with ID {hotelId} was not found.");
     }
 

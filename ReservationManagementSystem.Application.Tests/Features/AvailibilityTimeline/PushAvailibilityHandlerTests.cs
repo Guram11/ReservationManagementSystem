@@ -99,7 +99,7 @@ public class PushAvailabilityHandlerTests
 
         // Assert
         result.IsSuccess.Should().BeFalse();
-        result.Error.Description.Should().Be("Room type not found.");
+        result.Error.Description.Should().Be($"RoomType with ID {roomTypeId} was not found.");
     }
 
     [Fact]

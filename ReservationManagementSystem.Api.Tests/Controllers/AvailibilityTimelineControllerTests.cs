@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using ReservationManagementSystem.API.Controllers;
+using ReservationManagementSystem.Application.Enums;
 using ReservationManagementSystem.Application.Features.AvailibilityTimeline.CheckAvailibility;
 using ReservationManagementSystem.Application.Features.AvailibilityTimeline.PushAvailability;
 using ReservationManagementSystem.Application.Wrappers;
@@ -79,7 +80,7 @@ public class AvailabilityTimelineControllerTests
     {
         // Arrange
         var request = new PushAvailabilityRequest(Guid.NewGuid(), DateTime.UtcNow, DateTime.UtcNow, 2);
-        var result = Result<AvailabilityResponse>.Failure(new Error("ValidationError", "Invalid request data."));
+        var result = Result<AvailabilityResponse>.Failure(new Error(ErrorType.ValidationError, "Invalid request data."));
 
         _mediatorMock
             .Setup(m => m.Send(request, It.IsAny<CancellationToken>()))
@@ -99,7 +100,7 @@ public class AvailabilityTimelineControllerTests
     {
         // Arrange
         var request = new CheckAvailabilityRequest(DateTime.Now, DateTime.Now.AddDays(2));
-        var result = Result<List<CheckAvailabilityResponse>>.Failure(new Error("NotFound", "No availability found."));
+        var result = Result<List<CheckAvailabilityResponse>>.Failure(new Error(ErrorType.NotFoundError, "No availability found."));
 
         _mediatorMock
             .Setup(m => m.Send(request, It.IsAny<CancellationToken>()))

@@ -1,6 +1,8 @@
-﻿namespace ReservationManagementSystem.Application.Wrappers;
+﻿using ReservationManagementSystem.Application.Enums;
 
-public sealed record Error(string Code, string Description)
+namespace ReservationManagementSystem.Application.Wrappers;
+
+public sealed record Error(ErrorType ErrorType, string Description)
 {
-    public static readonly Error None = new(string.Empty, string.Empty);
+    public static readonly Error None = new(ErrorType.None, string.Empty);
 }

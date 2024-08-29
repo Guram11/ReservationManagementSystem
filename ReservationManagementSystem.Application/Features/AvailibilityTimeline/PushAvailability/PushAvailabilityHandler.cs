@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using ReservationManagementSystem.Application.Features.AvailibilityTimeline.Common;
+using ReservationManagementSystem.Application.Features.RoomTypes.Common;
 using ReservationManagementSystem.Application.Interfaces.Repositories;
 using ReservationManagementSystem.Application.Wrappers;
 using ReservationManagementSystem.Domain.Entities;
@@ -27,7 +28,7 @@ public sealed class PushAvailabilityHandler : IRequestHandler<PushAvailabilityRe
 
         if (roomType is null)
         {
-            return Result<AvailabilityResponse>.Failure(new Error("Not found.", "Room type not found."));
+            return Result<AvailabilityResponse>.Failure(RoomTypeErrors.NotFound(request.RoomTypeId));
         }
 
         if (request.AvailableRooms > roomType.NumberOfRooms)

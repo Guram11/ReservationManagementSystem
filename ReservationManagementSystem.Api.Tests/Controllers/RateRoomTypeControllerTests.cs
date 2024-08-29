@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using ReservationManagementSystem.API.Controllers;
+using ReservationManagementSystem.Application.Enums;
 using ReservationManagementSystem.Application.Features.Hotels.Commands.CreateHotel;
 using ReservationManagementSystem.Application.Features.Hotels.Commands.DeleteHotel;
 using ReservationManagementSystem.Application.Features.Hotels.Common;
@@ -142,7 +143,7 @@ public class RateRoomTypeControllerTests
             PageSize = 0
         };
 
-        var result = Result<List<RateRoomTypeResponse>>.Failure(new Error("ValidationError", "Invalid request parameters."));
+        var result = Result<List<RateRoomTypeResponse>>.Failure(new Error(ErrorType.ValidationError, "Invalid request parameters."));
 
         _mediatorMock
             .Setup(m => m.Send(It.IsAny<GetAllRateRoomTypesRequest>(), It.IsAny<CancellationToken>()))
@@ -163,7 +164,7 @@ public class RateRoomTypeControllerTests
         // Arrange
         var roomTypeId = Guid.NewGuid();
         var rateId = Guid.NewGuid();
-        var result = Result<RateRoomTypeResponse>.Failure(new Error("NotFound", "RateRoomType not found."));
+        var result = Result<RateRoomTypeResponse>.Failure(new Error(ErrorType.NotFoundError, "RateRoomType not found."));
 
         _mediatorMock
             .Setup(m => m.Send(It.IsAny<DeleteRateRoomTypeRequest>(), It.IsAny<CancellationToken>()))

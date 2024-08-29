@@ -34,7 +34,7 @@ public class DeleteRateRoomTypeHandlerTests
 
         // Assert
         result.IsSuccess.Should().BeFalse();
-        result.Error.Code.Should().Be("NotFound");
+        result.Error.ErrorType.Should().Be(Enums.ErrorType.NotFoundError);
         result.Error.Description.Should().Be("RateRoomType was not found.");
     }
 

@@ -2,6 +2,7 @@
 using FluentAssertions;
 using FluentValidation;
 using Moq;
+using ReservationManagementSystem.Application.Enums;
 using ReservationManagementSystem.Application.Features.Guests.Commands.CreateGuest;
 using ReservationManagementSystem.Application.Features.Guests.Common;
 using ReservationManagementSystem.Application.Interfaces.Repositories;
@@ -38,7 +39,7 @@ public class CreateGuestHandlerTests
 
         // Assert
         result.IsSuccess.Should().BeFalse();
-        result.Error.Code.Should().Be("ValidationError");
+        result.Error.ErrorType.Should().Be(ErrorType.ValidationError);
         result.Error.Description.Should().Contain("Email is not valid.");
     }
 
@@ -58,7 +59,7 @@ public class CreateGuestHandlerTests
 
         // Assert
         result.IsSuccess.Should().BeFalse();
-        result.Error.Code.Should().Be("AlreadyCreated");
+        result.Error.ErrorType.Should().Be(ErrorType.AlreadyCreatedError);
         result.Error.Description.Should().Contain("Email is already in use!");
     }
 

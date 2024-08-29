@@ -78,7 +78,7 @@ public class DeleteReservationHandlerTests
 
         // Assert
         result.IsSuccess.Should().BeFalse();
-        result.Error.Code.Should().Be("NotFound");
+        result.Error.ErrorType.Should().Be(Enums.ErrorType.NotFoundError);
         result.Error.Description.Should().Be($"Reservation with ID {reservationId} was not found.");
     }
 

@@ -62,7 +62,7 @@ public class GetRateByIdHandlerTests
         // Assert
         result.IsSuccess.Should().BeFalse();
         result.Error.Should().NotBeNull();
-        result.Error.Code.Should().Be("NotFound");
+        result.Error.ErrorType.Should().Be(Enums.ErrorType.NotFoundError);
         result.Error.Description.Should().Be($"Rate with ID {rateId} was not found.");
     }
 }

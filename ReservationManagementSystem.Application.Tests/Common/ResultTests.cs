@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using ReservationManagementSystem.Application.Enums;
 using ReservationManagementSystem.Application.Wrappers;
 
 namespace ReservationManagementSystem.Application.Tests.Common;
@@ -22,13 +23,13 @@ public class ResultTests
     public void Failure_Should_Create_Failure_Result()
     {
         // Act
-        var result = Result<string>.Failure(new Error("ErrorCode", "Error occurred"));
+        var result = Result<string>.Failure(new Error(ErrorType.None, "Error occurred"));
 
         // Assert
         result.IsSuccess.Should().BeFalse();
         result.IsFailure.Should().BeTrue();
         result.Data.Should().BeNull();
-        result.Error.Code.Should().Be("ErrorCode");
+        result.Error.ErrorType.Should().Be(ErrorType.None);
         result.Error.Description.Should().Be("Error occurred");
     }
 }

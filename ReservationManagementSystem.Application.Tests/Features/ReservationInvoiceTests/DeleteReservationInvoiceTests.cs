@@ -81,7 +81,7 @@ public class DeleteReservationInvoiceHandlerTests
 
         // Assert
         result.IsSuccess.Should().BeFalse();
-        result.Error.Code.Should().Be("NotFound");
+        result.Error.ErrorType.Should().Be(Enums.ErrorType.NotFoundError);
         result.Error.Description.Should().Be($"ReservationInvoice with ID {invoiceId} was not found.");
     }
 

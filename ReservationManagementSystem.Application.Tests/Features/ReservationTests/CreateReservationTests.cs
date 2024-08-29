@@ -4,6 +4,7 @@ using FluentValidation;
 using FluentValidation.Results;
 using MediatR;
 using Moq;
+using ReservationManagementSystem.Application.Enums;
 using ReservationManagementSystem.Application.Features.AvailibilityTimeline.CheckAvailibility;
 using ReservationManagementSystem.Application.Features.Reservations.Commands.CreateReservation;
 using ReservationManagementSystem.Application.Features.Reservations.Common;
@@ -64,7 +65,7 @@ public class CreateReservationHandlerTests
             .ReturnsAsync(validationResult);
 
         _checkAvailabilityHandlerMock.Setup(c => c.Handle(It.IsAny<CheckAvailabilityRequest>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(Result<List<CheckAvailabilityResponse>>.Failure(new Error("TestError", "Availability check failed")));
+            .ReturnsAsync(Result<List<CheckAvailabilityResponse>>.Failure(new Error(ErrorType.InvalidDataPassedError, "Availability check failed")));
 
         // Act
         var result = await _handler.Handle(request, CancellationToken.None);
