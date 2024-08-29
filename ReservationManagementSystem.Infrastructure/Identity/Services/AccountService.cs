@@ -134,8 +134,8 @@ public class AccountService : IAccountService
             {
                 From = _mailSettings.EmailFrom,
                 To = user.Email,
-                Body = $"Please confirm your account by visiting this URL {verificationUri}",
-                Subject = "Confirm Registration"
+                Body = $"{_mailSettings.ConfirmEmailBody} {verificationUri}",
+                Subject = _mailSettings.ConfirmEmailSubject
             });
 
             return Result<string>.Success(user.Id);
@@ -177,14 +177,14 @@ public class AccountService : IAccountService
         };
 
         var code = await _userManager.GeneratePasswordResetTokenAsync(account);
-        var route = "api/account/reset-password/";
+        var route = _mailSettings.ResetEmailRoute;
         var _enpointUri = new Uri(string.Concat($"{model.Origin}/", route));
 
         var emailRequest = new EmailRequest
         {
-            Body = $"Your reset token is - {code}",
+            Body = $"{_mailSettings.ResetEmailBody} {code}",
             To = model.Email,
-            Subject = "Reset Password"
+            Subject = _mailSettings.ResetEmailSubject
         };
 
         try
@@ -271,7 +271,7 @@ public class AccountService : IAccountService
     {
         var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-        var route = "api/account/confirm-email/";
+        var route = _mailSettings.ConfirmEmailRoute;
         var _enpointUri = new Uri(string.Concat($"{origin}/", route));
         var verificationUri = QueryHelpers.AddQueryString(_enpointUri.ToString(), "userId", user.Id);
         verificationUri = QueryHelpers.AddQueryString(verificationUri, "code", code);

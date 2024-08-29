@@ -17,7 +17,7 @@ internal class Program
 
         var logger = new LoggerConfiguration()
             .WriteTo.Console()
-            .WriteTo.File("Logs/log.txt", rollingInterval: RollingInterval.Day)
+            .WriteTo.File(builder.Configuration["Logging:Address"]!, rollingInterval: RollingInterval.Day)
             .MinimumLevel.Information()
             .CreateLogger();
         builder.Logging.ClearProviders();
