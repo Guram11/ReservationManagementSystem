@@ -19,7 +19,7 @@ public sealed class DeleteGuestHandler : IRequestHandler<DeleteGuestRequest, Res
 
     public async Task<Result<GuestResponse>> Handle(DeleteGuestRequest request, CancellationToken cancellationToken)
     {
-        var guest = await _guestRepository.Delete(request.Id);
+        var guest = await _guestRepository.Delete(request.Id, cancellationToken);
 
         if (guest is null)
         {

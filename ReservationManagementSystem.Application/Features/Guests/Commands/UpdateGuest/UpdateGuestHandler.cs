@@ -36,7 +36,7 @@ public sealed class UpdateGuestHandler : IRequestHandler<UpdateGuestRequest, Res
         }
 
         var guest = _mapper.Map<Guest>(request);
-        await _guestRepository.Update(request.Id, guest);
+        await _guestRepository.Update(request.Id, guest, cancellationToken);
 
         var response = _mapper.Map<GuestResponse>(guest);
         return Result<GuestResponse>.Success(response);

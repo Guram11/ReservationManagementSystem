@@ -25,9 +25,9 @@ public sealed class CheckAvailabilityHandler : IRequestHandler<CheckAvailability
 
     public async Task<Result<List<CheckAvailabilityResponse>>> Handle(CheckAvailabilityRequest request, CancellationToken cancellationToken)
     {
-        var roomTypes = await _roomTypeRepository.GetAll(null, null, null, true, 1, 10);
-        var availabilityTimelines = await _availibilityTimelineRepository.GetAvailabilityByDateRange(request.DateFrom, request.DateTo);
-        var rateTimelines = await _rateTimelineRepository.GetRatesByDateRange(request.DateFrom, request.DateTo);
+        var roomTypes = await _roomTypeRepository.GetAll(null, null, null, true, 1, 10, cancellationToken);
+        var availabilityTimelines = await _availibilityTimelineRepository.GetAvailabilityByDateRange(request.DateFrom, request.DateTo, cancellationToken);
+        var rateTimelines = await _rateTimelineRepository.GetRatesByDateRange(request.DateFrom, request.DateTo, cancellationToken);
 
         var results = new List<CheckAvailabilityResponse>();
 
@@ -76,7 +76,7 @@ public sealed class CheckAvailabilityHandler : IRequestHandler<CheckAvailability
                 if (availableRoom?.Available > 0 && validRateTimeline != null)
                 {
                     var totalPrice = roomRateTimelines.Sum(rt => rt.Price);
-                    var rate = await _rateRepository.Get(validRateTimeline.RateId);
+                    var rate = await _rateRepository.Get(validRateTimeline.RateId, cancellationToken);
 
                     if (rate != null)
                     {

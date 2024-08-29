@@ -21,7 +21,7 @@ public sealed class GetAllRateReservationRoomPaymentsHandler : IRequestHandler<G
     {
         var reservationRooms = await _reservationRoomRepository.GetAll(
             request.FilterOn, request.FilterQuery, request.SortBy,
-            request.IsAscending, request.PageNumber, request.PageSize);
+            request.IsAscending, request.PageNumber, request.PageSize, cancellationToken);
 
         var response = _mapper.Map<List<ReservationRoomPaymentsResponse>>(reservationRooms);
 

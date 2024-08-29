@@ -36,7 +36,7 @@ public sealed class CreateRateHandler : IRequestHandler<CreateRateRequest, Resul
         }
 
         var rate = _mapper.Map<Rate>(request);
-        await _rateRepository.Create(rate);
+        await _rateRepository.Create(rate, cancellationToken);
         var response = _mapper.Map<RateResponse>(rate);
 
         return Result<RateResponse>.Success(response);

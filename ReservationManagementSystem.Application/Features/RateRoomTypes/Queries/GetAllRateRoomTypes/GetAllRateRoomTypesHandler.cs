@@ -21,7 +21,7 @@ public sealed class GetAllRateRoomTypesHandler : IRequestHandler<GetAllRateRoomT
     {
         var roomTypes = await _rateRoomTypeRepository.GetAll(
             request.FilterOn, request.FilterQuery, request.SortBy,
-            request.IsAscending, request.PageNumber, request.PageSize);
+            request.IsAscending, request.PageNumber, request.PageSize, cancellationToken);
 
         var response = _mapper.Map<List<RateRoomTypeResponse>>(roomTypes);
 

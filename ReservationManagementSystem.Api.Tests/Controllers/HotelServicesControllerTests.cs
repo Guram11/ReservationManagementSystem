@@ -74,7 +74,7 @@ public class HotelServiceControllerTests
             .ReturnsAsync(result);
 
         // Act
-        var actionResult = await _controller.GetAll(queryParams);
+        var actionResult = await _controller.GetAll(queryParams, CancellationToken.None);
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;
@@ -103,7 +103,7 @@ public class HotelServiceControllerTests
             .ReturnsAsync(result);
 
         // Act
-        var actionResult = await _controller.Create(request);
+        var actionResult = await _controller.Create(request, CancellationToken.None);
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;
@@ -133,7 +133,7 @@ public class HotelServiceControllerTests
             .ReturnsAsync(result);
 
         // Act
-        var actionResult = await _controller.Delete(id);
+        var actionResult = await _controller.Delete(id, CancellationToken.None);
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;
@@ -161,7 +161,7 @@ public class HotelServiceControllerTests
             .ReturnsAsync(result);
 
         // Act
-        var actionResult = await _controller.GetAll(queryParams);
+        var actionResult = await _controller.GetAll(queryParams, CancellationToken.None);
 
         // Assert
         var badRequestResult = actionResult.Result as BadRequestObjectResult;
@@ -181,7 +181,7 @@ public class HotelServiceControllerTests
             .ReturnsAsync(result);
 
         // Act
-        var actionResult = await _controller.Delete(id);
+        var actionResult = await _controller.Delete(id, CancellationToken.None);
 
         // Assert
         var notFoundResult = actionResult.Result as NotFoundObjectResult;

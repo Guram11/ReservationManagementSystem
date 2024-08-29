@@ -79,7 +79,7 @@ public class UpdateHotelHandlerTests
         _mockValidator.Setup(v => v.ValidateAsync(request, It.IsAny<CancellationToken>()))
                       .ReturnsAsync(new ValidationResult());
         _mockMapper.Setup(m => m.Map<Hotel>(request)).Returns(hotel);
-        _mockHotelRepository.Setup(r => r.Update(hotelId, hotel))
+        _mockHotelRepository.Setup(r => r.Update(hotelId, hotel, CancellationToken.None))
                             .ThrowsAsync(new Exception("Database error"));
 
         // Act

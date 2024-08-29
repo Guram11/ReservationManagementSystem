@@ -14,10 +14,10 @@ public class ReservationRoomServiceRepository : BaseRepository<ReservationRoomSe
         _context = context;
     }
 
-    public async Task<ReservationRoomServices?> Delete(Guid reservationRoomId, Guid hotelServiceId)
+    public async Task<ReservationRoomServices?> Delete(Guid reservationRoomId, Guid hotelServiceId, CancellationToken cancellationToken)
     {
         var reservationRoomService = await _context.ReservationRoomServices
-                .FirstOrDefaultAsync(rt => rt.ReservationRoomId == reservationRoomId && rt.HotelServiceId == hotelServiceId);
+                .FirstOrDefaultAsync(rt => rt.ReservationRoomId == reservationRoomId && rt.HotelServiceId == hotelServiceId, cancellationToken);
 
         if (reservationRoomService == null)
         {
@@ -25,7 +25,7 @@ public class ReservationRoomServiceRepository : BaseRepository<ReservationRoomSe
         }
 
         _context.ReservationRoomServices.Remove(reservationRoomService);
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync(cancellationToken);
 
         return reservationRoomService;
     }

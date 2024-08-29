@@ -30,7 +30,7 @@ public class GetRateByIdHandlerTests
 
         var request = new GetRateByIdRequest(rateId);
 
-        _rateRepositoryMock.Setup(r => r.Get(rateId))
+        _rateRepositoryMock.Setup(r => r.Get(rateId, CancellationToken.None))
             .ReturnsAsync(rate);
 
         var rateResponse = new RateResponse { Id = rate.Id, Name = rate.Name, HotelId = rate.HotelId };
@@ -51,7 +51,7 @@ public class GetRateByIdHandlerTests
     {
         // Arrange
         var rateId = Guid.NewGuid();
-        _rateRepositoryMock.Setup(repo => repo.Get(rateId))
+        _rateRepositoryMock.Setup(repo => repo.Get(rateId, CancellationToken.None))
             .ReturnsAsync((Rate)null!);
 
         var request = new GetRateByIdRequest(rateId);

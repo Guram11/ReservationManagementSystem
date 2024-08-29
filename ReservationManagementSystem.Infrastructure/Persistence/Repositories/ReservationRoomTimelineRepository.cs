@@ -14,10 +14,10 @@ public class ReservationRoomTimelineRepository : BaseRepository<ReservationRoomT
         _context = context;
     }
 
-    public async Task<List<ReservationRoomTimeline>> GetReservationRoomTimelinesByReservationRoomId( Guid id)
+    public async Task<List<ReservationRoomTimeline>> GetReservationRoomTimelinesByReservationRoomId( Guid id, CancellationToken cancellationToken)
     {
         return await _context.ReservationRoomTimelines
             .Where(rrt => rrt.ReservationRoomId == id)
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
     }
 }

@@ -19,7 +19,7 @@ public sealed class DeleteRateHandler : IRequestHandler<DeleteRateRequest, Resul
 
     public async Task<Result<RateResponse>> Handle(DeleteRateRequest request, CancellationToken cancellationToken)
     {
-        var rate = await _rateRepository.Delete(request.Id);
+        var rate = await _rateRepository.Delete(request.Id, cancellationToken);
         
         if (rate == null)
         {

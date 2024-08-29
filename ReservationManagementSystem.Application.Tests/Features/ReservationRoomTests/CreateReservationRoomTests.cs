@@ -66,7 +66,7 @@ public class CreateReservationRoomlHandlerTests
 
         _mapperMock.Setup(m => m.Map<ReservationRoom>(request)).Returns(reservationRoom);
         _mapperMock.Setup(m => m.Map<ReservationRoomResponse>(reservationRoom)).Returns(reservationRoomResponse);
-        _reservationRoomRepositoryMock.Setup(repo => repo.Create(reservationRoom)).ReturnsAsync(reservationRoom);
+        _reservationRoomRepositoryMock.Setup(repo => repo.Create(reservationRoom, CancellationToken.None)).ReturnsAsync(reservationRoom);
 
         // Act
         var result = await _handler.Handle(request, CancellationToken.None);
@@ -91,7 +91,7 @@ public class CreateReservationRoomlHandlerTests
         );
 
         _mapperMock.Setup(m => m.Map<ReservationRoom>(request)).Returns(new ReservationRoom());
-        _reservationRoomRepositoryMock.Setup(repo => repo.Create(It.IsAny<ReservationRoom>())).ReturnsAsync((ReservationRoom)null!);
+        _reservationRoomRepositoryMock.Setup(repo => repo.Create(It.IsAny<ReservationRoom>(), CancellationToken.None)).ReturnsAsync((ReservationRoom)null!);
 
         // Act
         var result = await _handler.Handle(request, CancellationToken.None);

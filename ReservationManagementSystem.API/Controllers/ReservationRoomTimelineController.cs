@@ -18,9 +18,9 @@ public class ReservationRoomTimelineController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<ReservationRoomTimelineResponse>> PushReservationRoomTimeline([FromBody] PushReservationTimelineRequest request)
+    public async Task<ActionResult<ReservationRoomTimelineResponse>> PushReservationRoomTimeline([FromBody] PushReservationTimelineRequest request, CancellationToken cancellationToken)
     {
-        var response = await _mediator.Send(request);
+        var response = await _mediator.Send(request, cancellationToken);
         return ResponseHandler.HandleResponse(response);
     }
 }

@@ -18,16 +18,16 @@ public class AvailabilityController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<AvailabilityResponse>> PushAvailability([FromBody] PushAvailabilityRequest request)
+    public async Task<ActionResult<AvailabilityResponse>> PushAvailability([FromBody] PushAvailabilityRequest request, CancellationToken cancellationToken)
     {
-        var response = await _mediator.Send(request);
+        var response = await _mediator.Send(request, cancellationToken);
         return ResponseHandler.HandleResponse(response);
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<CheckAvailabilityResponse>>> CheckAvailability([FromQuery] CheckAvailabilityRequest request)
+    public async Task<ActionResult<List<CheckAvailabilityResponse>>> CheckAvailability([FromQuery] CheckAvailabilityRequest request, CancellationToken cancellationToken)
     {
-        var response = await _mediator.Send(request);
+        var response = await _mediator.Send(request, cancellationToken);
         return ResponseHandler.HandleResponse(response);
     }
 }

@@ -42,7 +42,7 @@ public class AvailabilityTimelineControllerTests
             .ReturnsAsync(result);
 
         // Act
-        var actionResult = await _controller.PushAvailability(request);
+        var actionResult = await _controller.PushAvailability(request, CancellationToken.None);
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;
@@ -67,7 +67,7 @@ public class AvailabilityTimelineControllerTests
             .ReturnsAsync(result);
 
         // Act
-        var actionResult = await _controller.CheckAvailability(request);
+        var actionResult = await _controller.CheckAvailability(request, CancellationToken.None);
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;
@@ -87,7 +87,7 @@ public class AvailabilityTimelineControllerTests
             .ReturnsAsync(result);
 
         // Act
-        var actionResult = await _controller.PushAvailability(request);
+        var actionResult = await _controller.PushAvailability(request, CancellationToken.None);
 
         // Assert
         var badRequestResult = actionResult.Result as BadRequestObjectResult;
@@ -107,7 +107,7 @@ public class AvailabilityTimelineControllerTests
             .ReturnsAsync(result);
 
         // Act
-        var actionResult = await _controller.CheckAvailability(request);
+        var actionResult = await _controller.CheckAvailability(request, CancellationToken.None);
 
         // Assert
         var notFoundResult = actionResult.Result as NotFoundObjectResult;

@@ -29,7 +29,7 @@ public class DeleteRoomTypeHandlerTests
         var roomType = new RoomType { Id = request.Id, Name = "Deluxe" };
         var roomTypeResponse = new RoomTypeResponse { Id = roomType.Id, Name = roomType.Name };
 
-        _roomTypeRepositoryMock.Setup(r => r.Delete(request.Id)).ReturnsAsync(roomType);
+        _roomTypeRepositoryMock.Setup(r => r.Delete(request.Id, CancellationToken.None)).ReturnsAsync(roomType);
         _mapperMock.Setup(m => m.Map<RoomTypeResponse>(roomType)).Returns(roomTypeResponse);
 
         // Act
@@ -46,7 +46,7 @@ public class DeleteRoomTypeHandlerTests
         // Arrange
         var request = new DeleteRoomTypeRequest(Guid.NewGuid());
 
-        _roomTypeRepositoryMock.Setup(r => r.Delete(request.Id)).ReturnsAsync((RoomType)null!);
+        _roomTypeRepositoryMock.Setup(r => r.Delete(request.Id, CancellationToken.None)).ReturnsAsync((RoomType)null!);
 
         // Act
         var result = await _handler.Handle(request, CancellationToken.None);

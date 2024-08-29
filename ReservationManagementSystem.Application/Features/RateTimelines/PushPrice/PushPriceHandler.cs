@@ -24,7 +24,7 @@ public sealed class PushPriceHandler : IRequestHandler<PushPriceRequest, Result<
 
     public async Task<Result<RateTimelineResponse>> Handle(PushPriceRequest request, CancellationToken cancellationToken)
     {
-        var rateRoomType = await _rateRoomTypeRepository.GetRateRoomTypeWithRateTimelines(request.RateId, request.RoomTypeId);
+        var rateRoomType = await _rateRoomTypeRepository.GetRateRoomTypeWithRateTimelines(request.RateId, request.RoomTypeId, cancellationToken);
 
         if (rateRoomType is null)
         {
@@ -47,7 +47,7 @@ public sealed class PushPriceHandler : IRequestHandler<PushPriceRequest, Result<
                     RoomTypeId = request.RoomTypeId,
                     Price = request.Price
                 };
-                await _rateTimelineRepository.Create(rateTimeline);
+                await _rateTimelineRepository.Create(rateTimeline, cancellationToken);
                 rateRoomType?.RateTimelines?.Add(rateTimeline);
             }
             else
@@ -56,7 +56,7 @@ public sealed class PushPriceHandler : IRequestHandler<PushPriceRequest, Result<
             }
         }
 
-        await _rateRoomTypeRepository.SaveChangesAsync();
+        await _rateRoomTypeRepository.SaveChangesAsync(cancellationToken);
 
         var respose = _mapper.Map<RateTimelineResponse>(rateTimeline);
 

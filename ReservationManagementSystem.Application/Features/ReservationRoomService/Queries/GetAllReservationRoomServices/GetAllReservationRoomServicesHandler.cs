@@ -21,7 +21,7 @@ public sealed class GetAllReservationRoomServicesHandler : IRequestHandler<GetAl
     {
         var reservationRoomServices = await _reservationRoomServiceRepository.GetAll(
             request.FilterOn, request.FilterQuery, request.SortBy,
-            request.IsAscending, request.PageNumber, request.PageSize);
+            request.IsAscending, request.PageNumber, request.PageSize, cancellationToken);
 
         var response = _mapper.Map<List<ReservationRoomServiceResponse>>(reservationRoomServices);
 

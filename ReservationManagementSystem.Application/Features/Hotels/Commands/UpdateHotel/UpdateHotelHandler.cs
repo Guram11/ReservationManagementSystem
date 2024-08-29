@@ -36,7 +36,7 @@ public sealed class UpdateHotelHandler : IRequestHandler<UpdateHotelRequest, Res
         }
 
         var hotel = _mapper.Map<Hotel>(request);
-        await _hotelRepository.Update(request.Id, hotel);
+        await _hotelRepository.Update(request.Id, hotel, cancellationToken);
 
         var response = _mapper.Map<HotelResponse>(hotel);
         return Result<HotelResponse>.Success(response);

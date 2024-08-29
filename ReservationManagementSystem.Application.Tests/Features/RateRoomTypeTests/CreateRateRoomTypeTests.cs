@@ -29,7 +29,7 @@ public class CreateRateRoomTypeHandlerTests
         var rateRoomType = new RateRoomType();
 
         _mockMapper.Setup(m => m.Map<RateRoomType>(request)).Returns(rateRoomType);
-        _mockRateRoomTypeRepository.Setup(r => r.Create(rateRoomType)).ReturnsAsync((RateRoomType)null!);
+        _mockRateRoomTypeRepository.Setup(r => r.Create(rateRoomType, CancellationToken.None)).ReturnsAsync((RateRoomType)null!);
 
         // Act
         var result = await _handler.Handle(request, CancellationToken.None);
@@ -69,7 +69,7 @@ public class CreateRateRoomTypeHandlerTests
 
         // Setup the mapper to correctly map the domain model to the response model
         _mockMapper.Setup(m => m.Map<RateRoomType>(request)).Returns(rateRoomType);
-        _mockRateRoomTypeRepository.Setup(r => r.Create(rateRoomType)).ReturnsAsync(createdRateRoomType);
+        _mockRateRoomTypeRepository.Setup(r => r.Create(rateRoomType, CancellationToken.None)).ReturnsAsync(createdRateRoomType);
         _mockMapper.Setup(m => m.Map<RateRoomTypeResponse>(createdRateRoomType)).Returns(response);
 
         // Act

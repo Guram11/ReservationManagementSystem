@@ -3,7 +3,6 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using ReservationManagementSystem.API.Controllers;
-using ReservationManagementSystem.Application.Features.Hotels.Common;
 using ReservationManagementSystem.Application.Features.RateTimelines.Common;
 using ReservationManagementSystem.Application.Features.RateTimelines.PushPrice;
 using ReservationManagementSystem.Application.Wrappers;
@@ -43,7 +42,7 @@ public class RateTimelinesControllerTests
             .ReturnsAsync(result);
 
         // Act
-        var actionResult = await _controller.PushPrice(request);
+        var actionResult = await _controller.PushPrice(request, CancellationToken.None);
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;

@@ -23,42 +23,42 @@ public class GuestsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<GuestResponse>>> GetAll([FromQuery] GetAllQueryParams queryParams)
+    public async Task<ActionResult<List<GuestResponse>>> GetAll([FromQuery] GetAllQueryParams queryParams, CancellationToken cancellationToken)
     {
         var response = await _mediator.Send(new GetAllGuestsRequest(
             queryParams.FilterOn, queryParams.FilterQuery,
             queryParams.SortBy, queryParams.IsAscending,
-            queryParams.PageNumber, queryParams.PageSize));
+            queryParams.PageNumber, queryParams.PageSize), cancellationToken);
         return ResponseHandler.HandleResponse(response);
     }
 
     [HttpGet]
     [Route("{id:Guid}")]
-    public async Task<ActionResult<GuestResponse>> Get([FromRoute] Guid id)
+    public async Task<ActionResult<GuestResponse>> Get([FromRoute] Guid id, CancellationToken cancellationToken)
     {
-        var response = await _mediator.Send(new GetGuestByIdRequest(id));
+        var response = await _mediator.Send(new GetGuestByIdRequest(id), cancellationToken);
         return ResponseHandler.HandleResponse(response);
     }
 
     [HttpPost]
-    public async Task<ActionResult<GuestResponse>> Create(CreateGuestRequest request)
+    public async Task<ActionResult<GuestResponse>> Create(CreateGuestRequest request, CancellationToken cancellationToken)
     {
-        var response = await _mediator.Send(request);
+        var response = await _mediator.Send(request, cancellationToken);
         return ResponseHandler.HandleResponse(response);
     }
 
     [HttpPut]
-    public async Task<ActionResult<GuestResponse>> Update(UpdateGuestRequest request)
+    public async Task<ActionResult<GuestResponse>> Update(UpdateGuestRequest request, CancellationToken cancellationToken)
     {
-        var response = await _mediator.Send(request);
+        var response = await _mediator.Send(request, cancellationToken);
         return ResponseHandler.HandleResponse(response);
     }
 
     [HttpDelete]
     [Route("{id:Guid}")]
-    public async Task<ActionResult<GuestResponse>> Delete([FromRoute] Guid id)
+    public async Task<ActionResult<GuestResponse>> Delete([FromRoute] Guid id, CancellationToken cancellationToken)
     {
-        var response = await _mediator.Send(new DeleteGuestRequest(id));
+        var response = await _mediator.Send(new DeleteGuestRequest(id), cancellationToken);
         return ResponseHandler.HandleResponse(response);
     }
 }

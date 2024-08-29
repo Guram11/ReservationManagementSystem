@@ -37,7 +37,7 @@ public class GetAllRateRoomTypesHandlerTests
 
         _rateRoomTypeRepositoryMock.Setup(x => x.GetAll(
             request.FilterOn, request.FilterQuery, request.SortBy,
-            request.IsAscending, request.PageNumber, request.PageSize))
+            request.IsAscending, request.PageNumber, request.PageSize, CancellationToken.None))
             .ReturnsAsync(roomTypes);
 
         var rateRoomTypeResponses = new List<RateRoomTypeResponse>
@@ -67,7 +67,7 @@ public class GetAllRateRoomTypesHandlerTests
 
         _rateRoomTypeRepositoryMock.Setup(x => x.GetAll(
             request.FilterOn, request.FilterQuery, request.SortBy,
-            request.IsAscending, request.PageNumber, request.PageSize))
+            request.IsAscending, request.PageNumber, request.PageSize, CancellationToken.None))
             .ReturnsAsync(roomTypes);
 
         var rateRoomTypeResponses = new List<RateRoomTypeResponse>();

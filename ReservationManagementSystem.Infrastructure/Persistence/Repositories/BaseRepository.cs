@@ -15,22 +15,22 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
         Context = context;
     }
 
-    public async Task<T> Create(T entity)
+    public async Task<T> Create(T entity, CancellationToken cancellationToken)
     {
        Context.Set<T>().Add(entity);
-       await Context.SaveChangesAsync();
+       await Context.SaveChangesAsync(cancellationToken);
 
        return entity;
     }
 
-    public Task<T?> Get(Guid id)
+    public Task<T?> Get(Guid id, CancellationToken cancellationToken)
     {
-        return Context.Set<T>().FirstOrDefaultAsync(x => x.Id == id);
+        return Context.Set<T>().FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
     }
 
     public Task<List<T>> GetAll(string? filterOn, string? filterQuery,
         string? sortBy, bool isAscending,
-        int pageNumber, int pageSize)
+        int pageNumber, int pageSize, CancellationToken cancellationToken)
     {
         var filterExpression = FilterExtensions.FilterExtensions.GetFilterExpression<T>(filterOn, filterQuery);
         var sortExpression = FilterExtensions.FilterExtensions.GetSortExpression<T>(sortBy);
@@ -39,12 +39,12 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
                 .ApplyFilter(filterExpression)
                 .ApplySort(sortExpression, isAscending)
                 .ApplyPagination(pageNumber, pageSize)
-                .ToListAsync();
+                .ToListAsync(cancellationToken);
     }
 
-    public async Task<T?> Update(Guid id, T entity)
+    public async Task<T?> Update(Guid id, T entity, CancellationToken cancellationToken)
     {
-        var existingEntity = await Context.Set<T>().FindAsync(id);
+        var existingEntity = await Context.Set<T>().FindAsync(id, cancellationToken);
         if (existingEntity == null)
         {
             return null;
@@ -52,20 +52,20 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
 
         Context.Entry(existingEntity).CurrentValues.SetValues(entity);
         Context.Entry(existingEntity).State = EntityState.Modified;
-        await Context.SaveChangesAsync();
+        await Context.SaveChangesAsync(cancellationToken);
         return existingEntity;
     }
 
-    public async Task<T?> Delete(Guid id)
+    public async Task<T?> Delete(Guid id, CancellationToken cancellationToken)
     {
-        var entity = await Context.Set<T>().FindAsync(id);
+        var entity = await Context.Set<T>().FindAsync(id, cancellationToken);
         if (entity == null)
         {
             return null;
         }
 
         Context.Set<T>().Remove(entity);
-        await Context.SaveChangesAsync();
+        await Context.SaveChangesAsync(cancellationToken);
         return entity;
     }
 }

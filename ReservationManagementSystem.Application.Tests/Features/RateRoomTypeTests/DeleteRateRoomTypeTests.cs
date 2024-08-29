@@ -26,7 +26,7 @@ public class DeleteRateRoomTypeHandlerTests
     {
         // Arrange
         var request = new DeleteRateRoomTypeRequest(Guid.NewGuid(), Guid.NewGuid());
-        _rateRoomTypeRepositoryMock.Setup(x => x.Delete(request.RateId, request.RoomTypeId))
+        _rateRoomTypeRepositoryMock.Setup(x => x.Delete(request.RateId, request.RoomTypeId, CancellationToken.None))
             .ReturnsAsync((RateRoomType)null!);
 
         // Act
@@ -52,7 +52,7 @@ public class DeleteRateRoomTypeHandlerTests
 
         var request = new DeleteRateRoomTypeRequest(rateRoomType.RateId, rateRoomType.RoomTypeId);
 
-        _rateRoomTypeRepositoryMock.Setup(x => x.Delete(request.RateId, request.RoomTypeId))
+        _rateRoomTypeRepositoryMock.Setup(x => x.Delete(request.RateId, request.RoomTypeId, CancellationToken.None))
             .ReturnsAsync(rateRoomType);
 
         var rateRoomTypeResponse = new RateRoomTypeResponse

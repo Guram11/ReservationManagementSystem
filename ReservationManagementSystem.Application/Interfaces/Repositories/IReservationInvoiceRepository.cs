@@ -4,5 +4,5 @@ namespace ReservationManagementSystem.Application.Interfaces.Repositories;
 
 public interface IReservationInvoiceRepository : IBaseRepository<ReservationInvoices>
 {
-    Task<CurrencyRate?> GetCurrencyRate(string currency);
+    Task<CurrencyRate?> GetCurrencyRate(string currency, CancellationToken cancellationToken);
 }

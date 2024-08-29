@@ -21,27 +21,27 @@ public class ReservationRoomPaymentsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<ReservationRoomPaymentsResponse>>> GetAll([FromQuery] GetAllQueryParams queryParams)
+    public async Task<ActionResult<List<ReservationRoomPaymentsResponse>>> GetAll([FromQuery] GetAllQueryParams queryParams, CancellationToken cancellationToken)
     {
         var response = await _mediator.Send(new GetAllReservationRoomPaymentsRequest(
             queryParams.FilterOn, queryParams.FilterQuery,
             queryParams.SortBy, queryParams.IsAscending,
-            queryParams.PageNumber, queryParams.PageSize));
+            queryParams.PageNumber, queryParams.PageSize), cancellationToken);
         return ResponseHandler.HandleResponse(response);
     }
 
     [HttpPost]
-    public async Task<ActionResult<ReservationRoomPaymentsResponse>> Create(CreateReservationRoomPaymentRequest request)
+    public async Task<ActionResult<ReservationRoomPaymentsResponse>> Create(CreateReservationRoomPaymentRequest request, CancellationToken cancellationToken)
     {
-        var response = await _mediator.Send(request);
+        var response = await _mediator.Send(request, cancellationToken);
         return ResponseHandler.HandleResponse(response);
     }
 
     [HttpDelete]
     [Route("{id:Guid}")]
-    public async Task<ActionResult<ReservationRoomPaymentsResponse>> Delete([FromRoute] Guid id)
+    public async Task<ActionResult<ReservationRoomPaymentsResponse>> Delete([FromRoute] Guid id, CancellationToken cancellationToken)
     {
-        var response = await _mediator.Send(new DeleteReservationRoomPaymentRequest(id));
+        var response = await _mediator.Send(new DeleteReservationRoomPaymentRequest(id), cancellationToken);
         return ResponseHandler.HandleResponse(response);
     }
 }

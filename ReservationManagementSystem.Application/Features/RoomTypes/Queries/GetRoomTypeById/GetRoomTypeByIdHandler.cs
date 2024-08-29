@@ -19,7 +19,7 @@ public sealed class GetRoomTypeByIdHandler : IRequestHandler<GetRoomTypeByIdRequ
 
     public async Task<Result<RoomTypeResponse>> Handle(GetRoomTypeByIdRequest request, CancellationToken cancellationToken)
     {
-        var roomType = await _roomTypeRepository.GetRoomTypeWithAvailabilityAsync(request.Id);
+        var roomType = await _roomTypeRepository.GetRoomTypeWithAvailabilityAsync(request.Id, cancellationToken);
 
         if (roomType is null)
         {

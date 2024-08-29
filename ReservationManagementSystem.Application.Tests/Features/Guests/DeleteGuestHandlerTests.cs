@@ -29,7 +29,7 @@ public class DeleteGuestHandlerTests
         var guest = new Guest { Id = guestId, Email = "test@example.com", FirstName = "John", LastName = "Doe", PhoneNumber = "1234567890", ReservationRoomId = Guid.NewGuid() };
         var guestResponse = new GuestResponse { Id = guestId, Email = guest.Email, FirstName = guest.FirstName, LastName = guest.LastName, PhoneNumber = guest.PhoneNumber, ReservationRoomId = guest.ReservationRoomId };
 
-        _mockGuestRepository.Setup(repo => repo.Delete(guestId)).ReturnsAsync(guest);
+        _mockGuestRepository.Setup(repo => repo.Delete(guestId, CancellationToken.None)).ReturnsAsync(guest);
         _mockMapper.Setup(m => m.Map<GuestResponse>(guest)).Returns(guestResponse);
 
         var request = new DeleteGuestRequest(guestId);
@@ -47,7 +47,7 @@ public class DeleteGuestHandlerTests
     {
         // Arrange
         var guestId = Guid.NewGuid();
-        _mockGuestRepository.Setup(repo => repo.Delete(guestId)).ReturnsAsync((Guest)null!);
+        _mockGuestRepository.Setup(repo => repo.Delete(guestId, CancellationToken.None)).ReturnsAsync((Guest)null!);
 
         var request = new DeleteGuestRequest(guestId);
 
@@ -65,7 +65,7 @@ public class DeleteGuestHandlerTests
     {
         // Arrange
         var guestId = Guid.NewGuid();
-        _mockGuestRepository.Setup(repo => repo.Delete(guestId)).ThrowsAsync(new Exception("Database error"));
+        _mockGuestRepository.Setup(repo => repo.Delete(guestId, CancellationToken.None)).ThrowsAsync(new Exception("Database error"));
 
         var request = new DeleteGuestRequest(guestId);
 

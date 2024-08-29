@@ -36,7 +36,7 @@ public sealed class UpdateRoomTypeHandler : IRequestHandler<UpdateRoomTypeReques
         }
 
         var roomType = _mapper.Map<RoomType>(request);
-        await _roomTypeRepository.Update(request.Id, roomType);
+        await _roomTypeRepository.Update(request.Id, roomType, cancellationToken);
         var response = _mapper.Map<RoomTypeResponse>(roomType);
 
         return Result<RoomTypeResponse>.Success(response);

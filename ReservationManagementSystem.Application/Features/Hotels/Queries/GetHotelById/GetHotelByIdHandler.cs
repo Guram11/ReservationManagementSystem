@@ -19,7 +19,7 @@ public sealed class GetHotelByIdHandler : IRequestHandler<GetHotelByIdRequest, R
 
     public async Task<Result<HotelResponse>> Handle(GetHotelByIdRequest request, CancellationToken cancellationToken)
     {
-        var hotel = await _hotelRepository.Get(request.Id);
+        var hotel = await _hotelRepository.Get(request.Id, cancellationToken);
 
         if (hotel is null)
         {

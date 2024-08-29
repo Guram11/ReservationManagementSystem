@@ -14,11 +14,11 @@ public class RoomTypeRepository : BaseRepository<RoomType>, IRoomTypeRepository
         _context = context;
     }
 
-    public async Task<RoomType?> GetRoomTypeWithAvailabilityAsync(Guid roomTypeId)
+    public async Task<RoomType?> GetRoomTypeWithAvailabilityAsync(Guid roomTypeId, CancellationToken cancellationToken)
     {
         var roomType = await _context.RoomTypes
            .Include(rt => rt.AvailabilityTimelines)
-           .FirstOrDefaultAsync(rt => rt.Id == roomTypeId);
+           .FirstOrDefaultAsync(rt => rt.Id == roomTypeId, cancellationToken);
 
         if (roomType == null)
         {
@@ -28,8 +28,8 @@ public class RoomTypeRepository : BaseRepository<RoomType>, IRoomTypeRepository
         return roomType;
     }
 
-    public async Task SaveChangesAsync()
+    public async Task SaveChangesAsync(CancellationToken cancellationToken)
     {
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync(cancellationToken);
     }
 }

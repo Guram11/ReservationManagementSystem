@@ -28,7 +28,7 @@ public class GetRoomByIdHandlerTests
         var request = new GetRoomByIdRequest(Guid.NewGuid());
         var room = new Room { Id = request.Id, RoomTypeId = Guid.NewGuid(), Number = "101", Floor = 1, Note = "Nice room" };
 
-        _roomRepositoryMock.Setup(r => r.Get(request.Id))
+        _roomRepositoryMock.Setup(r => r.Get(request.Id, CancellationToken.None))
             .ReturnsAsync(room);
 
         var roomResponse = new RoomResponse { Id = room.Id, RoomTypeId = room.RoomTypeId, Number = room.Number, Floor = room.Floor, Note = room.Note };
@@ -50,7 +50,7 @@ public class GetRoomByIdHandlerTests
         // Arrange
         var request = new GetRoomByIdRequest(Guid.NewGuid());
 
-        _roomRepositoryMock.Setup(r => r.Get(request.Id))
+        _roomRepositoryMock.Setup(r => r.Get(request.Id, CancellationToken.None))
             .ReturnsAsync((Room)null!);
 
         // Act

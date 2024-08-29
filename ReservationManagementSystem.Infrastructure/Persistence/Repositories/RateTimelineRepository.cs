@@ -14,13 +14,13 @@ public class RateTimelineRepository : BaseRepository<RateTimeline>, IRateTimelin
         _context = context;
     }
 
-    public async Task<IEnumerable<RateTimeline>> GetRatesByDateRange(DateTime startDate, DateTime endDate)
+    public async Task<IEnumerable<RateTimeline>> GetRatesByDateRange(DateTime startDate, DateTime endDate, CancellationToken cancellationToken)
     {
         var startDateWithoutTime = startDate.Date;
         var endDateWithoutTime = endDate.Date.AddDays(1);
 
         return await _context.RateTimelines
             .Where(at => at.Date >= startDateWithoutTime && at.Date < endDateWithoutTime)
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
     }
 }

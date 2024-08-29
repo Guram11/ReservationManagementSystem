@@ -4,5 +4,5 @@ namespace ReservationManagementSystem.Application.Interfaces.Repositories;
 
 public interface IReservationRoomServiceRepository : IBaseRepository<ReservationRoomServices>
 {
-    Task<ReservationRoomServices?> Delete(Guid reservationRoomId, Guid hotelServicId);
+    Task<ReservationRoomServices?> Delete(Guid reservationRoomId, Guid hotelServicId, CancellationToken cancellationToken);
 }

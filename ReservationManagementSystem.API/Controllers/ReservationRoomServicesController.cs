@@ -21,27 +21,27 @@ public class ReservationRoomServicesController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<ReservationRoomServiceResponse>>> GetAll([FromQuery] GetAllQueryParams queryParams)
+    public async Task<ActionResult<List<ReservationRoomServiceResponse>>> GetAll([FromQuery] GetAllQueryParams queryParams, CancellationToken cancellationToken)
     {
         var response = await _mediator.Send(new GetAllReservationRoomServicesRequest(
             queryParams.FilterOn, queryParams.FilterQuery,
             queryParams.SortBy, queryParams.IsAscending,
-            queryParams.PageNumber, queryParams.PageSize));
+            queryParams.PageNumber, queryParams.PageSize), cancellationToken);
         return ResponseHandler.HandleResponse(response);
     }
 
     [HttpPost]
-    public async Task<ActionResult<ReservationRoomServiceResponse>> Create(CreateReservationRoomServiceRequest request)
+    public async Task<ActionResult<ReservationRoomServiceResponse>> Create(CreateReservationRoomServiceRequest request, CancellationToken cancellationToken)
     {
-        var response = await _mediator.Send(request);
+        var response = await _mediator.Send(request, cancellationToken);
         return ResponseHandler.HandleResponse(response);
     }
 
     [HttpDelete]
     [Route("{reservationRoomId:guid}/{hotelServiceId:guid}")]
-    public async Task<ActionResult<ReservationRoomServiceResponse>> Delete([FromRoute] Guid reservationRoomId, [FromRoute] Guid hotelServiceId)
+    public async Task<ActionResult<ReservationRoomServiceResponse>> Delete([FromRoute] Guid reservationRoomId, [FromRoute] Guid hotelServiceId, CancellationToken cancellationToken)
     {
-        var response = await _mediator.Send(new DeleteReservationRoomServiceRequest(reservationRoomId, hotelServiceId));
+        var response = await _mediator.Send(new DeleteReservationRoomServiceRequest(reservationRoomId, hotelServiceId), cancellationToken);
         return ResponseHandler.HandleResponse(response);
     }
 }

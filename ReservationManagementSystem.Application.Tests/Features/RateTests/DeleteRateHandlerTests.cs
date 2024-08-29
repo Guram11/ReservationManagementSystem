@@ -30,7 +30,7 @@ public class DeleteRateHandlerTests
 
         var request = new DeleteRateRequest(rateId);
 
-        _rateRepositoryMock.Setup(r => r.Delete(rateId))
+        _rateRepositoryMock.Setup(r => r.Delete(rateId, CancellationToken.None))
             .ReturnsAsync(rate);
 
         var rateResponse = new RateResponse { Id = rate.Id, Name = rate.Name, HotelId = rate.HotelId };
@@ -53,7 +53,7 @@ public class DeleteRateHandlerTests
         var rateId = Guid.NewGuid();
         var request = new DeleteRateRequest(rateId);
 
-        _rateRepositoryMock.Setup(r => r.Delete(rateId))
+        _rateRepositoryMock.Setup(r => r.Delete(rateId, CancellationToken.None))
             .ReturnsAsync((Rate)null!);
 
         // Act

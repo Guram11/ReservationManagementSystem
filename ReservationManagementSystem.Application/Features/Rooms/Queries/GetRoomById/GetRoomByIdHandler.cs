@@ -19,7 +19,7 @@ public sealed class GetRoomByIdHandler : IRequestHandler<GetRoomByIdRequest, Res
 
     public async Task<Result<RoomResponse>> Handle(GetRoomByIdRequest request, CancellationToken cancellationToken)
     {
-        var room = await _roomRepository.Get(request.Id);
+        var room = await _roomRepository.Get(request.Id, cancellationToken);
 
         if (room is null)
         {

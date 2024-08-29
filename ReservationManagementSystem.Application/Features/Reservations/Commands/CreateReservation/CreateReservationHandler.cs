@@ -59,7 +59,7 @@ public sealed class CreateReservationHandler : IRequestHandler<CreateReservation
         }
 
         var reservation = _mapper.Map<Reservation>(request);
-        await _reservationRepository.Create(reservation);
+        await _reservationRepository.Create(reservation, cancellationToken);
 
         var reservationResponse = _mapper.Map<ReservationResponse>(reservation);
         return Result<ReservationResponse>.Success(reservationResponse);

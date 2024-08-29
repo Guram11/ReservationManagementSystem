@@ -21,27 +21,27 @@ public class RateRoomTypesController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<RateRoomTypeResponse>>> GetAll([FromQuery] GetAllQueryParams queryParams)
+    public async Task<ActionResult<List<RateRoomTypeResponse>>> GetAll([FromQuery] GetAllQueryParams queryParams, CancellationToken cancellationToken)
     {
         var response = await _mediator.Send(new GetAllRateRoomTypesRequest(
             queryParams.FilterOn, queryParams.FilterQuery,
             queryParams.SortBy, queryParams.IsAscending,
-            queryParams.PageNumber, queryParams.PageSize));
+            queryParams.PageNumber, queryParams.PageSize), cancellationToken);
         return ResponseHandler.HandleResponse(response);
     }
 
     [HttpPost]
-    public async Task<ActionResult<RateRoomTypeResponse>> Create(CreateRateRoomTypeRequest request)
+    public async Task<ActionResult<RateRoomTypeResponse>> Create(CreateRateRoomTypeRequest request, CancellationToken cancellationToken)
     {
-        var response = await _mediator.Send(request);
+        var response = await _mediator.Send(request, cancellationToken);
         return ResponseHandler.HandleResponse(response);
     }
 
     [HttpDelete]
     [Route("{rateId:guid}/{roomTypeId:guid}")]
-    public async Task<ActionResult<RateRoomTypeResponse>> Delete([FromRoute] Guid rateId, [FromRoute] Guid roomTypeId)
+    public async Task<ActionResult<RateRoomTypeResponse>> Delete([FromRoute] Guid rateId, [FromRoute] Guid roomTypeId, CancellationToken cancellationToken)
     {
-        var response = await _mediator.Send(new DeleteRateRoomTypeRequest(rateId, roomTypeId));
+        var response = await _mediator.Send(new DeleteRateRoomTypeRequest(rateId, roomTypeId), cancellationToken);
         return ResponseHandler.HandleResponse(response);
     }
 }   

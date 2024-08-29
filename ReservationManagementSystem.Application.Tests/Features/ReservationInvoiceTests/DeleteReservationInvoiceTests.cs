@@ -54,7 +54,7 @@ public class DeleteReservationInvoiceHandlerTests
             Currency = reservationInvoice.Currency
         };
 
-        _mockReservationInvoiceRepository.Setup(repo => repo.Delete(invoiceId)).ReturnsAsync(reservationInvoice);
+        _mockReservationInvoiceRepository.Setup(repo => repo.Delete(invoiceId, CancellationToken.None)).ReturnsAsync(reservationInvoice);
         _mockMapper.Setup(m => m.Map<ReservationInvoiceResponse>(reservationInvoice)).Returns(reservationInvoiceResponse);
 
         var request = new DeleteReservationInvoiceRequest(invoiceId);
@@ -72,7 +72,7 @@ public class DeleteReservationInvoiceHandlerTests
     {
         // Arrange
         var invoiceId = Guid.NewGuid();
-        _mockReservationInvoiceRepository.Setup(repo => repo.Delete(invoiceId)).ReturnsAsync((ReservationInvoices)null!);
+        _mockReservationInvoiceRepository.Setup(repo => repo.Delete(invoiceId, CancellationToken.None)).ReturnsAsync((ReservationInvoices)null!);
 
         var request = new DeleteReservationInvoiceRequest(invoiceId);
 
@@ -90,7 +90,7 @@ public class DeleteReservationInvoiceHandlerTests
     {
         // Arrange
         var invoiceId = Guid.NewGuid();
-        _mockReservationInvoiceRepository.Setup(repo => repo.Delete(invoiceId)).ThrowsAsync(new Exception("Database error"));
+        _mockReservationInvoiceRepository.Setup(repo => repo.Delete(invoiceId, CancellationToken.None)).ThrowsAsync(new Exception("Database error"));
 
         var request = new DeleteReservationInvoiceRequest(invoiceId);
 

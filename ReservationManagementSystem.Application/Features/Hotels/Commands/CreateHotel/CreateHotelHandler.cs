@@ -36,7 +36,7 @@ public sealed class CreateHotelHandler : IRequestHandler<CreateHotelRequest, Res
         }
 
         var hotel = _mapper.Map<Hotel>(request);
-        await _hotelRepository.Create(hotel);
+        await _hotelRepository.Create(hotel, cancellationToken);
 
         var hotelResponse = _mapper.Map<HotelResponse>(hotel);
         return Result<HotelResponse>.Success(hotelResponse);

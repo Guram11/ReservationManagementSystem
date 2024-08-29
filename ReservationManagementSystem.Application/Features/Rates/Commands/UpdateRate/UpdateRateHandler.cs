@@ -36,7 +36,7 @@ public sealed class UpdateRateHandler : IRequestHandler<UpdateRateRequest, Resul
         }
 
         var rate = _mapper.Map<Rate>(request);
-        await _rateRepository.Update(request.Id, rate);
+        await _rateRepository.Update(request.Id, rate, cancellationToken);
         var response = _mapper.Map<RateResponse>(rate);
 
         return Result<RateResponse>.Success(response);

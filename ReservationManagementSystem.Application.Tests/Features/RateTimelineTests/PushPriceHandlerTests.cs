@@ -53,10 +53,10 @@ public class PushPriceHandlerTests
             Price = 90m
         };
 
-        _rateRoomTypeRepositoryMock.Setup(r => r.GetRateRoomTypeWithRateTimelines(rateId, roomTypeId))
+        _rateRoomTypeRepositoryMock.Setup(r => r.GetRateRoomTypeWithRateTimelines(rateId, roomTypeId, CancellationToken.None))
             .ReturnsAsync(rateRoomType);
 
-        _rateRoomTypeRepositoryMock.Setup(r => r.SaveChangesAsync())
+        _rateRoomTypeRepositoryMock.Setup(r => r.SaveChangesAsync(CancellationToken.None))
             .Returns(Task.CompletedTask);
 
         _mapperMock.Setup(m => m.Map<RateTimelineResponse>(It.IsAny<RateTimeline>()))
@@ -67,8 +67,8 @@ public class PushPriceHandlerTests
 
         // Assert
         result.IsSuccess.Should().BeTrue();
-        _rateTimelineRepositoryMock.Verify(r => r.Create(It.IsAny<RateTimeline>()), Times.Exactly(3));
-        _rateRoomTypeRepositoryMock.Verify(r => r.SaveChangesAsync(), Times.Once);
+        _rateTimelineRepositoryMock.Verify(r => r.Create(It.IsAny<RateTimeline>(), CancellationToken.None), Times.Exactly(3));
+        _rateRoomTypeRepositoryMock.Verify(r => r.SaveChangesAsync(CancellationToken.None), Times.Once);
     }
 
     [Fact]
@@ -79,7 +79,7 @@ public class PushPriceHandlerTests
         var roomTypeId = Guid.NewGuid();
         var request = new PushPriceRequest(rateId, roomTypeId, DateTime.Now, DateTime.Now.AddDays(1), 100m);
 
-        _rateRoomTypeRepositoryMock.Setup(r => r.GetRateRoomTypeWithRateTimelines(rateId, roomTypeId))
+        _rateRoomTypeRepositoryMock.Setup(r => r.GetRateRoomTypeWithRateTimelines(rateId, roomTypeId, CancellationToken.None))
             .ReturnsAsync((RateRoomType)null!);
 
         // Act

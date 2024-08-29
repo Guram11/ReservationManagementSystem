@@ -21,7 +21,7 @@ public sealed class CreateRateRoomTypeHandler : IRequestHandler<CreateRateRoomTy
     public async Task<Result<RateRoomTypeResponse>> Handle(CreateRateRoomTypeRequest request, CancellationToken cancellationToken)
     {
         var rateRoomType = _mapper.Map<RateRoomType>(request);
-        var createdRateRoomType = await _rateRoomTypeRepository.Create(rateRoomType);
+        var createdRateRoomType = await _rateRoomTypeRepository.Create(rateRoomType, cancellationToken);
 
         if (createdRateRoomType == null)
         {

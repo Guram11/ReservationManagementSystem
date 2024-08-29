@@ -19,7 +19,7 @@ public sealed class DeleteReservationInvoiceHandler : IRequestHandler<DeleteRese
 
     public async Task<Result<ReservationInvoiceResponse>> Handle(DeleteReservationInvoiceRequest request, CancellationToken cancellationToken)
     {
-        var reservationInvoice = await _reservationInvoiceRepository.Delete(request.Id);
+        var reservationInvoice = await _reservationInvoiceRepository.Delete(request.Id, cancellationToken);
 
         if (reservationInvoice is null)
         {

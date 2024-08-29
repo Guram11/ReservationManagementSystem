@@ -34,7 +34,7 @@ public class GetAllRoomsHandlerTests
 
         _roomRepositoryMock.Setup(r => r.GetAll(
             request.FilterOn, request.FilterQuery, request.SortBy,
-            request.IsAscending, request.PageNumber, request.PageSize))
+            request.IsAscending, request.PageNumber, request.PageSize, CancellationToken.None))
             .ReturnsAsync(rooms);
 
         var roomResponses = new List<RoomResponse>

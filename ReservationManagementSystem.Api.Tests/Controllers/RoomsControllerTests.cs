@@ -53,7 +53,7 @@ public class RoomsControllerTests
             .ReturnsAsync(result);
 
         // Act
-        var actionResult = await _controller.GetAll(queryParams);
+        var actionResult = await _controller.GetAll(queryParams, CancellationToken.None);
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;
@@ -83,7 +83,7 @@ public class RoomsControllerTests
             .ReturnsAsync(result);
 
         // Act
-        var actionResult = await _controller.Get(roomlId);
+        var actionResult = await _controller.Get(roomlId, CancellationToken.None);
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;
@@ -113,7 +113,7 @@ public class RoomsControllerTests
             .ReturnsAsync(result);
 
         // Act
-        var actionResult = await _controller.Create(createRoomRequest);
+        var actionResult = await _controller.Create(createRoomRequest, CancellationToken.None);
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;
@@ -143,7 +143,7 @@ public class RoomsControllerTests
             .ReturnsAsync(result);
 
         // Act
-        var actionResult = await _controller.Update(updateRoomRequest);
+        var actionResult = await _controller.Update(updateRoomRequest, CancellationToken.None);
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;
@@ -173,7 +173,7 @@ public class RoomsControllerTests
             .ReturnsAsync(result);
 
         // Act
-        var actionResult = await _controller.Delete(roomId);
+        var actionResult = await _controller.Delete(roomId, CancellationToken.None);
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;

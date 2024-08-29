@@ -19,7 +19,7 @@ public sealed class GetGuestByIdHandler : IRequestHandler<GetGuestByIdRequest, R
 
     public async Task<Result<GuestResponse>> Handle(GetGuestByIdRequest request, CancellationToken cancellationToken)
     {
-        var guest = await _guestRepository.Get(request.Id);
+        var guest = await _guestRepository.Get(request.Id, cancellationToken);
 
         if (guest is null)
         {

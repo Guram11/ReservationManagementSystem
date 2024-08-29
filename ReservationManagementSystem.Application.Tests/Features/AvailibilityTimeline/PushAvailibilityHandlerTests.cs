@@ -52,10 +52,10 @@ public class PushAvailabilityHandlerTests
             Available = availableRooms
         };
 
-        _roomTypeRepositoryMock.Setup(r => r.GetRoomTypeWithAvailabilityAsync(roomTypeId))
+        _roomTypeRepositoryMock.Setup(r => r.GetRoomTypeWithAvailabilityAsync(roomTypeId, CancellationToken.None))
             .ReturnsAsync(existingRoomType);
 
-        _roomTypeRepositoryMock.Setup(r => r.SaveChangesAsync())
+        _roomTypeRepositoryMock.Setup(r => r.SaveChangesAsync(CancellationToken.None))
             .Returns(Task.CompletedTask);
 
         _mapperMock.Setup(m => m.Map<AvailabilityResponse>(It.IsAny<AvailabilityTimeline>()))
@@ -80,8 +80,8 @@ public class PushAvailabilityHandlerTests
             Available = availableRooms
         });
 
-        _availabilityTimelineRepositoryMock.Verify(a => a.Create(It.IsAny<AvailabilityTimeline>()), Times.Exactly(3));
-        _roomTypeRepositoryMock.Verify(r => r.SaveChangesAsync(), Times.Once);
+        _availabilityTimelineRepositoryMock.Verify(a => a.Create(It.IsAny<AvailabilityTimeline>(), CancellationToken.None), Times.Exactly(3));
+        _roomTypeRepositoryMock.Verify(r => r.SaveChangesAsync(CancellationToken.None), Times.Once);
     }
 
     [Fact]
@@ -91,7 +91,7 @@ public class PushAvailabilityHandlerTests
         var roomTypeId = Guid.NewGuid();
         var request = new PushAvailabilityRequest(roomTypeId, DateTime.Now, DateTime.Now.AddDays(1), 5);
 
-        _roomTypeRepositoryMock.Setup(r => r.GetRoomTypeWithAvailabilityAsync(roomTypeId))
+        _roomTypeRepositoryMock.Setup(r => r.GetRoomTypeWithAvailabilityAsync(roomTypeId, CancellationToken.None))
             .ReturnsAsync((RoomType)null!);
 
         // Act
@@ -117,7 +117,7 @@ public class PushAvailabilityHandlerTests
             AvailabilityTimelines = new List<AvailabilityTimeline>()
         };
 
-        _roomTypeRepositoryMock.Setup(r => r.GetRoomTypeWithAvailabilityAsync(roomTypeId))
+        _roomTypeRepositoryMock.Setup(r => r.GetRoomTypeWithAvailabilityAsync(roomTypeId, CancellationToken.None))
             .ReturnsAsync(existingRoomType);
 
         // Act

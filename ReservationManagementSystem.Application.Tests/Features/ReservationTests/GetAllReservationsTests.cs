@@ -93,7 +93,7 @@ public class GetAllReservationsHandlerTests
                 request.SortBy,
                 request.IsAscending,
                 request.PageNumber,
-                request.PageSize
+                request.PageSize, CancellationToken.None
             ))
             .ReturnsAsync(reservations);
 

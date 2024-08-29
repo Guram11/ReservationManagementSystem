@@ -14,14 +14,14 @@ public class AvailibilityRepository : BaseRepository<AvailabilityTimeline>, IAva
         _context = context;
     }
 
-    public async Task<IEnumerable<AvailabilityTimeline>> GetAvailabilityByDateRange(DateTime startDate, DateTime endDate)
+    public async Task<IEnumerable<AvailabilityTimeline>> GetAvailabilityByDateRange(DateTime startDate, DateTime endDate, CancellationToken cancellationToken)
     {
         var startDateWithoutTime = startDate.Date;
         var endDateWithoutTime = endDate.Date.AddDays(1);
 
         return await _context.AvailabilityTimelines
             .Where(at => at.Date >= startDateWithoutTime && at.Date < endDateWithoutTime)
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
     }
 }
 

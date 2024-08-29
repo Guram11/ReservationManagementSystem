@@ -19,7 +19,7 @@ public sealed class GetRateByIdHandler : IRequestHandler<GetRateByIdRequest, Res
 
     public async Task<Result<RateResponse>> Handle(GetRateByIdRequest request, CancellationToken cancellationToken)
     {
-        var rate = await _rateRepository.Get(request.Id);
+        var rate = await _rateRepository.Get(request.Id, cancellationToken);
 
         if (rate is null)
         {

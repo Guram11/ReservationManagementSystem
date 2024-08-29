@@ -19,7 +19,7 @@ public sealed class DeleteRoomHandler : IRequestHandler<DeleteRoomRequest, Resul
 
     public async Task<Result<RoomResponse>> Handle(DeleteRoomRequest request, CancellationToken cancellationToken)
     {
-        var room = await _roomRepository.Delete(request.Id);
+        var room = await _roomRepository.Delete(request.Id, cancellationToken);
 
         if (room is null)
         {

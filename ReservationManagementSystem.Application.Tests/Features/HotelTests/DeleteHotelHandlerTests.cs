@@ -29,7 +29,7 @@ public class DeleteHotelHandlerTests
         var hotel = new Hotel { Id = hotelId, Name = "Test Hotel" };
         var hotelResponse = new HotelResponse { Id = hotelId, Name = hotel.Name };
 
-        _mockHotelRepository.Setup(repo => repo.Delete(hotelId)).ReturnsAsync(hotel);
+        _mockHotelRepository.Setup(repo => repo.Delete(hotelId, CancellationToken.None)).ReturnsAsync(hotel);
         _mockMapper.Setup(m => m.Map<HotelResponse>(hotel)).Returns(hotelResponse);
 
         var request = new DeleteHotelRequest(hotelId);
@@ -47,7 +47,7 @@ public class DeleteHotelHandlerTests
     {
         // Arrange
         var hotelId = Guid.NewGuid();
-        _mockHotelRepository.Setup(repo => repo.Delete(hotelId)).ReturnsAsync((Hotel)null!);
+        _mockHotelRepository.Setup(repo => repo.Delete(hotelId, CancellationToken.None)).ReturnsAsync((Hotel)null!);
 
         var request = new DeleteHotelRequest(hotelId);
 
@@ -65,7 +65,7 @@ public class DeleteHotelHandlerTests
     {
         // Arrange
         var hotelId = Guid.NewGuid();
-        _mockHotelRepository.Setup(repo => repo.Delete(hotelId)).ThrowsAsync(new Exception("Database error"));
+        _mockHotelRepository.Setup(repo => repo.Delete(hotelId, CancellationToken.None)).ThrowsAsync(new Exception("Database error"));
 
         var request = new DeleteHotelRequest(hotelId);
 

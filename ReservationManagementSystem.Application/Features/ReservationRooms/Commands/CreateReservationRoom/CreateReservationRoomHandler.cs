@@ -21,7 +21,7 @@ public sealed class CreateReservationRoomlHandler : IRequestHandler<CreateReserv
     public async Task<Result<ReservationRoomResponse>> Handle(CreateReservationRoomRequest request, CancellationToken cancellationToken)
     {
         var reservationRoom = _mapper.Map<ReservationRoom>(request);
-        var response =  await _reservationRoomRepository.Create(reservationRoom);
+        var response =  await _reservationRoomRepository.Create(reservationRoom, cancellationToken);
 
         if (response is null)
         {

@@ -37,7 +37,7 @@ public sealed class CreateReservationRoomPaymentHandler : IRequestHandler<Create
         }
 
         var reservationRoomPayment = _mapper.Map<ReservationRoomPayments>(request);
-        await _reservationRoomPaymentRepository.Create(reservationRoomPayment);
+        await _reservationRoomPaymentRepository.Create(reservationRoomPayment, cancellationToken);
 
         var reservationResponse = _mapper.Map<ReservationRoomPaymentsResponse>(reservationRoomPayment);
         return Result<ReservationRoomPaymentsResponse>.Success(reservationResponse);

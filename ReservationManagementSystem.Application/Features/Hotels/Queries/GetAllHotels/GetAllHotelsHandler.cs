@@ -21,7 +21,7 @@ public sealed class GetAllHotelsHandler : IRequestHandler<GetAllHotelsRequest, R
     {
         var hotels = await _hotelRepository.GetAll(
             request.FilterOn, request.FilterQuery, request.SortBy,
-            request.IsAscending, request.PageNumber, request.PageSize);
+            request.IsAscending, request.PageNumber, request.PageSize, cancellationToken);
 
         var response = _mapper.Map<List<HotelResponse>>(hotels);
 

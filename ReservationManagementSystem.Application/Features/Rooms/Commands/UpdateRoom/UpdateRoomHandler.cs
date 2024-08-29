@@ -36,7 +36,7 @@ public sealed class UpdateRoomHandler : IRequestHandler<UpdateRoomRequest, Resul
         }
 
         var room = _mapper.Map<Room>(request);
-        await _roomRepository.Update(request.Id, room);
+        await _roomRepository.Update(request.Id, room, cancellationToken);
         var response = _mapper.Map<RoomResponse>(room);
 
         return Result<RoomResponse>.Success(response);

@@ -14,9 +14,9 @@ public class GuestRepository : BaseRepository<Guest>, IGuestRepository
         _context = context;
     }
 
-    public async Task<Guest?> GetGuestByEmail(string email)
+    public async Task<Guest?> GetGuestByEmail(string email, CancellationToken cancellationToken)
     {
-        var guest  = await _context.Guests.FirstOrDefaultAsync(g => g.Email == email);
+        var guest  = await _context.Guests.FirstOrDefaultAsync(g => g.Email == email, cancellationToken);
         return guest;
     }
 }

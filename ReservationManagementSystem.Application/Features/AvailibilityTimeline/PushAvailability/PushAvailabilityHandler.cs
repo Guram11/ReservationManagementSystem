@@ -24,7 +24,7 @@ public sealed class PushAvailabilityHandler : IRequestHandler<PushAvailabilityRe
 
     public async Task<Result<AvailabilityResponse>> Handle(PushAvailabilityRequest request, CancellationToken cancellationToken)
     {
-        var roomType = await _roomTypeRepository.GetRoomTypeWithAvailabilityAsync(request.RoomTypeId);
+        var roomType = await _roomTypeRepository.GetRoomTypeWithAvailabilityAsync(request.RoomTypeId, cancellationToken);
 
         if (roomType is null)
         {
@@ -51,7 +51,7 @@ public sealed class PushAvailabilityHandler : IRequestHandler<PushAvailabilityRe
                     RoomTypeId = request.RoomTypeId,
                     Available = request.AvailableRooms
                 };
-                await _availibilityTimelineRepository.Create(availabilityTimeline);
+                await _availibilityTimelineRepository.Create(availabilityTimeline, cancellationToken);
                 roomType?.AvailabilityTimelines?.Add(availabilityTimeline);
             }
             else
@@ -60,7 +60,7 @@ public sealed class PushAvailabilityHandler : IRequestHandler<PushAvailabilityRe
             }
         }
 
-        await _roomTypeRepository.SaveChangesAsync();
+        await _roomTypeRepository.SaveChangesAsync(cancellationToken);
 
         var respose = _mapper.Map<AvailabilityResponse>(availabilityTimeline);
 

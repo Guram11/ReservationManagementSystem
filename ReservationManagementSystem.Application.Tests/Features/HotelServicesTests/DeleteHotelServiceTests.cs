@@ -49,7 +49,7 @@ public class DeleteHotelServiceTests
             Price = hotelService.Price
         };
 
-        _mockHotelServiceRepository.Setup(repo => repo.Delete(hotelServiceId)).ReturnsAsync(hotelService);
+        _mockHotelServiceRepository.Setup(repo => repo.Delete(hotelServiceId, CancellationToken.None)).ReturnsAsync(hotelService);
         _mockMapper.Setup(m => m.Map<HotelServiceResponse>(hotelService)).Returns(hotelServiceResponse);
 
         var request = new DeleteHotelServiceRequest(hotelServiceId);
@@ -67,7 +67,7 @@ public class DeleteHotelServiceTests
     {
         // Arrange
         var hotelServiceId = Guid.NewGuid();
-        _mockHotelServiceRepository.Setup(repo => repo.Delete(hotelServiceId)).ReturnsAsync((HotelService)null!);
+        _mockHotelServiceRepository.Setup(repo => repo.Delete(hotelServiceId, CancellationToken.None)).ReturnsAsync((HotelService)null!);
 
         var request = new DeleteHotelServiceRequest(hotelServiceId);
 
@@ -85,7 +85,7 @@ public class DeleteHotelServiceTests
     {
         // Arrange
         var hotelServiceId = Guid.NewGuid();
-        _mockHotelServiceRepository.Setup(repo => repo.Delete(hotelServiceId)).ThrowsAsync(new Exception("Database error"));
+        _mockHotelServiceRepository.Setup(repo => repo.Delete(hotelServiceId, CancellationToken.None)).ThrowsAsync(new Exception("Database error"));
 
         var request = new DeleteHotelServiceRequest(hotelServiceId);
 

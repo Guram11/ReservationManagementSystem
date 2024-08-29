@@ -105,7 +105,7 @@ public class UpdateGuestHandlerTests
         _mockValidator.Setup(v => v.ValidateAsync(request, It.IsAny<CancellationToken>()))
                       .ReturnsAsync(new ValidationResult());
         _mockMapper.Setup(m => m.Map<Guest>(request)).Returns(guest);
-        _mockGuestRepository.Setup(r => r.Update(guestId, guest))
+        _mockGuestRepository.Setup(r => r.Update(guestId, guest, CancellationToken.None))
                             .ThrowsAsync(new Exception("Database error"));
 
         // Act

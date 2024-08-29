@@ -18,9 +18,9 @@ public class RateTimelinesController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<RateTimelineResponse>> PushPrice([FromBody] PushPriceRequest request)
+    public async Task<ActionResult<RateTimelineResponse>> PushPrice([FromBody] PushPriceRequest request, CancellationToken cancellationToken)
     {
-        var response = await _mediator.Send(request);
+        var response = await _mediator.Send(request, cancellationToken);
         return ResponseHandler.HandleResponse(response);
     }
 }

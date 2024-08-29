@@ -36,7 +36,7 @@ public class GetAllRatesHandlerTests
 
         _rateRepositoryMock.Setup(x => x.GetAll(
             request.FilterOn, request.FilterQuery, request.SortBy,
-            request.IsAscending, request.PageNumber, request.PageSize))
+            request.IsAscending, request.PageNumber, request.PageSize, CancellationToken.None))
             .ReturnsAsync(rates);
 
         var rateResponses = new List<RateResponse>
@@ -66,7 +66,7 @@ public class GetAllRatesHandlerTests
 
         _rateRepositoryMock.Setup(x => x.GetAll(
             request.FilterOn, request.FilterQuery, request.SortBy,
-            request.IsAscending, request.PageNumber, request.PageSize))
+            request.IsAscending, request.PageNumber, request.PageSize, CancellationToken.None))
             .ReturnsAsync(rates);
 
         var rateResponses = new List<RateResponse>();

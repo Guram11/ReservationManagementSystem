@@ -21,7 +21,7 @@ public sealed class GetAllRatesHandler : IRequestHandler<GetAllRatesRequest, Res
     {
         var rates = await _rateRepository.GetAll(
             request.FilterOn, request.FilterQuery, request.SortBy,
-            request.IsAscending, request.PageNumber, request.PageSize);
+            request.IsAscending, request.PageNumber, request.PageSize, cancellationToken);
 
         var response = _mapper.Map<List<RateResponse>>(rates);
 

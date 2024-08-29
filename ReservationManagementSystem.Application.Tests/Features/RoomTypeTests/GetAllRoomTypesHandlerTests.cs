@@ -40,7 +40,7 @@ public class GetAllRoomTypesHandlerTests
 
         _roomTypeRepositoryMock.Setup(r => r.GetAll(
             request.FilterOn, request.FilterQuery, request.SortBy, request.IsAscending,
-            request.PageNumber, request.PageSize)).ReturnsAsync(roomTypes);
+            request.PageNumber, request.PageSize, CancellationToken.None)).ReturnsAsync(roomTypes);
 
         _mapperMock.Setup(m => m.Map<List<RoomTypeResponse>>(roomTypes)).Returns(roomTypeResponses);
 
@@ -62,7 +62,7 @@ public class GetAllRoomTypesHandlerTests
 
         _roomTypeRepositoryMock.Setup(r => r.GetAll(
             request.FilterOn, request.FilterQuery, request.SortBy, request.IsAscending,
-            request.PageNumber, request.PageSize)).ReturnsAsync(roomTypes);
+            request.PageNumber, request.PageSize, CancellationToken.None)).ReturnsAsync(roomTypes);
 
         _mapperMock.Setup(m => m.Map<List<RoomTypeResponse>>(roomTypes)).Returns(roomTypeResponses);
 

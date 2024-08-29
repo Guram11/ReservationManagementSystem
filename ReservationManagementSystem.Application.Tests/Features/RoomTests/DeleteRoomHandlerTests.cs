@@ -30,7 +30,7 @@ public class DeleteRoomHandlerTests
 
         var request = new DeleteRoomRequest(roomId);
 
-        _roomRepositoryMock.Setup(r => r.Delete(roomId))
+        _roomRepositoryMock.Setup(r => r.Delete(roomId, CancellationToken.None))
             .ReturnsAsync(room);
 
         var roomResponse = new RoomResponse { Id = room.Id, RoomTypeId = room.RoomTypeId, Number = room.Number, Floor = room.Floor, Note = room.Note };
@@ -53,7 +53,7 @@ public class DeleteRoomHandlerTests
         var roomId = Guid.NewGuid();
         var request = new DeleteRoomRequest(roomId);
 
-        _roomRepositoryMock.Setup(r => r.Delete(roomId))
+        _roomRepositoryMock.Setup(r => r.Delete(roomId, CancellationToken.None))
             .ReturnsAsync((Room)null!);
 
         // Act

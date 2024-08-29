@@ -19,7 +19,7 @@ public sealed class GetReservationByIdHandler : IRequestHandler<GetReservationBy
 
     public async Task<Result<ReservationResponse>> Handle(GetReservationByIdRequest request, CancellationToken cancellationToken)
     {
-        var reservation = await _reservationRepository.Get(request.Id);
+        var reservation = await _reservationRepository.Get(request.Id, cancellationToken);
 
         if (reservation is null)
         {

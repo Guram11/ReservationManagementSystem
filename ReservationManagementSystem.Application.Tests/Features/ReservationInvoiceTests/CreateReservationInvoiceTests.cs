@@ -79,21 +79,21 @@ public class CreateReservationInvoiceHandlerTests
             .ReturnsAsync(new ValidationResult());
 
         _reservationRoomRepositoryMock
-            .Setup(repo => repo.GetReservationRoomByReservationId(request.ReservationId))
+            .Setup(repo => repo.GetReservationRoomByReservationId(request.ReservationId, CancellationToken.None))
             .ReturnsAsync(reservationRoom);
 
         _reservationRoomTimelineRepositoryMock
-            .Setup(repo => repo.GetReservationRoomTimelinesByReservationRoomId(reservationRoom.Id))
+            .Setup(repo => repo.GetReservationRoomTimelinesByReservationRoomId(reservationRoom.Id, CancellationToken.None))
             .ReturnsAsync(roomTimelines);
 
         _reservationInvoiceRepositoryMock
-            .Setup(repo => repo.GetCurrencyRate(request.Currency.ToString()))
+            .Setup(repo => repo.GetCurrencyRate(request.Currency.ToString(), CancellationToken.None))
             .ReturnsAsync(currencyRate);
 
         _mapperMock.Setup(m => m.Map<ReservationInvoices>(It.IsAny<ReservationInvoices>())).Returns(reservationInvoice);
         _mapperMock.Setup(m => m.Map<ReservationInvoiceResponse>(reservationInvoice)).Returns(reservationInvoiceResponse);
 
-        _reservationInvoiceRepositoryMock.Setup(repo => repo.Create(reservationInvoice)).ReturnsAsync(reservationInvoice);
+        _reservationInvoiceRepositoryMock.Setup(repo => repo.Create(reservationInvoice, CancellationToken.None)).ReturnsAsync(reservationInvoice);
 
         // Act
         var result = await _handler.Handle(request, CancellationToken.None);
@@ -144,7 +144,7 @@ public class CreateReservationInvoiceHandlerTests
             .ReturnsAsync(new ValidationResult());
 
         _reservationRoomRepositoryMock
-            .Setup(repo => repo.GetReservationRoomByReservationId(request.ReservationId))
+            .Setup(repo => repo.GetReservationRoomByReservationId(request.ReservationId, CancellationToken.None))
             .ReturnsAsync((ReservationRoom)null!);
 
         // Act
@@ -171,11 +171,11 @@ public class CreateReservationInvoiceHandlerTests
             .ReturnsAsync(new ValidationResult());
 
         _reservationRoomRepositoryMock
-            .Setup(repo => repo.GetReservationRoomByReservationId(request.ReservationId))
+            .Setup(repo => repo.GetReservationRoomByReservationId(request.ReservationId, CancellationToken.None))
             .ReturnsAsync(reservationRoom);
 
         _reservationInvoiceRepositoryMock
-            .Setup(repo => repo.GetCurrencyRate(request.Currency.ToString()))
+            .Setup(repo => repo.GetCurrencyRate(request.Currency.ToString(), CancellationToken.None))
             .ReturnsAsync((CurrencyRate)null!);
 
         // Act

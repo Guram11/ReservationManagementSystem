@@ -44,15 +44,15 @@ public sealed class CreateReservationInvoicelHandler : IRequestHandler<CreateRes
             }
         }
 
-        var reservationRoom = await _reservationRoomRepository.GetReservationRoomByReservationId(request.ReservationId);
-        var currencyRate = await _reservationInvoiceRepository.GetCurrencyRate(request.Currency.ToString());
+        var reservationRoom = await _reservationRoomRepository.GetReservationRoomByReservationId(request.ReservationId, cancellationToken);
+        var currencyRate = await _reservationInvoiceRepository.GetCurrencyRate(request.Currency.ToString(), cancellationToken);
 
         if (currencyRate == null || reservationRoom == null)
         {
             return Result<ReservationInvoiceResponse>.Failure(ReservationRoomErrors.NotFound());
         }
 
-        var roomTimeline = await _roomTimelineRepository.GetReservationRoomTimelinesByReservationRoomId(reservationRoom.Id);
+        var roomTimeline = await _roomTimelineRepository.GetReservationRoomTimelinesByReservationRoomId(reservationRoom.Id, cancellationToken);
         var totalAmountInGEL = roomTimeline.Sum(rt => rt.Price);
 
         var finalAmount = request.Currency == Currencies.GEL ? totalAmountInGEL : totalAmountInGEL / currencyRate.Rate;
@@ -68,7 +68,7 @@ public sealed class CreateReservationInvoicelHandler : IRequestHandler<CreateRes
         };
 
         var reservationInvoice = _mapper.Map<ReservationInvoices>(invoice);
-        await _reservationInvoiceRepository.Create(reservationInvoice);
+        await _reservationInvoiceRepository.Create(reservationInvoice, cancellationToken);
 
         var reservationResponse = _mapper.Map<ReservationInvoiceResponse>(reservationInvoice);
         return Result<ReservationInvoiceResponse>.Success(reservationResponse);

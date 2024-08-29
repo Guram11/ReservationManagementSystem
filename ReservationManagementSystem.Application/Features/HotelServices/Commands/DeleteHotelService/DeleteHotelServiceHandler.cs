@@ -19,7 +19,7 @@ public sealed class DeleteHoteServicelHandler : IRequestHandler<DeleteHotelServi
 
     public async Task<Result<HotelServiceResponse>> Handle(DeleteHotelServiceRequest request, CancellationToken cancellationToken)
     {
-        var hotelService = await _hotelServiceRepository.Delete(request.Id);
+        var hotelService = await _hotelServiceRepository.Delete(request.Id, cancellationToken);
 
         if (hotelService is null)
         {

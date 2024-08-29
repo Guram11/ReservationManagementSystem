@@ -56,7 +56,7 @@ public class CreateHotelHandlerTests
         _mockMapper.Setup(m => m.Map<Hotel>(request)).Returns(hotel);
         _mockMapper.Setup(m => m.Map<HotelResponse>(hotel)).Returns(hotelResponse);
 
-        _mockHotelRepository.Setup(repo => repo.Create(hotel)).ReturnsAsync(hotel);
+        _mockHotelRepository.Setup(repo => repo.Create(hotel, CancellationToken.None)).ReturnsAsync(hotel);
 
         // Act
         var result = await _handler.Handle(request, CancellationToken.None);

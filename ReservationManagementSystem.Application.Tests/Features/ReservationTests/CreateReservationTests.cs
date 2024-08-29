@@ -120,7 +120,7 @@ public class CreateReservationHandlerTests
 
         var reservation = new Reservation();
         _mapperMock.Setup(m => m.Map<Reservation>(request)).Returns(reservation);
-        _reservationRepositoryMock.Setup(r => r.Create(reservation)).ReturnsAsync(reservation);
+        _reservationRepositoryMock.Setup(r => r.Create(reservation, CancellationToken.None)).ReturnsAsync(reservation);
 
         var reservationResponse = new ReservationResponse();
         _mapperMock.Setup(m => m.Map<ReservationResponse>(reservation)).Returns(reservationResponse);

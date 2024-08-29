@@ -21,7 +21,7 @@ public sealed class GetAllRoomsHandler : IRequestHandler<GetAllRoomsRequest, Res
     {
         var rooms = await _roomRepository.GetAll(
             request.FilterOn, request.FilterQuery, request.SortBy,
-            request.IsAscending, request.PageNumber, request.PageSize);
+            request.IsAscending, request.PageNumber, request.PageSize, cancellationToken);
 
         var response = _mapper.Map<List<RoomResponse>>(rooms);
 

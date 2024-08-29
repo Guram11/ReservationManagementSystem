@@ -51,7 +51,7 @@ public class RatesControllerTests
             .ReturnsAsync(result);
 
         // Act
-        var actionResult = await _controller.GetAll(queryParams);
+        var actionResult = await _controller.GetAll(queryParams, CancellationToken.None);
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;
@@ -79,7 +79,7 @@ public class RatesControllerTests
             .ReturnsAsync(result);
 
         // Act
-        var actionResult = await _controller.Get(rateId);
+        var actionResult = await _controller.Get(rateId, CancellationToken.None);
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;
@@ -107,7 +107,7 @@ public class RatesControllerTests
             .ReturnsAsync(result);
 
         // Act
-        var actionResult = await _controller.Create(createRateRequest);
+        var actionResult = await _controller.Create(createRateRequest, CancellationToken.None);
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;
@@ -135,7 +135,7 @@ public class RatesControllerTests
             .ReturnsAsync(result);
 
         // Act
-        var actionResult = await _controller.Update(updateRateRequest);
+        var actionResult = await _controller.Update(updateRateRequest, CancellationToken.None);
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;
@@ -163,7 +163,7 @@ public class RatesControllerTests
             .ReturnsAsync(result);
 
         // Act
-        var actionResult = await _controller.Delete(rateId);
+        var actionResult = await _controller.Delete(rateId, CancellationToken.None);
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;

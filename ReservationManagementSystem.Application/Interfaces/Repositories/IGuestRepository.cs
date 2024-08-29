@@ -4,5 +4,5 @@ namespace ReservationManagementSystem.Application.Interfaces.Repositories;
 
 public interface IGuestRepository : IBaseRepository<Guest>
 {
-    Task<Guest?> GetGuestByEmail(string email);
+    Task<Guest?> GetGuestByEmail(string email, CancellationToken cancellationToken);
 }

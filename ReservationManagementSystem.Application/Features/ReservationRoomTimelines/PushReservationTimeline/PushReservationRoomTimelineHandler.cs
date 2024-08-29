@@ -24,7 +24,7 @@ public sealed class PushReservationRoomTimeline : IRequestHandler<PushReservatio
 
     public async Task<Result<ReservationRoomTimelineResponse>> Handle(PushReservationTimelineRequest request, CancellationToken cancellationToken)
     {
-        var reservationRoom = await _reservationRoomRepository.GetReservationRoomWithTimeline(request.ReservationRoomId);
+        var reservationRoom = await _reservationRoomRepository.GetReservationRoomWithTimeline(request.ReservationRoomId, cancellationToken);
 
         if (reservationRoom is null)
         {
@@ -35,7 +35,7 @@ public sealed class PushReservationRoomTimeline : IRequestHandler<PushReservatio
 
         for (var date = request.StartDate; date <= request.EndDate; date = date.AddDays(1))
         {
-            var reservationRoomTimeline = reservationRoom.ReservationRoomTimelines
+            var reservationRoomTimeline = reservationRoom.ReservationRoomTimelines!
                 .FirstOrDefault(rt => rt.Date == date);
 
             if (reservationRoomTimeline == null)
@@ -46,8 +46,8 @@ public sealed class PushReservationRoomTimeline : IRequestHandler<PushReservatio
                     ReservationRoomId = reservationRoom.Id,
                     Price = request.Price
                 };
-                await _reservationRoomTimelineRepository.Create(reservationRoomTimeline);
-                reservationRoom.ReservationRoomTimelines.Add(reservationRoomTimeline);
+                await _reservationRoomTimelineRepository.Create(reservationRoomTimeline, cancellationToken);
+                reservationRoom.ReservationRoomTimelines!.Add(reservationRoomTimeline);
             }
             else
             {
@@ -57,7 +57,7 @@ public sealed class PushReservationRoomTimeline : IRequestHandler<PushReservatio
             lastModifiedRateTimeline = reservationRoomTimeline;
         }
 
-        await _reservationRoomRepository.SaveChangesAsync();
+        await _reservationRoomRepository.SaveChangesAsync(cancellationToken);
 
         var response = _mapper.Map<ReservationRoomTimelineResponse>(lastModifiedRateTimeline);
 

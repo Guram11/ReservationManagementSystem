@@ -14,9 +14,9 @@ public class ReservationInvoiceRepository : BaseRepository<ReservationInvoices>,
         _context = context;
     }
 
-    public async Task<CurrencyRate?> GetCurrencyRate(string currency)
+    public async Task<CurrencyRate?> GetCurrencyRate(string currency, CancellationToken cancellationToken)
     {
-        var currencyRate = await _context.CurrencyRates.FirstOrDefaultAsync(c => c.Currency == currency);
+        var currencyRate = await _context.CurrencyRates.FirstOrDefaultAsync(c => c.Currency == currency, cancellationToken);
 
         if (currencyRate == null)
         {

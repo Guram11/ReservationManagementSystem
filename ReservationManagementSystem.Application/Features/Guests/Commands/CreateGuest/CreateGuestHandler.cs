@@ -35,7 +35,7 @@ public sealed class CreateGuestHandler : IRequestHandler<CreateGuestRequest, Res
             }
         }
 
-        var createdGuest = await _guestRepository.GetGuestByEmail(request.Email);
+        var createdGuest = await _guestRepository.GetGuestByEmail(request.Email, cancellationToken);
 
         if (createdGuest != null)
         {
@@ -43,7 +43,7 @@ public sealed class CreateGuestHandler : IRequestHandler<CreateGuestRequest, Res
         }
 
         var guest = _mapper.Map<Guest>(request);
-        await _guestRepository.Create(guest);
+        await _guestRepository.Create(guest, cancellationToken);
 
         var guestResponse = _mapper.Map<GuestResponse>(guest);
         return Result<GuestResponse>.Success(guestResponse);

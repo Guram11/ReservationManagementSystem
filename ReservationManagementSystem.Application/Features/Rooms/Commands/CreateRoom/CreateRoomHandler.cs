@@ -36,7 +36,7 @@ public sealed class CreateRoomHandler : IRequestHandler<CreateRoomRequest, Resul
         }
 
         var room = _mapper.Map<Room>(request);
-        await _roomRepository.Create(room);
+        await _roomRepository.Create(room, cancellationToken);
 
         var roomResponse = _mapper.Map<RoomResponse>(room);
         return Result<RoomResponse>.Success(roomResponse);

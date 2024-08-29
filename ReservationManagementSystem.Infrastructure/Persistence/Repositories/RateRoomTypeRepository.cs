@@ -14,10 +14,10 @@ public class RateRoomTypeRepository : BaseRepository<RateRoomType>, IRateRoomTyp
         _context = context;
     }
 
-    public new async Task<RateRoomType> Create(RateRoomType rateRoomType)
+    public new async Task<RateRoomType> Create(RateRoomType rateRoomType, CancellationToken cancellationToken)
     {
-        var rate = await _context.Rates.FirstOrDefaultAsync(x => x.Id == rateRoomType.RateId);
-        var roomType = await _context.RoomTypes.FirstOrDefaultAsync(x => x.Id == rateRoomType.RoomTypeId);
+        var rate = await _context.Rates.FirstOrDefaultAsync(x => x.Id == rateRoomType.RateId, cancellationToken);
+        var roomType = await _context.RoomTypes.FirstOrDefaultAsync(x => x.Id == rateRoomType.RoomTypeId, cancellationToken);
 
         if (rate is null || roomType is null )
         {
@@ -25,16 +25,16 @@ public class RateRoomTypeRepository : BaseRepository<RateRoomType>, IRateRoomTyp
         }
 
         await _context.RateRoomTypes.AddAsync(rateRoomType);
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync(cancellationToken);
 
         return rateRoomType;
     }
 
-    public async Task<RateRoomType?> GetRateRoomTypeWithRateTimelines(Guid rateId, Guid roomTypeId)
+    public async Task<RateRoomType?> GetRateRoomTypeWithRateTimelines(Guid rateId, Guid roomTypeId, CancellationToken cancellationToken)
     {
         var rateRoomType = await _context.RateRoomTypes
            .Include(rt => rt.RateTimelines)
-           .FirstOrDefaultAsync(rt => rt.RateId == rateId && rt.RoomTypeId == roomTypeId);
+           .FirstOrDefaultAsync(rt => rt.RateId == rateId && rt.RoomTypeId == roomTypeId, cancellationToken);
 
         if (rateRoomType == null)
         {
@@ -44,10 +44,10 @@ public class RateRoomTypeRepository : BaseRepository<RateRoomType>, IRateRoomTyp
         return rateRoomType;
     }
 
-    public async Task<RateRoomType?> Delete(Guid rateId, Guid roomTypeId)
+    public async Task<RateRoomType?> Delete(Guid rateId, Guid roomTypeId, CancellationToken cancellationToken)
     {
         var rateRoomType = await _context.RateRoomTypes
-                .FirstOrDefaultAsync(rt => rt.RateId == rateId && rt.RoomTypeId == roomTypeId);
+                .FirstOrDefaultAsync(rt => rt.RateId == rateId && rt.RoomTypeId == roomTypeId, cancellationToken);
 
         if (rateRoomType == null)
         {
@@ -55,13 +55,13 @@ public class RateRoomTypeRepository : BaseRepository<RateRoomType>, IRateRoomTyp
         }
 
         _context.RateRoomTypes.Remove(rateRoomType);
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync(cancellationToken);
 
         return rateRoomType;
     }
 
-    public async Task SaveChangesAsync()
+    public async Task SaveChangesAsync(CancellationToken cancellationToken)
     {
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync(cancellationToken);
     }
 }

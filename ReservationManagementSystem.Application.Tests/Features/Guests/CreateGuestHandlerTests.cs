@@ -52,7 +52,7 @@ public class CreateGuestHandlerTests
 
         _mockValidator.Setup(v => v.ValidateAsync(request, It.IsAny<CancellationToken>()))
             .ReturnsAsync(new FluentValidation.Results.ValidationResult());
-        _mockGuestRepository.Setup(repo => repo.GetGuestByEmail(request.Email)).ReturnsAsync(existingGuest);
+        _mockGuestRepository.Setup(repo => repo.GetGuestByEmail(request.Email, CancellationToken.None)).ReturnsAsync(existingGuest);
 
         // Act
         var result = await _handler.Handle(request, CancellationToken.None);
@@ -92,9 +92,9 @@ public class CreateGuestHandlerTests
 
         _mockValidator.Setup(v => v.ValidateAsync(request, It.IsAny<CancellationToken>()))
             .ReturnsAsync(new FluentValidation.Results.ValidationResult());
-        _mockGuestRepository.Setup(repo => repo.GetGuestByEmail(request.Email)).ReturnsAsync((Guest)null!);
+        _mockGuestRepository.Setup(repo => repo.GetGuestByEmail(request.Email, CancellationToken.None)).ReturnsAsync((Guest)null!);
         _mockMapper.Setup(m => m.Map<Guest>(request)).Returns(guest);
-        _mockGuestRepository.Setup(repo => repo.Create(guest)).ReturnsAsync(guest);
+        _mockGuestRepository.Setup(repo => repo.Create(guest, CancellationToken.None)).ReturnsAsync(guest);
         _mockMapper.Setup(m => m.Map<GuestResponse>(guest)).Returns(guestResponse);
 
         // Act

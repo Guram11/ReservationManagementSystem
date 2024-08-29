@@ -54,7 +54,7 @@ public class DeleteReservationRoomHandlerTests
             Price = reservationRoom.Price
         };
 
-        _mockReservationRoomRepository.Setup(repo => repo.Delete(reservationId, roomId)).ReturnsAsync(reservationRoom);
+        _mockReservationRoomRepository.Setup(repo => repo.Delete(reservationId, roomId, CancellationToken.None)).ReturnsAsync(reservationRoom);
         _mockMapper.Setup(m => m.Map<ReservationRoomResponse>(reservationRoom)).Returns(reservationRoomResponse);
 
         var request = new DeleteReservationRoomRequest(reservationId, roomId);
@@ -73,7 +73,7 @@ public class DeleteReservationRoomHandlerTests
         // Arrange
         var reservationId = Guid.NewGuid();
         var roomId = Guid.NewGuid();
-        _mockReservationRoomRepository.Setup(repo => repo.Delete(reservationId, roomId)).ReturnsAsync((ReservationRoom)null!);
+        _mockReservationRoomRepository.Setup(repo => repo.Delete(reservationId, roomId, CancellationToken.None)).ReturnsAsync((ReservationRoom)null!);
 
         var request = new DeleteReservationRoomRequest(reservationId, roomId);
 
@@ -92,7 +92,7 @@ public class DeleteReservationRoomHandlerTests
         // Arrange
         var reservationId = Guid.NewGuid();
         var roomId = Guid.NewGuid();
-        _mockReservationRoomRepository.Setup(repo => repo.Delete(reservationId, roomId)).ThrowsAsync(new Exception("Database error"));
+        _mockReservationRoomRepository.Setup(repo => repo.Delete(reservationId, roomId, CancellationToken.None)).ThrowsAsync(new Exception("Database error"));
 
         var request = new DeleteReservationRoomRequest(reservationId, roomId);
 

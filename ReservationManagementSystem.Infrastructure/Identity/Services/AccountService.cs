@@ -135,7 +135,7 @@ public class AccountService : IAccountService
                 From = _mailSettings.EmailFrom,
                 To = user.Email,
                 Body = $"{_mailSettings.ConfirmEmailBody} {verificationUri}",
-                Subject = _mailSettings.ConfirmEmailSubject
+                Subject = _mailSettings.ConfirmEmailSubject!
             });
 
             return Result<string>.Success(user.Id);
@@ -184,7 +184,7 @@ public class AccountService : IAccountService
         {
             Body = $"{_mailSettings.ResetEmailBody} {code}",
             To = model.Email,
-            Subject = _mailSettings.ResetEmailSubject
+            Subject = _mailSettings.ResetEmailSubject!
         };
 
         try

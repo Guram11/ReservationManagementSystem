@@ -67,7 +67,7 @@ public class ReservationRoomPaymentsControllerTests
             .ReturnsAsync(result);
 
         // Act
-        var actionResult = await _controller.GetAll(queryParams);
+        var actionResult = await _controller.GetAll(queryParams, CancellationToken.None);
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;
@@ -97,7 +97,7 @@ public class ReservationRoomPaymentsControllerTests
             .ReturnsAsync(result);
 
         // Act
-        var actionResult = await _controller.Create(request);
+        var actionResult = await _controller.Create(request, CancellationToken.None);
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;
@@ -127,7 +127,7 @@ public class ReservationRoomPaymentsControllerTests
             .ReturnsAsync(result);
 
         // Act
-        var actionResult = await _controller.Delete(paymentId);
+        var actionResult = await _controller.Delete(paymentId, CancellationToken.None);
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;

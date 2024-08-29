@@ -42,7 +42,7 @@ public class GuestsControllerTests
             .ReturnsAsync(result);
 
         // Act
-        var actionResult = await _controller.GetAll(new GetAllQueryParams());
+        var actionResult = await _controller.GetAll(new GetAllQueryParams(), CancellationToken.None);
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;
@@ -61,7 +61,7 @@ public class GuestsControllerTests
             .ReturnsAsync(result);
 
         // Act
-        var actionResult = await _controller.Get(guest.Id);
+        var actionResult = await _controller.Get(guest.Id, CancellationToken.None);
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;
@@ -80,7 +80,7 @@ public class GuestsControllerTests
             .ReturnsAsync(result);
 
         // Act
-        var actionResult = await _controller.Create(new CreateGuestRequest("guest1", "guest", "guest", "123", Guid.NewGuid()));
+        var actionResult = await _controller.Create(new CreateGuestRequest("guest1", "guest", "guest", "123", Guid.NewGuid()), CancellationToken.None);
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;
@@ -99,7 +99,7 @@ public class GuestsControllerTests
             .ReturnsAsync(result);
 
         // Act
-        var actionResult = await _controller.Update(new UpdateGuestRequest(Guid.NewGuid(), "email@mail.com", "guest1", "guest", "123"));
+        var actionResult = await _controller.Update(new UpdateGuestRequest(Guid.NewGuid(), "email@mail.com", "guest1", "guest", "123"), CancellationToken.None);
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;
@@ -118,7 +118,7 @@ public class GuestsControllerTests
             .ReturnsAsync(result);
 
         // Act
-        var actionResult = await _controller.Delete(guest.Id);
+        var actionResult = await _controller.Delete(guest.Id, CancellationToken.None);
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;
@@ -136,7 +136,7 @@ public class GuestsControllerTests
             .ReturnsAsync(result);
 
         // Act
-        var actionResult = await _controller.Get(Guid.NewGuid());
+        var actionResult = await _controller.Get(Guid.NewGuid(), CancellationToken.None);
 
         // Assert
         var notFoundResult = actionResult.Result as NotFoundObjectResult;
@@ -154,7 +154,7 @@ public class GuestsControllerTests
             .ReturnsAsync(result);
 
         // Act
-        var actionResult = await _controller.Create(new CreateGuestRequest("guest1", "guest", "guest", "123", Guid.NewGuid()));
+        var actionResult = await _controller.Create(new CreateGuestRequest("guest1", "guest", "guest", "123", Guid.NewGuid()), CancellationToken.None);
 
         // Assert
         var badRequestResult = actionResult.Result as BadRequestObjectResult;

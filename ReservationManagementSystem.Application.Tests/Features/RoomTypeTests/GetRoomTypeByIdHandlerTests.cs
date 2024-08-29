@@ -30,7 +30,7 @@ public class GetRoomTypeByIdHandlerTests
         var roomType = new RoomType { Id = roomId, Name = "Deluxe", NumberOfRooms = 5, IsActive = true };
         var roomTypeResponse = new RoomTypeResponse { Id = roomType.Id, Name = "Deluxe", NumberOfRooms = 5, IsActive = true };
 
-        _roomTypeRepositoryMock.Setup(r => r.GetRoomTypeWithAvailabilityAsync(roomId))
+        _roomTypeRepositoryMock.Setup(r => r.GetRoomTypeWithAvailabilityAsync(roomId, CancellationToken.None))
             .ReturnsAsync(roomType);
         _mapperMock.Setup(m => m.Map<RoomTypeResponse>(roomType))
             .Returns(roomTypeResponse);
@@ -50,7 +50,7 @@ public class GetRoomTypeByIdHandlerTests
         var roomId = Guid.NewGuid();
         var request = new GetRoomTypeByIdRequest(roomId);
 
-        _roomTypeRepositoryMock.Setup(r => r.GetRoomTypeWithAvailabilityAsync(roomId))
+        _roomTypeRepositoryMock.Setup(r => r.GetRoomTypeWithAvailabilityAsync(roomId, CancellationToken.None))
             .ReturnsAsync((RoomType)null!);
 
         // Act

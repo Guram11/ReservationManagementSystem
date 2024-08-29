@@ -36,7 +36,7 @@ public sealed class CreateRoomTypeHandler : IRequestHandler<CreateRoomTypeReques
         }
 
         var roomType = _mapper.Map<RoomType>(request);
-        await _roomTypeRepository.Create(roomType);
+        await _roomTypeRepository.Create(roomType, cancellationToken);
         var response = _mapper.Map<RoomTypeResponse>(roomType);
 
         return Result<RoomTypeResponse>.Success(response);
