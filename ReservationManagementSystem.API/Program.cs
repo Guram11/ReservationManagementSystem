@@ -8,6 +8,7 @@ using ReservationManagementSystem.Infrastructure.Context;
 using Serilog;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
+using ReservationManagementSystem.API.Middlewares;
 
 internal class Program
 {
@@ -17,7 +18,7 @@ internal class Program
 
         var logger = new LoggerConfiguration()
             .WriteTo.Console()
-            .WriteTo.File(builder.Configuration["Logging:Address"]!, rollingInterval: RollingInterval.Day)
+            .WriteTo.File(builder.Configuration["Logging:Address"] ?? string.Empty, rollingInterval: RollingInterval.Day)
             .MinimumLevel.Information()
             .CreateLogger();
         builder.Logging.ClearProviders();
@@ -75,6 +76,7 @@ internal class Program
         await DefaultSuperAdmin.SeedAsync(userManager);
         await DefaultBasicUser.SeedAsync(userManager);
 
+        app.UseMiddleware<CustomExceptionMiddleware>();
         app.UseSwagger();
         app.UseSwaggerUI();
         app.UseCors();
