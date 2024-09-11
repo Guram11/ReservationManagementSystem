@@ -60,8 +60,9 @@ public class RoomTypesControllerTests
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;
-        okResult.Should().NotBeNull();
-        okResult!.Value.Should().BeEquivalentTo(roomTypeResponses);
+        var responseResult = okResult!.Value as Result<List<RoomTypeResponse>>;
+        responseResult.Should().NotBeNull();
+        responseResult!.Data.Should().BeEquivalentTo(roomTypeResponses);
     }
 
     [Fact]
@@ -92,8 +93,9 @@ public class RoomTypesControllerTests
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;
-        okResult.Should().NotBeNull();
-        okResult!.Value.Should().BeEquivalentTo(roomTypeResponse);
+        var responseResult = okResult!.Value as Result<RoomTypeResponse>;
+        responseResult.Should().NotBeNull();
+        responseResult!.Data.Should().BeEquivalentTo(roomTypeResponse);
     }
 
     [Fact]
@@ -124,8 +126,9 @@ public class RoomTypesControllerTests
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;
-        okResult.Should().NotBeNull();
-        okResult!.Value.Should().BeEquivalentTo(roomTypeResponse);
+        var responseResult = okResult!.Value as Result<RoomTypeResponse>;
+        responseResult.Should().NotBeNull();
+        responseResult!.Data.Should().BeEquivalentTo(roomTypeResponse);
     }
 
     [Fact]
@@ -156,8 +159,9 @@ public class RoomTypesControllerTests
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;
-        okResult.Should().NotBeNull();
-        okResult!.Value.Should().BeEquivalentTo(roomTypeResponse);
+        var responseResult = okResult!.Value as Result<RoomTypeResponse>;
+        responseResult.Should().NotBeNull();
+        responseResult!.Data.Should().BeEquivalentTo(roomTypeResponse);
     }
 
     [Fact]
@@ -188,7 +192,8 @@ public class RoomTypesControllerTests
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;
-        okResult.Should().NotBeNull();
-        okResult!.Value.Should().BeEquivalentTo(roomTypeResponse);
+        var responseResult = okResult!.Value as Result<RoomTypeResponse>;
+        responseResult.Should().NotBeNull();
+        responseResult!.Data.Should().BeEquivalentTo(roomTypeResponse);
     }
 }

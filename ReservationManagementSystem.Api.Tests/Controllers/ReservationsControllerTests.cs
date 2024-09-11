@@ -73,8 +73,9 @@ public class ReservationsControllerTests
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;
-        okResult.Should().NotBeNull();
-        okResult!.Value.Should().BeEquivalentTo(reservations);
+        var responseResult = okResult!.Value as Result<List<ReservationResponse>>;
+        responseResult.Should().NotBeNull();
+        responseResult!.Data.Should().BeEquivalentTo(reservations);
     }
 
     [Fact]
@@ -105,8 +106,9 @@ public class ReservationsControllerTests
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;
-        okResult.Should().NotBeNull();
-        okResult!.Value.Should().BeEquivalentTo(reservation);
+        var responseResult = okResult!.Value as Result<ReservationResponse>;
+        responseResult.Should().NotBeNull();
+        responseResult!.Data.Should().BeEquivalentTo(reservation);
     }
 
     [Fact]
@@ -136,7 +138,8 @@ public class ReservationsControllerTests
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;
-        okResult.Should().NotBeNull();
-        okResult!.Value.Should().BeEquivalentTo(reservation);
+        var responseResult = okResult!.Value as Result<ReservationResponse>;
+        responseResult.Should().NotBeNull();
+        responseResult!.Data.Should().BeEquivalentTo(reservation);
     }
 }

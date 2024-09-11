@@ -85,8 +85,9 @@ public class AuthControllerTests
 
         // Assert
         var actionResult = result.Result.Should().BeOfType<UnauthorizedObjectResult>().Subject;
-        var actualError = actionResult.Value.Should().BeOfType<Error>().Subject;
-        actualError.Should().BeEquivalentTo(error);
+        var responseResult = actionResult.Value.Should().BeOfType<Result<AuthenticationResponse>>().Subject;
+        responseResult.Should().NotBeNull();
+        responseResult!.Error.Should().BeEquivalentTo(error);
     }
 
     [Fact]
@@ -113,8 +114,9 @@ public class AuthControllerTests
 
         // Assert
         var actionResult = result.Result.Should().BeOfType<OkObjectResult>().Subject;
-        var actualUserId = actionResult.Value.Should().BeOfType<string>().Subject;
-        actualUserId.Should().Be(expectedUserId);
+        var responseResult = actionResult.Value.Should().BeOfType<Result<string>>().Subject;
+        responseResult.Should().NotBeNull();
+        responseResult!.Data.Should().Be(expectedUserId);
     }
 
     [Fact]
@@ -141,8 +143,9 @@ public class AuthControllerTests
 
         // Assert
         var actionResult = result.Result.Should().BeOfType<BadRequestObjectResult>().Subject;
-        var actualError = actionResult.Value.Should().BeOfType<Error>().Subject;
-        actualError.Should().BeEquivalentTo(error);
+        var responseResult = actionResult.Value.Should().BeOfType<Result<string>>().Subject;
+        responseResult.Should().NotBeNull();
+        responseResult!.Error.Should().BeEquivalentTo(error);
     }
 
     [Fact]
@@ -183,8 +186,9 @@ public class AuthControllerTests
 
         // Assert
         var actionResult = result.Should().BeOfType<BadRequestObjectResult>().Subject;
-        var actualError = actionResult.Value.Should().BeOfType<Error>().Subject;
-        actualError.Should().BeEquivalentTo(error);
+        var responseResult = actionResult.Value.Should().BeOfType<Result<string>>().Subject;
+        responseResult.Should().NotBeNull();
+        responseResult!.Error.Should().BeEquivalentTo(error);
     }
 
     [Fact]
@@ -229,8 +233,9 @@ public class AuthControllerTests
 
         // Assert
         var actionResult = result.Result.Should().BeOfType<BadRequestObjectResult>().Subject;
-        var actualError = actionResult.Value.Should().BeOfType<Error>().Subject;
-        actualError.Should().BeEquivalentTo(error);
+        var responseResult = actionResult.Value.Should().BeOfType<Result<string>>().Subject;
+        responseResult.Should().NotBeNull();
+        responseResult!.Error.Should().BeEquivalentTo(error);
     }
 
     [Fact]
@@ -279,8 +284,8 @@ public class AuthControllerTests
 
         // Assert
         var actionResult = result.Result.Should().BeOfType<BadRequestObjectResult>().Subject;
-        var actualError = actionResult.Value.Should().BeOfType<Error>().Subject;
-        actualError.Should().BeEquivalentTo(error);
-
+        var responseResult = actionResult.Value.Should().BeOfType<Result<string>>().Subject;
+        responseResult.Should().NotBeNull();
+        responseResult!.Error.Should().BeEquivalentTo(error);
     }
 }

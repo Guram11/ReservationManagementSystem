@@ -6,11 +6,13 @@ using ReservationManagementSystem.Application.Features.RateRoomTypes.Commands.De
 using ReservationManagementSystem.Domain.Settings;
 using ReservationManagementSystem.Application.Features.RateRoomTypes.Queries.GetAllRateRoomTypes;
 using ReservationManagementSystem.API.Extensions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ReservationManagementSystem.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize(Roles = "SuperAdmin, Basic")]
 public class RateRoomTypesController : ControllerBase
 {
     private readonly IMediator _mediator;

@@ -55,8 +55,9 @@ public class RatesControllerTests
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;
-        okResult.Should().NotBeNull();
-        okResult!.Value.Should().BeEquivalentTo(rateResponses);
+        var responseResult = okResult!.Value as Result<List<RateResponse>>;
+        responseResult.Should().NotBeNull();
+        responseResult!.Data.Should().BeEquivalentTo(rateResponses);
     }
 
     [Fact]
@@ -83,37 +84,41 @@ public class RatesControllerTests
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;
-        okResult.Should().NotBeNull();
-        okResult!.Value.Should().BeEquivalentTo(rateResponse);
+        var responseResult = okResult!.Value as Result<RateResponse>;
+        responseResult.Should().NotBeNull();
+        responseResult!.Data.Should().BeEquivalentTo(rateResponse);
     }
 
-    [Fact]
-    public async Task Create_WhenCalled_ReturnsOkResultWithRateResponse()
+[Fact]
+public async Task Create_WhenCalled_ReturnsOkResultWithRateResponse()
+{
+    // Arrange
+    var createRateRequest = new CreateRateRequest("Rate A", Guid.NewGuid());
+    var rateResponse = new RateResponse
     {
-        // Arrange
-        var createRateRequest = new CreateRateRequest("Rate A", Guid.NewGuid());
-        var rateResponse = new RateResponse
-        {
-            Id = Guid.NewGuid(),
-            Name = "Rate A",
-            CreatedAt = DateTime.UtcNow,
-            UpdatedAt = DateTime.UtcNow,
-            HotelId = Guid.NewGuid()
-        };
-        var result = Result<RateResponse>.Success(rateResponse);
+        Id = Guid.NewGuid(),
+        Name = "Rate A",
+        CreatedAt = DateTime.UtcNow,
+        UpdatedAt = DateTime.UtcNow,
+        HotelId = Guid.NewGuid()
+    };
+    var result = Result<RateResponse>.Success(rateResponse);
 
-        _mediatorMock
-            .Setup(m => m.Send(createRateRequest, default))
-            .ReturnsAsync(result);
+    _mediatorMock
+        .Setup(m => m.Send(createRateRequest, default))
+        .ReturnsAsync(result);
 
-        // Act
-        var actionResult = await _controller.Create(createRateRequest, CancellationToken.None);
+    // Act
+    var actionResult = await _controller.Create(createRateRequest, CancellationToken.None);
 
-        // Assert
-        var okResult = actionResult.Result as OkObjectResult;
-        okResult.Should().NotBeNull();
-        okResult!.Value.Should().BeEquivalentTo(rateResponse);
-    }
+    // Assert
+    var okResult = actionResult.Result as OkObjectResult;
+    okResult.Should().NotBeNull();
+    
+    var responseResult = okResult!.Value as Result<RateResponse>;
+    responseResult.Should().NotBeNull();
+    responseResult!.Data.Should().BeEquivalentTo(rateResponse);
+}
 
     [Fact]
     public async Task Update_WhenCalled_ReturnsOkResultWithRateResponse()
@@ -139,8 +144,9 @@ public class RatesControllerTests
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;
-        okResult.Should().NotBeNull();
-        okResult!.Value.Should().BeEquivalentTo(rateResponse);
+        var responseResult = okResult!.Value as Result<RateResponse>;
+        responseResult.Should().NotBeNull();
+        responseResult!.Data.Should().BeEquivalentTo(rateResponse);
     }
 
     [Fact]
@@ -167,7 +173,8 @@ public class RatesControllerTests
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;
-        okResult.Should().NotBeNull();
-        okResult!.Value.Should().BeEquivalentTo(rateResponse);
+        var responseResult = okResult!.Value as Result<RateResponse>;
+        responseResult.Should().NotBeNull();
+        responseResult!.Data.Should().BeEquivalentTo(rateResponse);
     }
 }

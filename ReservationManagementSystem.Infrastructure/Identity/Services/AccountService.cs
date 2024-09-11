@@ -274,7 +274,7 @@ public class AccountService : IAccountService
         var route = _mailSettings.ConfirmEmailRoute;
         var _enpointUri = new Uri(string.Concat($"{origin}/", route));
         var verificationUri = QueryHelpers.AddQueryString(_enpointUri.ToString(), "userId", user.Id);
-        verificationUri = QueryHelpers.AddQueryString(verificationUri, "code", code);
+        verificationUri = $"https://localhost:7197/api/Auth/confirm-email?userId={user.Id}&code={code}";
 
         return verificationUri;
     }

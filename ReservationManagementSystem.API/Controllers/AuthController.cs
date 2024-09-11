@@ -31,7 +31,7 @@ public class AuthController : ControllerBase
         {
             return Ok(result.Data);
         }
-        return Unauthorized(result.Error);
+        return Unauthorized(result);
     }
 
     [HttpPost("register")]
@@ -43,9 +43,9 @@ public class AuthController : ControllerBase
 
         if (result.IsSuccess)
         {
-            return Ok(result.Data);
+            return Ok(result);
         }
-        return BadRequest(result.Error);
+        return BadRequest(result);
     }
 
     [HttpGet("confirm-email")]
@@ -57,7 +57,7 @@ public class AuthController : ControllerBase
         {
             return Ok(result.Data);
         }
-        return BadRequest(result.Error);
+        return BadRequest(result);
     }
 
     [HttpPost("forgot-password")]
@@ -71,7 +71,7 @@ public class AuthController : ControllerBase
         {
             return Ok(result.Data);
         }
-        return BadRequest(result.Error);
+        return BadRequest(result);
     }
 
     [HttpPost("reset-password")]
@@ -83,6 +83,6 @@ public class AuthController : ControllerBase
         {
             return Ok(result.Data);
         }
-        return BadRequest(result.Error);
+        return BadRequest(result);
     }
 }

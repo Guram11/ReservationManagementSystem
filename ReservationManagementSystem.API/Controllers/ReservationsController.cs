@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ReservationManagementSystem.API.Extensions;
 using ReservationManagementSystem.Application.Features.Reservations.Commands.CreateReservation;
@@ -11,6 +12,7 @@ namespace ReservationManagementSystem.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize(Roles = "SuperAdmin, Basic")]
 public class ReservationsController : ControllerBase
 {
     private readonly IMediator _mediator;

@@ -71,8 +71,9 @@ public class ReservationRoomPaymentsControllerTests
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;
-        okResult.Should().NotBeNull();
-        okResult!.Value.Should().BeEquivalentTo(payments);
+        var responseResult = okResult!.Value as Result<List<ReservationRoomPaymentsResponse>>;
+        responseResult.Should().NotBeNull();
+        responseResult!.Data.Should().BeEquivalentTo(payments);
     }
 
     [Fact]
@@ -101,8 +102,9 @@ public class ReservationRoomPaymentsControllerTests
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;
-        okResult.Should().NotBeNull();
-        okResult!.Value.Should().BeEquivalentTo(payment);
+        var responseResult = okResult!.Value as Result<ReservationRoomPaymentsResponse>;
+        responseResult.Should().NotBeNull();
+        responseResult!.Data.Should().BeEquivalentTo(payment);
     }
 
     [Fact]
@@ -131,7 +133,8 @@ public class ReservationRoomPaymentsControllerTests
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;
-        okResult.Should().NotBeNull();
-        okResult!.Value.Should().BeEquivalentTo(payment);
+        var responseResult = okResult!.Value as Result<ReservationRoomPaymentsResponse>;
+        responseResult.Should().NotBeNull();
+        responseResult!.Data.Should().BeEquivalentTo(payment);
     }
 }

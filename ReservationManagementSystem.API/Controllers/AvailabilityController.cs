@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ReservationManagementSystem.API.Extensions;
 using ReservationManagementSystem.Application.Features.AvailibilityTimeline.CheckAvailibility;
@@ -18,6 +19,7 @@ public class AvailabilityController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = "SuperAdmin, Basic")]
     public async Task<ActionResult<AvailabilityResponse>> PushAvailability([FromBody] PushAvailabilityRequest request, CancellationToken cancellationToken)
     {
         var response = await _mediator.Send(request, cancellationToken);

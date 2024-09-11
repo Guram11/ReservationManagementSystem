@@ -4,16 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using ReservationManagementSystem.API.Controllers;
 using ReservationManagementSystem.Application.Enums;
-using ReservationManagementSystem.Application.Features.Hotels.Commands.CreateHotel;
-using ReservationManagementSystem.Application.Features.Hotels.Commands.DeleteHotel;
-using ReservationManagementSystem.Application.Features.Hotels.Common;
 using ReservationManagementSystem.Application.Features.HotelServices.Commands.CreateHotelService;
 using ReservationManagementSystem.Application.Features.HotelServices.Commands.DeleteHotelService;
 using ReservationManagementSystem.Application.Features.HotelServices.Common;
 using ReservationManagementSystem.Application.Features.HotelServices.Queries;
-using ReservationManagementSystem.Application.Features.RateRoomTypes.Common;
 using ReservationManagementSystem.Application.Wrappers;
-using ReservationManagementSystem.Domain.Entities;
 using ReservationManagementSystem.Domain.Enums;
 using ReservationManagementSystem.Domain.Settings;
 
@@ -78,8 +73,9 @@ public class HotelServiceControllerTests
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;
-        okResult.Should().NotBeNull();
-        okResult!.Value.Should().BeEquivalentTo(hotelServices);
+        var responseResult = okResult!.Value as Result<List<HotelServiceResponse>>;
+        responseResult.Should().NotBeNull();
+        responseResult!.Data.Should().BeEquivalentTo(hotelServices);
     }
 
     [Fact]
@@ -107,8 +103,9 @@ public class HotelServiceControllerTests
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;
-        okResult.Should().NotBeNull();
-        okResult!.Value.Should().BeEquivalentTo(hotelService);
+        var responseResult = okResult!.Value as Result<HotelServiceResponse>;
+        responseResult.Should().NotBeNull();
+        responseResult!.Data.Should().BeEquivalentTo(hotelService);
     }
 
     [Fact]
@@ -137,8 +134,9 @@ public class HotelServiceControllerTests
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;
-        okResult.Should().NotBeNull();
-        okResult!.Value.Should().BeEquivalentTo(hotelService);
+        var responseResult = okResult!.Value as Result<HotelServiceResponse>;
+        responseResult.Should().NotBeNull();
+        responseResult!.Data.Should().BeEquivalentTo(hotelService);
     }
 
     [Fact]
@@ -165,8 +163,9 @@ public class HotelServiceControllerTests
 
         // Assert
         var badRequestResult = actionResult.Result as BadRequestObjectResult;
-        badRequestResult.Should().NotBeNull();
-        badRequestResult!.Value.Should().Be("Invalid request parameters.");
+        var responseResult = badRequestResult!.Value as Result<List<HotelServiceResponse>>;
+        responseResult.Should().NotBeNull();
+        responseResult!.Error.Description.Should().Be("Invalid request parameters.");
     }
 
     [Fact]
@@ -185,7 +184,8 @@ public class HotelServiceControllerTests
 
         // Assert
         var notFoundResult = actionResult.Result as NotFoundObjectResult;
-        notFoundResult.Should().NotBeNull();
-        notFoundResult!.Value.Should().Be("Service not found.");
+        var responseResult = notFoundResult!.Value as Result<HotelServiceResponse>;
+        responseResult.Should().NotBeNull();
+        responseResult!.Error.Description.Should().Be("Service not found.");
     }
 }

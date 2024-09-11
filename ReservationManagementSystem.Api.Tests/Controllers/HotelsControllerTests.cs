@@ -57,8 +57,9 @@ public class HotelsControllerTests
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;
-        okResult.Should().NotBeNull();
-        okResult!.Value.Should().BeEquivalentTo(hotelResponses);
+        var responseResult = okResult!.Value as Result<List<HotelResponse>>;
+        responseResult.Should().NotBeNull();
+        responseResult!.Data.Should().BeEquivalentTo(hotelResponses);
     }
 
     [Fact]
@@ -84,8 +85,9 @@ public class HotelsControllerTests
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;
-        okResult.Should().NotBeNull();
-        okResult!.Value.Should().BeEquivalentTo(hotelResponse);
+        var responseResult = okResult!.Value as Result<HotelResponse>;
+        responseResult.Should().NotBeNull();
+        responseResult!.Data.Should().BeEquivalentTo(hotelResponse);
     }
 
     [Fact]
@@ -111,8 +113,9 @@ public class HotelsControllerTests
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;
-        okResult.Should().NotBeNull();
-        okResult!.Value.Should().BeEquivalentTo(hotelResponse);
+        var responseResult = okResult!.Value as Result<HotelResponse>;
+        responseResult.Should().NotBeNull();
+        responseResult!.Data.Should().BeEquivalentTo(hotelResponse);
     }
 
     [Fact]
@@ -138,8 +141,9 @@ public class HotelsControllerTests
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;
-        okResult.Should().NotBeNull();
-        okResult!.Value.Should().BeEquivalentTo(hotelResponse);
+        var responseResult = okResult!.Value as Result<HotelResponse>;
+        responseResult.Should().NotBeNull();
+        responseResult!.Data.Should().BeEquivalentTo(hotelResponse);
     }
 
     [Fact]
@@ -165,8 +169,9 @@ public class HotelsControllerTests
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;
-        okResult.Should().NotBeNull();
-        okResult!.Value.Should().BeEquivalentTo(hotelResponse);
+        var responseResult = okResult!.Value as Result<HotelResponse>;
+        responseResult.Should().NotBeNull();
+        responseResult!.Data.Should().BeEquivalentTo(hotelResponse);
     }
 
     [Fact]
@@ -184,8 +189,9 @@ public class HotelsControllerTests
 
         // Assert
         var notFoundResult = actionResult.Result as NotFoundObjectResult;
-        notFoundResult.Should().NotBeNull();
-        notFoundResult!.Value.Should().Be("Hotel not found.");
+        var responseResult = notFoundResult!.Value as Result<HotelResponse>;
+        responseResult.Should().NotBeNull();
+        responseResult!.Error.Description.Should().Be("Hotel not found.");
     }
 
     [Fact]
@@ -203,7 +209,8 @@ public class HotelsControllerTests
 
         // Assert
         var badRequestResult = actionResult.Result as BadRequestObjectResult;
-        badRequestResult.Should().NotBeNull();
-        badRequestResult!.Value.Should().Be("Invalid request data.");
+        var responseResult = badRequestResult!.Value as Result<HotelResponse>;
+        responseResult.Should().NotBeNull();
+        responseResult!.Error.Description.Should().Be("Invalid request data.");
     }
 }

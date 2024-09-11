@@ -46,8 +46,9 @@ public class AvailabilityTimelineControllerTests
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;
-        okResult.Should().NotBeNull();
-        okResult!.Value.Should().BeEquivalentTo(expectedResponse);
+        var responseResult = okResult!.Value as Result<AvailabilityResponse>;
+        responseResult.Should().NotBeNull();
+        responseResult!.Data.Should().BeEquivalentTo(expectedResponse);
     }
 
     [Fact]
@@ -71,8 +72,9 @@ public class AvailabilityTimelineControllerTests
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;
-        okResult.Should().NotBeNull();
-        okResult!.Value.Should().BeEquivalentTo(expectedResponse);
+        var responseResult = okResult!.Value as Result<List<CheckAvailabilityResponse>>;
+        responseResult.Should().NotBeNull();
+        responseResult!.Data.Should().BeEquivalentTo(expectedResponse);
     }
 
     [Fact]
@@ -92,7 +94,10 @@ public class AvailabilityTimelineControllerTests
         // Assert
         var badRequestResult = actionResult.Result as BadRequestObjectResult;
         badRequestResult.Should().NotBeNull();
-        badRequestResult!.Value.Should().Be("Invalid request data.");
+
+        var responseResult = badRequestResult!.Value as Result<AvailabilityResponse>;
+        responseResult.Should().NotBeNull();
+        responseResult!.Error.Description.Should().Be("Invalid request data.");
     }
 
     [Fact]
@@ -112,6 +117,9 @@ public class AvailabilityTimelineControllerTests
         // Assert
         var notFoundResult = actionResult.Result as NotFoundObjectResult;
         notFoundResult.Should().NotBeNull();
-        notFoundResult!.Value.Should().Be("No availability found.");
+
+        var responseResult = notFoundResult!.Value as Result<List<CheckAvailabilityResponse>>;
+        responseResult.Should().NotBeNull();
+        responseResult!.Error.Description.Should().Be("No availability found.");
     }
 }

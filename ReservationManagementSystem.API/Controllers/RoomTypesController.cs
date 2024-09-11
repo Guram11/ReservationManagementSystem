@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ReservationManagementSystem.API.Extensions;
 using ReservationManagementSystem.Application.Features.RoomTypes.Commands.CreateRoomType;
@@ -13,6 +14,7 @@ namespace ReservationManagementSystem.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize(Roles = "SuperAdmin, Basic")]
 public class RoomTypesController : ControllerBase
 {
     private readonly IMediator _mediator;

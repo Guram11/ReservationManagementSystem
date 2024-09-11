@@ -46,8 +46,9 @@ public class GuestsControllerTests
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;
-        okResult.Should().NotBeNull();
-        okResult!.Value.Should().BeEquivalentTo(guests);
+        var responseResult = okResult!.Value as Result<List<GuestResponse>>;
+        responseResult.Should().NotBeNull();
+        responseResult!.Data.Should().BeEquivalentTo(guests);
     }
 
     [Fact]
@@ -65,8 +66,9 @@ public class GuestsControllerTests
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;
-        okResult.Should().NotBeNull();
-        okResult!.Value.Should().BeEquivalentTo(guest);
+        var responseResult = okResult!.Value as Result<GuestResponse>;
+        responseResult.Should().NotBeNull();
+        responseResult!.Data.Should().BeEquivalentTo(guest);
     }
 
     [Fact]
@@ -84,8 +86,9 @@ public class GuestsControllerTests
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;
-        okResult.Should().NotBeNull();
-        okResult!.Value.Should().BeEquivalentTo(guest);
+        var responseResult = okResult!.Value as Result<GuestResponse>;
+        responseResult.Should().NotBeNull();
+        responseResult!.Data.Should().BeEquivalentTo(guest);
     }
 
     [Fact]
@@ -103,8 +106,9 @@ public class GuestsControllerTests
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;
-        okResult.Should().NotBeNull();
-        okResult!.Value.Should().BeEquivalentTo(guest);
+        var responseResult = okResult!.Value as Result<GuestResponse>;
+        responseResult.Should().NotBeNull();
+        responseResult!.Data.Should().BeEquivalentTo(guest);
     }
 
     [Fact]
@@ -122,8 +126,9 @@ public class GuestsControllerTests
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;
-        okResult.Should().NotBeNull();
-        okResult!.Value.Should().BeEquivalentTo(guest);
+        var responseResult = okResult!.Value as Result<GuestResponse>;
+        responseResult.Should().NotBeNull();
+        responseResult!.Data.Should().BeEquivalentTo(guest);
     }
 
     [Fact]
@@ -140,8 +145,9 @@ public class GuestsControllerTests
 
         // Assert
         var notFoundResult = actionResult.Result as NotFoundObjectResult;
-        notFoundResult.Should().NotBeNull();
-        notFoundResult!.Value.Should().Be("Guest not found.");
+        var responseResult = notFoundResult!.Value as Result<GuestResponse>;
+        responseResult.Should().NotBeNull();
+        responseResult!.Error.Description.Should().Be("Guest not found.");
     }
 
     [Fact]
@@ -158,7 +164,8 @@ public class GuestsControllerTests
 
         // Assert
         var badRequestResult = actionResult.Result as BadRequestObjectResult;
-        badRequestResult.Should().NotBeNull();
-        badRequestResult!.Value.Should().Be("Invalid request data.");
+        var responseResult = badRequestResult!.Value as Result<GuestResponse>;
+        responseResult.Should().NotBeNull();
+        responseResult!.Error.Description.Should().Be("Invalid request data.");
     }
 }

@@ -46,7 +46,8 @@ public class RateTimelinesControllerTests
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;
-        okResult.Should().NotBeNull();
-        okResult!.Value.Should().BeEquivalentTo(expectedResponse);
+        var responseResult = okResult!.Value as Result<RateTimelineResponse>;
+        responseResult.Should().NotBeNull();
+        responseResult!.Data.Should().BeEquivalentTo(expectedResponse);
     }
 }

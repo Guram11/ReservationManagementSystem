@@ -3,11 +3,13 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using ReservationManagementSystem.API.Controllers;
+using ReservationManagementSystem.Application.Features.RateRoomTypes.Common;
 using ReservationManagementSystem.Application.Features.ReservationRooms.Commands.CreateReservationRoom;
 using ReservationManagementSystem.Application.Features.ReservationRooms.Commands.DeleteReservationRoom;
 using ReservationManagementSystem.Application.Features.ReservationRooms.Common;
 using ReservationManagementSystem.Application.Features.ReservationRooms.Queries;
 using ReservationManagementSystem.Application.Wrappers;
+using ReservationManagementSystem.Domain.Entities;
 using ReservationManagementSystem.Domain.Settings;
 
 namespace ReservationManagementSystem.Api.Tests.Controllers;
@@ -76,8 +78,9 @@ public class ReservationRoomsControllerTests
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;
-        okResult.Should().NotBeNull();
-        okResult!.Value.Should().BeEquivalentTo(reservations);
+        var responseResult = okResult!.Value as Result<List<ReservationRoomResponse>>;
+        responseResult.Should().NotBeNull();
+        responseResult!.Data.Should().BeEquivalentTo(reservations);
     }
 
     [Fact]
@@ -109,8 +112,9 @@ public class ReservationRoomsControllerTests
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;
-        okResult.Should().NotBeNull();
-        okResult!.Value.Should().BeEquivalentTo(reservation);
+        var responseResult = okResult!.Value as Result<ReservationRoomResponse>;
+        responseResult.Should().NotBeNull();
+        responseResult!.Data.Should().BeEquivalentTo(reservation);
     }
 
     [Fact]
@@ -143,7 +147,8 @@ public class ReservationRoomsControllerTests
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;
-        okResult.Should().NotBeNull();
-        okResult!.Value.Should().BeEquivalentTo(reservation);
+        var responseResult = okResult!.Value as Result<ReservationRoomResponse>;
+        responseResult.Should().NotBeNull();
+        responseResult!.Data.Should().BeEquivalentTo(reservation);
     }
 }

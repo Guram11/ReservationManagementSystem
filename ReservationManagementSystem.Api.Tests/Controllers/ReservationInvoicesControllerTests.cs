@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using ReservationManagementSystem.API.Controllers;
+using ReservationManagementSystem.Application.Features.Hotels.Common;
 using ReservationManagementSystem.Application.Features.ResrevationInvoices.Commands.CreateReservationInvoice;
 using ReservationManagementSystem.Application.Features.ResrevationInvoices.Commands.DeleteReservationInvoice;
 using ReservationManagementSystem.Application.Features.ResrevationInvoices.Common;
@@ -74,8 +75,9 @@ public class ReservationInvoicesControllerTests
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;
-        okResult.Should().NotBeNull();
-        okResult!.Value.Should().BeEquivalentTo(reservationInvoices);
+        var responseResult = okResult!.Value as Result<List<ReservationInvoiceResponse>>;
+        responseResult.Should().NotBeNull();
+        responseResult!.Data.Should().BeEquivalentTo(reservationInvoices);
     }
 
     [Fact]
@@ -106,8 +108,9 @@ public class ReservationInvoicesControllerTests
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;
-        okResult.Should().NotBeNull();
-        okResult!.Value.Should().BeEquivalentTo(reservationInvoiceResponse);
+        var responseResult = okResult!.Value as Result<ReservationInvoiceResponse>;
+        responseResult.Should().NotBeNull();
+        responseResult!.Data.Should().BeEquivalentTo(reservationInvoiceResponse);
     }
 
     [Fact]
@@ -138,7 +141,8 @@ public class ReservationInvoicesControllerTests
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;
-        okResult.Should().NotBeNull();
-        okResult!.Value.Should().BeEquivalentTo(reservationInvoiceResponse);
+        var responseResult = okResult!.Value as Result<ReservationInvoiceResponse>;
+        responseResult.Should().NotBeNull();
+        responseResult!.Data.Should().BeEquivalentTo(reservationInvoiceResponse);
     }
 }
