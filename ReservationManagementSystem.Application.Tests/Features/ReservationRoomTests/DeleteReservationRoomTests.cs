@@ -54,10 +54,10 @@ public class DeleteReservationRoomHandlerTests
             Price = reservationRoom.Price
         };
 
-        _mockReservationRoomRepository.Setup(repo => repo.Delete(reservationId, roomId, CancellationToken.None)).ReturnsAsync(reservationRoom);
+        _mockReservationRoomRepository.Setup(repo => repo.Delete(reservationRoom.Id, CancellationToken.None)).ReturnsAsync(reservationRoom);
         _mockMapper.Setup(m => m.Map<ReservationRoomResponse>(reservationRoom)).Returns(reservationRoomResponse);
 
-        var request = new DeleteReservationRoomRequest(reservationId, roomId);
+        var request = new DeleteReservationRoomRequest(reservationRoom.Id);
 
         // Act
         var result = await _handler.Handle(request, CancellationToken.None);
@@ -71,11 +71,10 @@ public class DeleteReservationRoomHandlerTests
     public async Task Handle_ShouldReturnFailure_WhenReservationRoomNotFound()
     {
         // Arrange
-        var reservationId = Guid.NewGuid();
-        var roomId = Guid.NewGuid();
-        _mockReservationRoomRepository.Setup(repo => repo.Delete(reservationId, roomId, CancellationToken.None)).ReturnsAsync((ReservationRoom)null!);
+        var reservationRoomId = Guid.NewGuid();
+        _mockReservationRoomRepository.Setup(repo => repo.Delete(reservationRoomId, CancellationToken.None)).ReturnsAsync((ReservationRoom)null!);
 
-        var request = new DeleteReservationRoomRequest(reservationId, roomId);
+        var request = new DeleteReservationRoomRequest(reservationRoomId);
 
         // Act
         var result = await _handler.Handle(request, CancellationToken.None);
@@ -90,11 +89,10 @@ public class DeleteReservationRoomHandlerTests
     public async Task Handle_ShouldThrowException_WhenRepositoryThrows()
     {
         // Arrange
-        var reservationId = Guid.NewGuid();
-        var roomId = Guid.NewGuid();
-        _mockReservationRoomRepository.Setup(repo => repo.Delete(reservationId, roomId, CancellationToken.None)).ThrowsAsync(new Exception("Database error"));
+        var reservationRoomId = Guid.NewGuid();
+        _mockReservationRoomRepository.Setup(repo => repo.Delete(reservationRoomId, CancellationToken.None)).ThrowsAsync(new Exception("Database error"));
 
-        var request = new DeleteReservationRoomRequest(reservationId, roomId);
+        var request = new DeleteReservationRoomRequest(reservationRoomId);
 
         // Act
         Func<Task> act = async () => await _handler.Handle(request, CancellationToken.None);

@@ -14,22 +14,6 @@ public class ReservationRoomRepository : BaseRepository<ReservationRoom>, IReser
         _context = context;
     }
 
-    public async Task<ReservationRoom?> Delete(Guid reservationId, Guid roomId, CancellationToken cancellationToken)
-    {
-        var reservationRoom = await _context.ReservationRooms
-                .FirstOrDefaultAsync(rt => rt.ReservationId == reservationId && rt.RoomId == roomId, cancellationToken);
-
-        if (reservationRoom == null)
-        {
-            return null;
-        }
-
-        _context.ReservationRooms.Remove(reservationRoom);
-        await _context.SaveChangesAsync(cancellationToken);
-
-        return reservationRoom;
-    }
-
     public async Task<ReservationRoom?> GetReservationRoomWithTimeline(Guid id, CancellationToken cancellationToken)
     {
         var reservationRoom = await _context.ReservationRooms
@@ -55,6 +39,24 @@ public class ReservationRoomRepository : BaseRepository<ReservationRoom>, IReser
         }
 
         return reservationRoom;
+    }
+
+    public async Task<bool> IsReservationRoomInUseAsync(Guid id)
+    {
+        var isReservationRoomTimelineInUse = await _context.ReservationRoomTimelines
+           .AnyAsync(r => r.ReservationRoomId == id);
+
+        var isReservationPaymentInUse = await _context.ReservationRoomPayments
+          .AnyAsync(r => r.ReservationRoomId == id);
+
+        var isReservationRoomServicesInUse = await _context.ReservationRoomServices
+          .AnyAsync(r => r.ReservationRoomId == id);
+
+        var isGuestInUse = await _context.Guests
+            .AnyAsync(r => r.ReservationRoomId == id);
+
+
+        return isReservationRoomTimelineInUse || isGuestInUse || isReservationPaymentInUse || isReservationRoomServicesInUse;
     }
 
     public async Task SaveChangesAsync(CancellationToken cancellationToken)

@@ -143,7 +143,7 @@ public class ReservationRoomsControllerTests
             .ReturnsAsync(result);
 
         // Act
-        var actionResult = await _controller.Delete(reservationId, roomId, CancellationToken.None);
+        var actionResult = await _controller.Delete(reservation.Id, CancellationToken.None);
 
         // Assert
         var okResult = actionResult.Result as OkObjectResult;

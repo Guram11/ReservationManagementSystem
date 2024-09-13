@@ -24,6 +24,7 @@ public static class ResponseHandler
             ErrorType.Unauthorized => new UnauthorizedObjectResult(response),
             ErrorType.Forbidden => new BadRequestObjectResult(response),
             ErrorType.InvalidCredentials => new BadRequestObjectResult(response),
+            ErrorType.ResourceInUse => new BadRequestObjectResult(response),
             ErrorType.NotFoundError => new NotFoundObjectResult(response),
             _ => new StatusCodeResult(500)
         };

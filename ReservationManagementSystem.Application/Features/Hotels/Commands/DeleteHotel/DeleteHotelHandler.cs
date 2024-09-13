@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.Extensions.Logging;
+using ReservationManagementSystem.Application.Common.Errors;
 using ReservationManagementSystem.Application.Features.Hotels.Common;
 using ReservationManagementSystem.Application.Interfaces.Repositories;
 using ReservationManagementSystem.Application.Wrappers;
@@ -19,6 +21,12 @@ public sealed class DeleteHotelHandler : IRequestHandler<DeleteHotelRequest, Res
 
     public async Task<Result<HotelResponse>> Handle(DeleteHotelRequest request, CancellationToken cancellationToken)
     {
+        var isInUse = await _hotelRepository.IsHotelInUseAsync(request.Id);
+        if (isInUse)
+        {
+            return Result<HotelResponse>.Failure(ValidationError.ResourceInUse());
+        }
+
         var hotel = await _hotelRepository.Delete(request.Id, cancellationToken);
 
         if (hotel is null)
@@ -27,7 +35,6 @@ public sealed class DeleteHotelHandler : IRequestHandler<DeleteHotelRequest, Res
         }
 
         var response = _mapper.Map<HotelResponse>(hotel);
-
         return Result<HotelResponse>.Success(response);
     }
 }

@@ -28,6 +28,21 @@ public class RoomTypeRepository : BaseRepository<RoomType>, IRoomTypeRepository
         return roomType;
     }
 
+    public async Task<bool> IsRoomTypeInUseAsync(Guid id)
+    {
+        var isReservationRoomInUse = await _context.ReservationRooms
+           .AnyAsync(r => r.RoomTypeId == id);
+
+        var isRateRoomTypeInUse = await _context.RateRoomTypes
+           .AnyAsync(r => r.RoomTypeId == id);
+
+        var isAvailabilityTimelineInUse = await _context.AvailabilityTimelines
+           .AnyAsync(r => r.RoomTypeId == id);
+
+        return isReservationRoomInUse || isRateRoomTypeInUse || isAvailabilityTimelineInUse;
+    }
+
+
     public async Task SaveChangesAsync(CancellationToken cancellationToken)
     {
         await _context.SaveChangesAsync(cancellationToken);

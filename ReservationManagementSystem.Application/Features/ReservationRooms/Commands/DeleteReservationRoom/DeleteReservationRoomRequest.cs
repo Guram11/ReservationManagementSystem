@@ -4,4 +4,4 @@ using ReservationManagementSystem.Application.Wrappers;
 
 namespace ReservationManagementSystem.Application.Features.ReservationRooms.Commands.DeleteReservationRoom;
 
-public sealed record DeleteReservationRoomRequest(Guid ReservationId, Guid RoomId) : IRequest<Result<ReservationRoomResponse>>;
+public sealed record DeleteReservationRoomRequest(Guid ReservationRoomId) : IRequest<Result<ReservationRoomResponse>>;

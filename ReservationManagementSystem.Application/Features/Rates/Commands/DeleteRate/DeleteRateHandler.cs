@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
+using ReservationManagementSystem.Application.Common.Errors;
+using ReservationManagementSystem.Application.Features.Hotels.Common;
 using ReservationManagementSystem.Application.Features.Rates.Common;
 using ReservationManagementSystem.Application.Interfaces.Repositories;
 using ReservationManagementSystem.Application.Wrappers;
@@ -19,6 +21,12 @@ public sealed class DeleteRateHandler : IRequestHandler<DeleteRateRequest, Resul
 
     public async Task<Result<RateResponse>> Handle(DeleteRateRequest request, CancellationToken cancellationToken)
     {
+        var isInUse = await _rateRepository.IsRateInUseAsync(request.Id);
+        if (isInUse)
+        {
+            return Result<RateResponse>.Failure(ValidationError.ResourceInUse());
+        }
+
         var rate = await _rateRepository.Delete(request.Id, cancellationToken);
         
         if (rate == null)

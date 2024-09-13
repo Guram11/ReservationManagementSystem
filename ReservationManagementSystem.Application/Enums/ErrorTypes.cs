@@ -12,5 +12,6 @@ public enum ErrorType
     Unauthorized,
     Forbidden,
     InvalidCredentials,
+    ResourceInUse,
     None
 }

@@ -7,10 +7,10 @@ public class ReservationRoom : BaseEntity
     public Guid ReservationId { get; set; }
     public Guid RateId { get; set; }
     public Guid RoomTypeId { get; set; }
-    public Guid RoomId { get; set; } // specific Room assigned to a reservation
+    public Guid RoomId { get; set; }
     public DateTime Checkin { get; set; }
     public DateTime Checkout { get; set; }
-    public decimal Price { get; set; } // Sum of prices of all child ReservationRoomTimeline rows
+    public decimal Price { get; set; }
     public Reservation? Reservation { get; set; }
     public RateRoomType? RateRoomType { get; set; }
     public Room? Room { get; set; }

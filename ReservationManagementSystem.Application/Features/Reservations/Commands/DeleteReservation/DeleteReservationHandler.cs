@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
+using ReservationManagementSystem.Application.Common.Errors;
+using ReservationManagementSystem.Application.Features.Rates.Common;
 using ReservationManagementSystem.Application.Features.Reservations.Common;
 using ReservationManagementSystem.Application.Interfaces.Repositories;
 using ReservationManagementSystem.Application.Wrappers;
@@ -19,6 +21,12 @@ public sealed class DeleteReservationHandler : IRequestHandler<DeleteReservation
 
     public async Task<Result<ReservationResponse>> Handle(DeleteReservationRequest request, CancellationToken cancellationToken)
     {
+        var isInUse = await _reservationRepository.IsReservationInUseAsync(request.Id);
+        if (isInUse)
+        {
+            return Result<ReservationResponse>.Failure(ValidationError.ResourceInUse());
+        }
+
         var reservation = await _reservationRepository.Delete(request.Id, cancellationToken);
 
         if (reservation is null)
