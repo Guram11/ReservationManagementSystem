@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
 using ReservationManagementSystem.API.Middlewares;
 
-internal class Program
+public class Program
 {
     private static async Task Main(string[] args)
     {

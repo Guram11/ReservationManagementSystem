@@ -1,16 +1,26 @@
-version: '3.8'
-
 services:
-  sqlserver:
-    image: mcr.microsoft.com/mssql/server:2019-latest
-    container_name: sqlserver
-    environment:
-      SA_PASSWORD: "YourStrong!Passw0rd"
-      ACCEPT_EULA: "Y"
+  webapi:
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
-      - "1433:1433"
-    volumes:
-      - sqlserver-data:/var/opt/mssql
+      - "5000:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Testing
+    networks:
+      - app-network
 
-volumes:
-  sqlserver-data:
+  tests:
+    build:
+      context: .
+      dockerfile: ./ReservationManagementSystem.FunctionalTests/Dockerfile
+    depends_on:
+      - webapi
+    environment:
+      - BASE_ADDRESS=http://webapi:80
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

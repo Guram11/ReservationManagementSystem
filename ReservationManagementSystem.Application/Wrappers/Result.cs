@@ -1,7 +1,11 @@
-﻿namespace ReservationManagementSystem.Application.Wrappers;
+﻿using System.Text.Json.Serialization;
+
+namespace ReservationManagementSystem.Application.Wrappers;
 
 public sealed class Result<T>
 {
+    [JsonConstructor]
+
     private Result(bool isSuccess, Error error, T data)
     {
         if (isSuccess && error != Error.None ||
